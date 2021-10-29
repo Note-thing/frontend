@@ -1,6 +1,5 @@
-import { List, ListItem, ListItemText, Grid, Avatar } from "@mui/material";
+import { List, ListItem, ListItemText, Grid, Avatar,Input, Chip } from "@mui/material";
 import "./AppLayout.css";
-import { Input } from "@mui/material";
 import {
     Code,
     Preview,
@@ -10,6 +9,7 @@ import {
     Delete,
     PersonOutline,
     LocalOffer,
+    
 } from "@mui/icons-material";
 /**
  * Layout of the application
@@ -18,6 +18,7 @@ import {
  */
 export default function AppLayout(props) {
     const user = {};
+    const tags = ["Compound litteral", "RHH", "Blanc"]
     user.name = "Frank Letest";
     return (
         <Grid container>
@@ -74,7 +75,11 @@ export default function AppLayout(props) {
                         Guide de survie durant le III Rentsch
                     </div>
                     <div className="editor-tag-footer">
-                        <LocalOffer /> Compound litteral, blanc 
+                        <LocalOffer />{" "}
+                        {tags.map((tag) => <Chip className="tag-chip"
+                            label={tag}
+                            onDelete={() => console.log("delete" + {tag})}
+                        />)}
                     </div>
                 </main>
             </Grid>
