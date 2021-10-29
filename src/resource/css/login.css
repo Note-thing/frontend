@@ -1,0 +1,16 @@
+.login{
+
+}
+
+.login .container{
+    padding:'24px';
+}
+
+.login .box_container{
+    padding:'16px';
+    background-color: '#cfe8fc';
+    height: '100vh';
+    display:'flex';
+    flex-direction: 'column';
+    justify-content: 'center';
+}
