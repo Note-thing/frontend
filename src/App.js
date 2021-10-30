@@ -3,7 +3,8 @@ import "./App.css";
 import 'typeface-roboto'
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import AppLayout from "./layout/AppLayout";
-import LoginLayout from "./layout/LoginLayout";
+import Login from "./layout/login/Login";
+import Signup from "./layout/login/Signup";
 import { MainProvider } from './context/MainContext'
 import ProtectedRoute from './layout/ProtectedRoute'
 
@@ -13,7 +14,8 @@ function App() {
             <BrowserRouter>
                 <Switch>
                     <ProtectedRoute exact path="/" component={AppLayout}></ProtectedRoute>
-                    <Route exact path="/login" component={LoginLayout}></Route>
+                    <Route exact path="/login" component={Login}></Route>
+                    <Route exact path="/signup" component={Signup}></Route>
                 </Switch>
             </BrowserRouter>
         </MainProvider>

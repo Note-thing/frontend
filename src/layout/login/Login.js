@@ -1,9 +1,10 @@
 import React, { useContext } from 'react';
-import { MainContext } from '../context/MainContext';
+import { MainContext } from '../../context/MainContext';
+import { useInput } from '../../hooks/useInput';
 import { useHistory } from "react-router-dom";
-import { useInput } from '../hooks/useInput';
+import LoginIcon from '@mui/icons-material/Login';
+
 import { 
-    Icon, 
     Typography, 
     Box, 
     Grid, 
@@ -14,7 +15,7 @@ import {
     Link
 } from '@mui/material'
 
-const LoginLayout = () => {
+const Login = () => {
 
     let history = useHistory();
 
@@ -42,11 +43,8 @@ const LoginLayout = () => {
                 item 
                 square
             >
-         
-            <Icon className="app-signin" />
-            
-            <Typography component="h1" variant="h5" align="center">
-              Connexion
+            <Typography sx={{ mt:4, mb:8 }} component="h1" variant="h5" align="center">
+              <LoginIcon align="center" /> Connection
             </Typography>
             
             <form noValidate>
@@ -122,4 +120,4 @@ function Copyright() {
     );
   }
 
-  export default LoginLayout;
+  export default Login;
