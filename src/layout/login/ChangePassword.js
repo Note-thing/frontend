@@ -2,20 +2,18 @@ import React, { useContext } from 'react';
 import { MainContext } from '../../context/MainContext';
 import { useInput } from '../../hooks/useInput';
 import { useHistory } from "react-router-dom";
-import LoginIcon from '@mui/icons-material/Login';
+import LockIcon from '@mui/icons-material/Lock';
 
 import { 
     Typography, 
     Box, 
     Grid, 
     TextField, 
-    FormControlLabel, 
-    Checkbox,
     Button,
     Link
 } from '@mui/material'
 
-const Login = () => {
+const ChangePassword = () => {
 
     let history = useHistory();
 
@@ -23,12 +21,12 @@ const Login = () => {
 
     // keep track of the input states 
     // each keystroke (onChange event listener) is saved within the state
-    const { value:email,        bind:bindEmail      } = useInput('');
-    const { value:password,     bind:bindPassword   } = useInput('');
+    const { value:password,              bind:bindPassword            } = useInput('');
+    const { value:passwordRepeat,        bind:bindPasswordRepeat      } = useInput('');
   
-    const buttonSignIn = (e) => {
+    const buttonChangePassword = (e) => {
         e.preventDefault();
-        dispatch({type:'login', user: { email : email, isAuthenticated : true }});
+        
         history.push("/");    
     }
 
@@ -37,11 +35,10 @@ const Login = () => {
         <Grid container 
             direction="column"
             alignItems="center"
-            spacing={4}
             >
-            <Grid item square>
+            <Grid item>
             <Typography sx={{ mt:6, mb:8 }} component="h1" variant="h5" align="center">
-              <LoginIcon align="center" /> Connection
+              <LockIcon align="center" /> Changer le mot de passe...
             </Typography>
             
             <form noValidate>
@@ -50,43 +47,40 @@ const Login = () => {
                 margin="normal"
                 required
                 fullWidth
-                id="email"
-                label="Adresse e-mail"
-                name="email"
-                autoComplete="email"
+                id="password"
+                label="Nouveau mot de passe"
+                name="password"
+                autoComplete="password"
                 autoFocus
-                { ...bindEmail } 
+                { ...bindPassword } 
               />
+
               <TextField
                 variant="outlined"
                 margin="normal"
                 required
                 fullWidth
-                name="password"
-                label="Mot de passe"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                { ...bindPassword } 
+                id="passwordRepeat"
+                label="Répéter"
+                name="passwordRepeat"
+                autoComplete="passwordRepeat"
+                { ...bindPasswordRepeat } 
               />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" defaultChecked  />}
-                label="Se souvenir de moi"
-              />
+             
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 color="primary"
                 size="large"
-                onClick= { buttonSignIn }
+                onClick= { buttonChangePassword }
               >
-                Se connecter
+                Changer
               </Button>
               <Grid container>
                 <Grid item xs>
-                <Link href="#" variant="body2" onClick={ () => redirectPage("/lost_password")}>
-                    {"Mot de passe oublié ?"}
+                <Link href="#" variant="body2" onClick={ () => redirectPage("/login")}>
+                    {"Se connecter ?"}
                   </Link>
                 </Grid>
                 <Grid item>
@@ -117,4 +111,4 @@ function Copyright() {
     );
   }
 
-  export default Login;
+  export default ChangePassword;

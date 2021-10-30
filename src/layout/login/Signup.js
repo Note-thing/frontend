@@ -49,7 +49,7 @@ const Signup = () => {
                 item 
                 square
             >           
-            <Typography sx={{ mt:4, mb:8 }}  component="h1" variant="h5" align="center">
+            <Typography sx={{ mt:6, mb:8 }}  component="h1" variant="h5" align="center">
               <AddIcon align="center" /> Nouveau compte
             </Typography>
             
@@ -79,7 +79,6 @@ const Signup = () => {
                     label="Nom"
                     name="lastname"
                     autoComplete="lastname"
-                    autoFocus
                     { ...bindLastname } 
                   />
                 </Grid>
@@ -93,7 +92,6 @@ const Signup = () => {
                 label="Adresse e-mail"
                 name="email"
                 autoComplete="email"
-                autoFocus
                 { ...bindEmail } 
               />
               <TextField
