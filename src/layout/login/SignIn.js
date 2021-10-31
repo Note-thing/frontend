@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import CONFIG from '../../config/config'
+import CONFIG, { Get } from '../../config/config'
 import { MainContext } from '../../context/MainContext';
 import { useInput } from '../../hooks/useInput';
 import { useHistory } from "react-router-dom";
@@ -28,10 +28,10 @@ const SignIn = () => {
     const { value:password,     bind:bindPassword   } = useInput('');
   
     const buttonSignIn = async (e) => {
-        e.preventDefault();
-        const response = await fetch(CONFIG.api_url + '/signin');
-        dispatch({type:'login', user: { email : email, isAuthenticated : true }});
-        history.push("/");    
+      e.preventDefault();
+      let response = Get(CONFIG.api_url);
+      dispatch({type:'login', user: { email : response.email, isAuthenticated : true }});  
+      history.push("/");    
     }
 
     const redirectPage = (link) => history.push(link);

@@ -6,3 +6,27 @@ const CONFIG = {
     signup_url : "/signup",
 }
 export default CONFIG;
+
+export const Get = async (url) => {
+    try{
+        return await fetch(url, {
+            method: 'GET',
+            credentials: 'include' 
+        });
+    }catch(err){
+        console.error(err);
+    }
+}
+
+export const Post = async (url, data) => {
+    try{
+        return await fetch(url,  {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams(data).toString()
+        });
+    }catch(err){
+        console.error(err);
+    }
+}
