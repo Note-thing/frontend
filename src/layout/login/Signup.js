@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import CONFIG from '../../config/config'
 import { MainContext } from '../../context/MainContext';
 import { useInput } from '../../hooks/useInput';
 import { useHistory } from "react-router-dom";
@@ -130,13 +131,13 @@ const Signup = () => {
               </Button>
               <Grid container>
                 <Grid item xs>
-                <Link href="#" variant="body2" onClick={ () => redirectPage("/lost_password")}>
-                    {"Mot de passe oublié ?"}
+                  <Link href="#" variant="body2" onClick={ () => redirectPage(CONFIG.signin_url)}>
+                    {"Se connecter"}
                   </Link>
                 </Grid>
-                <Grid item>
-                  <Link href="#" variant="body2" onClick={ () => redirectPage("/login")}>
-                    {"Se connecter"}
+                <Grid item >
+                <Link href="#" variant="body2" onClick={ () => redirectPage(CONFIG.lost_password_url)}>
+                    {"Mot de passe oublié ?"}
                   </Link>
                 </Grid>
               </Grid>

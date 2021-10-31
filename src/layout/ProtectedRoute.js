@@ -1,4 +1,5 @@
 import React from 'react';
+import CONFIG from '../config/config'
 import { Route, Redirect } from 'react-router-dom';
 
 const ProtectedRoute = ( { component: Component }, ...rest ) => {
@@ -12,7 +13,7 @@ const ProtectedRoute = ( { component: Component }, ...rest ) => {
             }else{
                 return <Redirect to={
                     { 
-                        pathname: "/login",
+                        pathname: CONFIG.signin_url,
                         state: {
                             from: props.location
                         }

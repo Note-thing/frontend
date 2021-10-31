@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import CONFIG from '../../config/config'
 import { MainContext } from '../../context/MainContext';
 import { useInput } from '../../hooks/useInput';
 import { useHistory } from "react-router-dom";
@@ -15,7 +16,7 @@ import {
     Link
 } from '@mui/material'
 
-const Login = () => {
+const SignIn = () => {
 
     let history = useHistory();
 
@@ -26,8 +27,9 @@ const Login = () => {
     const { value:email,        bind:bindEmail      } = useInput('');
     const { value:password,     bind:bindPassword   } = useInput('');
   
-    const buttonSignIn = (e) => {
+    const buttonSignIn = async (e) => {
         e.preventDefault();
+        const response = await fetch(CONFIG.api_url + '/signin');
         dispatch({type:'login', user: { email : email, isAuthenticated : true }});
         history.push("/");    
     }
@@ -85,12 +87,12 @@ const Login = () => {
               </Button>
               <Grid container>
                 <Grid item xs>
-                <Link href="#" variant="body2" onClick={ () => redirectPage("/lost_password")}>
+                <Link href="#" variant="body2" onClick={ () => redirectPage(CONFIG.lost_password_url)}>
                     {"Mot de passe oublié ?"}
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="#" variant="body2" onClick={ () => redirectPage("/signup")}>
+                  <Link href="#" variant="body2" onClick={ () => redirectPage(CONFIG.signup_url)}>
                     {"S'inscrire"}
                   </Link>
                 </Grid>
@@ -117,4 +119,4 @@ function Copyright() {
     );
   }
 
-  export default Login;
+  export default SignIn;
