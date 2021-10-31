@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import CONFIG from '../../config/config'
+import { CONFIG } from '../../config/config'
 import { MainContext } from '../../context/MainContext';
 import { useInput } from '../../hooks/useInput';
 import { useHistory } from "react-router-dom";

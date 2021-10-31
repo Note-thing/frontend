@@ -1,5 +1,5 @@
 import React from 'react';
-import CONFIG from '../config/config'
+import { CONFIG } from '../config/config'
 import { Route, Redirect } from 'react-router-dom';
 
 const ProtectedRoute = ( { component: Component }, ...rest ) => {
