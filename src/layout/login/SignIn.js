@@ -29,8 +29,8 @@ const SignIn = () => {
   
     const buttonSignIn = async (e) => {
       e.preventDefault();
-      let response = Get(CONFIG.api_url);
-      dispatch({type:'login', user: { email : response.email, isAuthenticated : true }});  
+      let response = await Get("/signin");
+      dispatch({type:'login', user: { email : email, isAuthenticated : true }});  
       history.push("/");    
     }
 
