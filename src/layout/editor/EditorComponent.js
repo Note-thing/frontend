@@ -4,7 +4,7 @@ import EditorHeader from "./EditorHeader";
 
 export default function EditorComponent() {
     return (
-        <Grid container direction="column" sx={{ height: "100vh" }}>
+        <Grid container direction="column" height="100%">
             <Grid item sx={{ height: "7%" }}>
                 <EditorHeader />
             </Grid>

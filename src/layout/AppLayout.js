@@ -10,7 +10,7 @@ import EditorComponent from "./editor/EditorComponent";
  */
 export default function AppLayout(props) {
     return (
-        <Grid container>
+        <Grid container height="100vh">
             <Grid
                 item
                 xs={4}
@@ -20,7 +20,7 @@ export default function AppLayout(props) {
             >
                 <MainMenu />
             </Grid>
-            <Grid item xs={8} md={10}>
+            <Grid item xs={8} md={10} height="100%">
                 <EditorComponent />
             </Grid>
         </Grid>

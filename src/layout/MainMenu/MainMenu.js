@@ -47,8 +47,8 @@ export default function MainMenu(props) {
     ];
     return (
         <Grid
-            sx={{ height: "100%" }}
             container
+            sx={{ height: "100%" }}
             display="flex"
             direction="column"
             justifyContent="space-between"
