@@ -2,7 +2,6 @@ import {
     Grid,
     Chip,
 } from "@mui/material";
-import "./AppLayout.css";
 import {
     LocalOffer,
 } from "@mui/icons-material";

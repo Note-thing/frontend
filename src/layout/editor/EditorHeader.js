@@ -2,7 +2,6 @@ import {
     Grid,
     Input,
 } from "@mui/material";
-import "./AppLayout.css";
 import {
     Code,
     Preview,
