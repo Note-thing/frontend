@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import "./AppLayout.css";
-import MainMenu from "./MainMenu";
+import MainMenu from "./MainMenu/MainMenu";
 import EditorComponent from "./editor/EditorComponent";
 
 /**

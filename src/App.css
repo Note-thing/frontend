@@ -10,5 +10,8 @@ body {
   flex: 1;
 }
 .h-100{
-   height: 100vh;
+   height: 100%;
+}
+.noBorderInput::before{
+    border-bottom: 0 !important;
 }

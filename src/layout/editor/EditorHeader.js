@@ -33,7 +33,8 @@ export default function EditorHeader() {
             </Grid>
 
             <Input
-                sx={{ width: "30rem", fontSize: "1.2rem" }}
+                className="noBorderInput"
+                sx={{ width: "30rem", fontSize: "1.2rem"}}
                 value=" Guide de survie durant le III Rentsch"
                 placeholder="Titre de la note"
             />
