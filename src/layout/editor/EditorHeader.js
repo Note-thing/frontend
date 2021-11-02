@@ -21,10 +21,9 @@ export default function EditorHeader() {
             display="flex"
             justifyContent="space-between"
             alignItems="center"
-            minHeight="4rem"
+            height="100%"
             padding="0 1rem 0 1rem"
             borderBottom="0.1rem solid #e9f0f0"
-            backgroundColor="#f5f9f9"
         >
             <Grid display="flex" justifyContent="space-around" width="10%">
                 <Code className="menu-icon-item" />

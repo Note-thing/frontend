@@ -17,52 +17,72 @@ export default function MainMenu(props) {
     const user = {};
     user.name = "Frank Letest";
     const notesDirectories = [
-        { name: "TWEB", notes: ["CSS", "JS", "JS - This...wat"] },
-        { name: "PDG", notes: ["Note-thing", "CI/CD", "Ruby on Rails"] },
+        {
+            name: "TWEB",
+            notes: [
+                { title: "CSS", tags: ["Web", "design "] },
+                { title: "JS", tags: ["JS", "prototype"] },
+                { title: "Node", tags: ["JS", "SSR"] },
+            ],
+        },
+        {
+            name: "PDG",
+            notes: [
+                { title: "Note-thing", tags: ["Web", "design"] },
+                { title: "Ruby on Rails", tags: ["Model", "Controller"] },
+                { title: "CI/CD", tags: ["Jest.js", "Unit test"] },
+            ],
+        },
         {
             name: "AMT",
             notes: [
-                "Guide de survie total",
-                "Survire en haute mer",
-                "Apprendre à utiliser une boussole",
+                { title: "Guide de survie total", tags: ["Spring"] },
+                { title: "Survire en haute mer", tags: ["Spring", "MVC"] },
+                {
+                    title: "Apprendre à utiliser une boussole",
+                    tags: ["Navigation"],
+                },
             ],
         },
     ];
     return (
         <Grid
-            className="h-100"
+            sx={{ height: "100%" }}
+            container
             display="flex"
-            xs={4}
-            md={2}
             direction="column"
             justifyContent="space-between"
-            borderRight="0.1rem solid #e9F0F0"
         >
-            <List>
-                {notesDirectories.map((dir, idx) => (
-                    <MainMenuItem directory={dir} />
-                ))}
-            </List>
-            <List>
-                <ListItem>
-                    <Input
-                        sx={{ width: "100%" }}
-                        placeholder="Rechercher dans les notes"
-                    />
-                </ListItem>
-                <ListItem>
-                    <Grid
-                        sx={{ width: "100%", alignItems: "center" }}
-                        display="flex"
-                        justifyContent="space-between"
-                    >
-                        <span>{user.name}</span>
-                        <Avatar alt="user-avatar">
-                            <PersonOutline />
-                        </Avatar>
-                    </Grid>
-                </ListItem>
-            </List>
+            <Grid sx={{ height: "80%", overflowY: "scroll" }}>
+                <List>
+                    {notesDirectories.map((dir, idx) => (
+                        <MainMenuItem key={idx} directory={dir} />
+                    ))}
+                </List>
+            </Grid>
+            <Grid
+                container
+                sx={{
+                    padding: "1rem",
+                    height: "20%",
+                    alignSelf: "flex-end",
+                }}
+            >
+                <Input
+                    sx={{ width: "100%", marginBottom: "1rem" }}
+                    placeholder="Rechercher dans les notes"
+                />
+                <Grid
+                    sx={{ width: "100%", alignItems: "center" }}
+                    display="flex"
+                    justifyContent="space-between"
+                >
+                    <span>{user.name}</span>
+                    <Avatar alt="user-avatar">
+                        <PersonOutline />
+                    </Avatar>
+                </Grid>
+            </Grid>
         </Grid>
     );
 }

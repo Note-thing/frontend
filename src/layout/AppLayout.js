@@ -11,8 +11,18 @@ import EditorComponent from "./editor/EditorComponent";
 export default function AppLayout(props) {
     return (
         <Grid container>
-            <MainMenu />
-            <EditorComponent />
+            <Grid
+                item
+                xs={4}
+                md={2}
+                height="100%"
+                borderRight="0.1rem solid #e9F0F0"
+            >
+                <MainMenu />
+            </Grid>
+            <Grid item xs={8} md={10}>
+                <EditorComponent />
+            </Grid>
         </Grid>
     );
 }
