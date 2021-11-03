@@ -47,7 +47,8 @@ const SignIn = () => {
                     variant="h5"
                     align="center"
                 >
-                    <LoginIcon align="center" /> Connection
+                    <LoginIcon align="center" />
+                    Connection
                 </Typography>
 
                 <form noValidate>

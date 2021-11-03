@@ -18,6 +18,10 @@ module.exports = {
         'react/jsx-indent': ['error', 4],
         'react/jsx-indent-props': ['error', 4],
         'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
+        'react/jsx-wrap-multilines': [
+            'error',
+            { declaration: false, assignment: false }
+        ],
         'comma-dangle': ['error', 'never']
     }
 };

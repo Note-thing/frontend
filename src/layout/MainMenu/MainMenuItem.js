@@ -3,7 +3,7 @@ import {
     List,
     ListItem,
     ListItemButton,
-    ListItemText,
+    ListItemText
 } from '@mui/material';
 import { KeyboardArrowRight } from '@mui/icons-material';
 import React, { useState } from 'react';
@@ -21,7 +21,7 @@ export default function MainMenuItem({ directory }) {
                     <KeyboardArrowRight
                         sx={{
                             transform: show ? 'rotate(90deg)' : 'rotate(0)',
-                            transition: '0.3s',
+                            transition: '0.3s'
                         }}
                     />
                 }
@@ -43,7 +43,7 @@ export default function MainMenuItem({ directory }) {
                     padding: show ? 'auto' : '0 !important',
                     transition: show
                         ? '0.2s opacity ease-out'
-                        : '0.1s  ease-out',
+                        : '0.1s  ease-out'
                 }}
                 data-testid="MainMenu-notesList"
             >
@@ -71,5 +71,13 @@ export default function MainMenuItem({ directory }) {
     );
 }
 MainMenuItem.propTypes = {
-    directory: PropTypes.node.isRequired,
+    directory: PropTypes.objectOf({
+        name: PropTypes.string.isRequired,
+        notes: PropTypes.arrayOf(
+            PropTypes.objectOf({
+                title: PropTypes.string.isRequired,
+                tags: PropTypes.arrayOf(PropTypes.string).isRequired
+            })
+        ).isRequired
+    }).isRequired
 };
