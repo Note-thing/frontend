@@ -1,14 +1,15 @@
-import { Grid } from "@mui/material";
-import EditorFooter from "./EditorFooter";
-import EditorHeader from "./EditorHeader";
+import React from 'react';
+import { Grid } from '@mui/material';
+import EditorFooter from './EditorFooter';
+import EditorHeader from './EditorHeader';
 
 export default function EditorComponent() {
     return (
         <Grid container direction="column" height="100%">
-            <Grid item sx={{ height: "7%" }}>
+            <Grid item sx={{ height: '7%' }}>
                 <EditorHeader />
             </Grid>
-            <Grid sx={{ padding: "20px", height: "86%", overflowY: "scroll" }}>
+            <Grid sx={{ padding: '20px', height: '86%', overflowY: 'scroll' }}>
                 Contrary to popular belief, Lorem Ipsum is not simply random
                 text. It has roots in a piece of classical Latin literature from
                 45 BC, making it over 2000 years old.
@@ -122,7 +123,7 @@ export default function EditorComponent() {
                 <br />
                 This book is a treatise on the theory of ethics, very popular
             </Grid>
-            <Grid item sx={{ height: "7%" }}>
+            <Grid item sx={{ height: '7%' }}>
                 <EditorFooter />
             </Grid>
         </Grid>

@@ -1,19 +1,17 @@
-import {
-    Grid,
-    Input,
-} from "@mui/material";
+import React from 'react';
+import { Grid, Input } from '@mui/material';
 import {
     Code,
     Preview,
     VerticalSplit,
     PictureAsPdf,
     Share,
-    Delete,
-} from "@mui/icons-material";
+    Delete
+} from '@mui/icons-material';
 
 /**
- * Header of the editor containing the note menu (display switch, PDF export, delete the note etc.). 
- * @returns 
+ * Header of the editor containing the note menu (display switch, PDF export, delete the note etc.).
+ * @returns
  */
 export default function EditorHeader() {
     return (
@@ -33,7 +31,7 @@ export default function EditorHeader() {
 
             <Input
                 className="noBorderInput"
-                sx={{ width: "30rem", fontSize: "1.2rem"}}
+                sx={{ width: '30rem', fontSize: '1.2rem' }}
                 value=" Guide de survie durant le III Rentsch"
                 placeholder="Titre de la note"
             />

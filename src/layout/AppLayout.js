@@ -1,7 +1,8 @@
-import { Grid } from "@mui/material";
-import "./AppLayout.css";
-import MainMenu from "./MainMenu/MainMenu";
-import EditorComponent from "./editor/EditorComponent";
+import React from 'react';
+import { Grid } from '@mui/material';
+import './AppLayout.css';
+import MainMenu from './MainMenu/MainMenu';
+import EditorComponent from './editor/EditorComponent';
 
 /**
  * Layout of the application
