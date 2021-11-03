@@ -71,10 +71,10 @@ export default function MainMenuItem({ directory }) {
     );
 }
 MainMenuItem.propTypes = {
-    directory: PropTypes.objectOf({
+    directory: PropTypes.shape({
         name: PropTypes.string.isRequired,
         notes: PropTypes.arrayOf(
-            PropTypes.objectOf({
+            PropTypes.shape({
                 title: PropTypes.string.isRequired,
                 tags: PropTypes.arrayOf(PropTypes.string).isRequired
             })

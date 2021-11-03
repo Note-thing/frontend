@@ -17,7 +17,7 @@ export default function EditorFooter() {
             borderTop="0.1rem solid #e9F0F0"
             className="editor-tag-footer"
         >
-            <LocalOffer />{' '}
+            <LocalOffer />
             {tags.map((tag, idx) => (
                 <Chip
                     key={idx}
