@@ -31,6 +31,12 @@ jobs:
 
       - name: Where the fuck i am
         run: pwd
-
-      - name: SSH to server and run a deploy app script
-        run: sudo ssh -o StrictHostKeyChecking=no -T ubuntu@18.193.129.54 -i "SSH.pem" "/home/ubuntu/deploy_app.sh &" 
+        
+      - name: Build app
+        run : npm run build
+        
+      - name: Copy app
+        run : rsync -r build ubuntu@18.193.129.54:/var/www/html
+        
+     # - name: SSH to server and run a deploy app script
+     #   run: sudo ssh -o StrictHostKeyChecking=no -T ubuntu@18.193.129.54 -i "SSH.pem" "/home/ubuntu/deploy_app.sh &" 
