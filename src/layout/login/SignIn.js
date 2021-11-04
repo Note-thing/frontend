@@ -20,6 +20,7 @@ const SignIn = () => {
 
     const { dispatch } = useContext(MainContext);
 
+    
     // keep track of the input states
     // each keystroke (onChange event listener) is saved within the state
     const { value: email, bind: bindEmail } = useInput('');
