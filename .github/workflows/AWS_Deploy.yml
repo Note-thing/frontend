@@ -33,7 +33,7 @@ jobs:
         run: pwd
         
       - name: Build app
-        run : npm run build
+        run : npm run build --if-present
         
       - name: Copy app
         run : rsync -r build ubuntu@18.193.129.54:/var/www/html
