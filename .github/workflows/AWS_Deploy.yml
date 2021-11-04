@@ -26,7 +26,7 @@ jobs:
         run: chmod 600 SSH.pem
 
       - name: Where the fuck i am
-        run:  ls -la /home/runner/work/frontend/frontend
+        run:  ls -la /home/runner/work/frontend/frontend/src
         
       - name: Build app
         run : npm run build --if-present
