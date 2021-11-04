@@ -33,4 +33,4 @@ jobs:
         run: pwd
 
       - name: SSH to server and run a deploy app script
-        run: sudo ssh -o StrictHostKeyChecking=no -T ubuntu@18.193.129.54 -i "SSH.pem" "~/deploy_app.sh &" 
+        run: sudo ssh -o StrictHostKeyChecking=no -T ubuntu@18.193.129.54 -i "SSH.pem" "/home/ubuntu/deploy_app.sh &" 
