@@ -48,7 +48,7 @@ jobs:
         run: more SSH.pem
 
       - name: Copy app
-        run : rsync -rave "sudo ssh -o StrictHostKeyChecking=no -i SSH.pem" ./frontend/build/ ubuntu@ec2-18-193-43-186.eu-central-1.compute.amazonaws.com:/var/www/html
+        run : rsync -rave "sudo ssh -o StrictHostKeyChecking=no -i SSH.pem" ./build/ ubuntu@ec2-18-193-43-186.eu-central-1.compute.amazonaws.com:/var/www/html
         
     # - name: SSH to server and run a deploy app script
     #   run: sudo ssh -o StrictHostKeyChecking=no -T ubuntu@18.193.129.54 -i "SSH.pem" "/home/ubuntu/deploy_app.sh &" 
