@@ -10,8 +10,10 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
-
+  CI:
+    env:
+      CI: false
+      
     runs-on: ubuntu-latest
 
     strategy:
