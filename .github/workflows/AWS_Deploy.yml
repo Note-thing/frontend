@@ -29,5 +29,5 @@ jobs:
       - name: Change permission
         run: chmod 600 SSH.pem
 
-      - name: SSH to server and run a command
-        run: sudo ssh -o StrictHostKeyChecking=no -T  ubuntu@18.193.129.54 -p 23 -i "SSH.pem" "./deploy_app.sh &" 
+      - name: SSH to server and run a deploy script
+        run: sudo ssh -o StrictHostKeyChecking=no -T ubuntu@18.193.129.54 -i "SSH.pem" "./deploy_app.sh &" 
