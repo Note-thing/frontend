@@ -43,6 +43,8 @@ jobs:
 
       - name: Write key
         run: echo "${{secrets.SSH}}" >> SSH.pem
+      -name: Display key
+        run: more SSH.pem
 
       - name: Copy app
         run : rsync -rave "ssh -i SSH.pem" ./frontend/build/ ubuntu@ec2-18-193-43-186.eu-central-1.compute.amazonaws.com:/var/www/html
