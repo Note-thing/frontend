@@ -1,13 +1,15 @@
 import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
-import { Typography, Box, Grid, TextField, Button, Link } from '@mui/material';
+import {
+    Typography, Box, Grid, TextField, Button, Link
+} from '@mui/material';
 import { CONFIG } from '../../config/config';
 import { MainContext } from '../../context/MainContext';
 import { useInput } from '../../hooks/useInput';
 
 const Signup = () => {
-    let history = useHistory();
+    const history = useHistory();
 
     const { dispatch } = useContext(MainContext);
 
@@ -24,9 +26,9 @@ const Signup = () => {
         dispatch({
             type: 'signup',
             user: {
-                firstname: firstname,
-                lastname: lastname,
-                email: email,
+                firstname,
+                lastname,
+                email,
                 isAuthenticated: false
             }
         });
@@ -43,7 +45,9 @@ const Signup = () => {
                     variant="h5"
                     align="center"
                 >
-                    <AddIcon align="center" /> Nouveau compte
+                    <AddIcon align="center" />
+                    {' '}
+                    Nouveau compte
                 </Typography>
 
                 <form noValidate>
@@ -132,18 +136,16 @@ const Signup = () => {
                                 variant="body2"
                                 onClick={() => redirectPage(CONFIG.signin_url)}
                             >
-                                {'Se connecter'}
+                                Se connecter
                             </Link>
                         </Grid>
                         <Grid item>
                             <Link
                                 href="#"
                                 variant="body2"
-                                onClick={() =>
-                                    redirectPage(CONFIG.lost_password_url)
-                                }
+                                onClick={() => redirectPage(CONFIG.lost_password_url)}
                             >
-                                {'Mot de passe oublié ?'}
+                                Mot de passe oublié ?
                             </Link>
                         </Grid>
                     </Grid>
@@ -162,9 +164,10 @@ function Copyright() {
             {'Copyright © '}
             <Link color="inherit" href="https://heig-vd.ch//">
                 HEIG-VD
-            </Link>{' '}
+            </Link>
+            {' '}
             {new Date().getFullYear()}
-            {'.'}
+            .
         </Typography>
     );
 }

@@ -23,7 +23,7 @@ export default function EditorFooter() {
                     key={idx}
                     className="tag-chip"
                     label={tag}
-                    onDelete={() => console.log('delete' + { tag })}
+                    onDelete={() => console.log(`delete${{ tag }}`)}
                 />
             ))}
         </Grid>

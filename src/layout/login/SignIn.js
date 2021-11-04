@@ -1,11 +1,6 @@
 import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import LoginIcon from '@mui/icons-material/Login';
-import { CONFIG, Get } from '../../config/config';
-import { MainContext } from '../../context/MainContext';
-import { useInput } from '../../hooks/useInput';
-
-
 import {
     Typography,
     Box,
@@ -16,9 +11,12 @@ import {
     Button,
     Link
 } from '@mui/material';
+import { CONFIG, Get } from '../../config/config';
+import { MainContext } from '../../context/MainContext';
+import { useInput } from '../../hooks/useInput';
 
 const SignIn = () => {
-    let history = useHistory();
+    const history = useHistory();
 
     const { dispatch } = useContext(MainContext);
 
@@ -29,10 +27,10 @@ const SignIn = () => {
 
     const buttonSignIn = async (e) => {
         e.preventDefault();
-        let response = await Get('/signin');
+        const response = await Get('/signin');
         dispatch({
             type: 'login',
-            user: { email: email, isAuthenticated: true }
+            user: { email, isAuthenticated: true }
         });
         history.push('/');
     };
@@ -101,11 +99,9 @@ const SignIn = () => {
                             <Link
                                 href="#"
                                 variant="body2"
-                                onClick={() =>
-                                    redirectPage(CONFIG.lost_password_url)
-                                }
+                                onClick={() => redirectPage(CONFIG.lost_password_url)}
                             >
-                                {'Mot de passe oublié ?'}
+                                Mot de passe oublié ?
                             </Link>
                         </Grid>
                         <Grid item>
@@ -114,7 +110,7 @@ const SignIn = () => {
                                 variant="body2"
                                 onClick={() => redirectPage(CONFIG.signup_url)}
                             >
-                                {"S'inscrire"}
+                                S'inscrire
                             </Link>
                         </Grid>
                     </Grid>
@@ -133,9 +129,10 @@ function Copyright() {
             {'Copyright © '}
             <Link color="inherit" href="https://heig-vd.ch//">
                 HEIG-VD
-            </Link>{' '}
+            </Link>
+            {' '}
             {new Date().getFullYear()}
-            {'.'}
+            .
         </Typography>
     );
 }

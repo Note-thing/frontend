@@ -1,10 +1,6 @@
 import React, { useContext } from 'react';
-import { CONFIG } from '../../config/config';
-import { MainContext } from '../../context/MainContext';
-import { useInput } from '../../hooks/useInput';
 import { useHistory } from 'react-router-dom';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-
 import {
     Typography,
     Box,
@@ -15,9 +11,12 @@ import {
     Button,
     Link
 } from '@mui/material';
+import { CONFIG } from '../../config/config';
+import { MainContext } from '../../context/MainContext';
+import { useInput } from '../../hooks/useInput';
 
 const LostPassword = () => {
-    let history = useHistory();
+    const history = useHistory();
 
     const { dispatch } = useContext(MainContext);
 
@@ -29,7 +28,7 @@ const LostPassword = () => {
         e.preventDefault();
         dispatch({
             type: 'login',
-            user: { email: email, isAuthenticated: true }
+            user: { email, isAuthenticated: true }
         });
         history.push('/');
     };
@@ -44,7 +43,9 @@ const LostPassword = () => {
                     variant="h5"
                     align="center"
                 >
-                    <HelpOutlineIcon align="center" /> Perdu le mot de passe?
+                    <HelpOutlineIcon align="center" />
+                    {' '}
+                    Perdu le mot de passe?
                 </Typography>
 
                 <form noValidate>
@@ -78,7 +79,7 @@ const LostPassword = () => {
                                 variant="body2"
                                 onClick={() => redirectPage(CONFIG.signin_url)}
                             >
-                                {'Se connecter ?'}
+                                Se connecter ?
                             </Link>
                         </Grid>
                         <Grid item>
@@ -87,7 +88,7 @@ const LostPassword = () => {
                                 variant="body2"
                                 onClick={() => redirectPage(CONFIG.signup_url)}
                             >
-                                {"S'inscrire"}
+                                S'inscrire
                             </Link>
                         </Grid>
                     </Grid>
@@ -106,9 +107,10 @@ function Copyright() {
             {'Copyright © '}
             <Link color="inherit" href="https://heig-vd.ch//">
                 HEIG-VD
-            </Link>{' '}
+            </Link>
+            {' '}
             {new Date().getFullYear()}
-            {'.'}
+            .
         </Typography>
     );
 }

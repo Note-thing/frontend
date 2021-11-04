@@ -5,27 +5,26 @@ import { useState } from 'react';
     for example see the usage in : layout/LoginLayout.js
 */
 
-export const useInput = data => {
+export const useInput = (data) => {
     const [value, setValue] = useState(data);
     const [error, setError] = useState({
-            error: false,
-            helperText:''
+        error: false,
+        helperText: ''
     });
-    
+
     return {
-        value, 
+        value,
         setValue,
         setError,
-        reset: () => setValue(""),
-        bind:{
+        reset: () => setValue(''),
+        bind: {
             value,
             ...error,
-            onChange: event => {
+            onChange: (event) => {
                 setValue(event.target.value);
                 setError({ error: false });
             }
 
         }
-    }
-
-}
+    };
+};

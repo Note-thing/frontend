@@ -1,5 +1,7 @@
 import React from 'react';
-import { List, Grid, Avatar, Input } from '@mui/material';
+import {
+    List, Grid, Avatar, Input
+} from '@mui/material';
 import { PersonOutline } from '@mui/icons-material';
 import MainMenuItem from './MainMenuItem';
 
