@@ -23,8 +23,6 @@ jobs:
       - name: Create SSH Key file
         run: touch SSH.pem
       # Runs a single command using the runners shell
-      - name: Write key
-        run: echo "${{secrets.SSH}}" >> SSH.pem
 
       - name: Change permission
         run: chmod 600 SSH.pem
@@ -34,7 +32,10 @@ jobs:
         
       - name: Build app
         run : npm run build --if-present
-        
+
+      - name: Write key
+        run: echo "${{secrets.SSH}}" >> SSH.pem
+
       - name: Copy app
         run : rsync -r build ubuntu@18.193.129.54:/var/www/html
         
