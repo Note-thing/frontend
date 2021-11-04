@@ -31,6 +31,8 @@ jobs:
 
       - name: Where the fuck i am
         run: pwd
+      - name: logg
+        run: ls -la
         
       - name: Build app
         run : npm run build
