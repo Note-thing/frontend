@@ -32,7 +32,7 @@ export default function EditorHeader() {
             <Input
                 className="noBorderInput"
                 sx={{ width: '30rem', fontSize: '1.2rem' }}
-                value=" Guide de survie durant le III Rentsch"
+                value="Technique de relaxation lorsque GH Action merde"
                 placeholder="Titre de la note"
             />
 
