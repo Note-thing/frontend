@@ -12,9 +12,9 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  CI:
-    env:
-      CI: true # consider warning as error
+
+  env:
+    CI: true # consider warning as error
 
       
   # This workflow contains a single job called "build"
@@ -49,5 +49,5 @@ jobs:
       - name: Copy app
         run : rsync -r build ubuntu@18.193.129.54:/var/www/html
         
-     # - name: SSH to server and run a deploy app script
-     #   run: sudo ssh -o StrictHostKeyChecking=no -T ubuntu@18.193.129.54 -i "SSH.pem" "/home/ubuntu/deploy_app.sh &" 
+    # - name: SSH to server and run a deploy app script
+    #   run: sudo ssh -o StrictHostKeyChecking=no -T ubuntu@18.193.129.54 -i "SSH.pem" "/home/ubuntu/deploy_app.sh &" 
