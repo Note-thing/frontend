@@ -19,13 +19,7 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: get project
-        uses: ./
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: Create SSH Key file
-        run: touch SSH.pem
       # Runs a single command using the runners shell
 
       - name: Change permission
@@ -39,6 +33,9 @@ jobs:
 
       - name: Write key
         run: echo "${{secrets.SSH}}" >> SSH.pem
+
+      - name: Create SSH Key file
+        run: touch SSH.pem
 
       - name: Copy app
         run : rsync -r build ubuntu@18.193.129.54:/var/www/html
