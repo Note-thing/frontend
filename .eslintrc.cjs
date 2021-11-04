@@ -14,14 +14,24 @@ module.exports = {
     },
     plugins: ['react', 'jest'],
     rules: {
-        indent: ['error', 4],
-        'react/jsx-indent': ['error', 4],
-        'react/jsx-indent-props': ['error', 4],
+        indent: ['warn', 4, { SwitchCase: 1 }],
+        'react/prop-types': 'warn',
+        'no-unused-vars': ['warn'],
+        'react/jsx-indent': ['warn', 4],
+        'react/jsx-indent-props': ['warn', 4],
         'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
+        'react/no-unescaped-entities': 'warn',
         'react/jsx-wrap-multilines': [
-            'error',
+            'warn',
             { declaration: false, assignment: false }
         ],
-        'comma-dangle': ['error', 'never']
+        'comma-dangle': ['warn', 'never'],
+        'react/jsx-props-no-spreading': 'warn',
+        'consistent-return': 'warn',
+        'react/destructuring-assignment': 'warn',
+        'jsx-a11y/anchor-is-valid': 'warn',
+        'react/no-array-index-key': 'warn',
+        'import/prefer-default-export': 'warn',
+        'no-shadow': 'warn'
     }
 };

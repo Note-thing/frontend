@@ -7,10 +7,17 @@ export const CONFIG = {
 
 export const Get = async (endpoint, data) => {
     try {
-        return await fetch(CONFIG.api_url + endpoint + (typeof data !== 'undefined' ? `?${new URLSearchParams(data).toString()}` : ''), {
-            method: 'GET',
-            credentials: 'include'
-        }).then((response) => response.json());
+        return await fetch(
+            CONFIG.api_url
+                + endpoint
+                + (typeof data !== 'undefined'
+                    ? '?'.concat(new URLSearchParams(data)).toString()
+                    : ''),
+            {
+                method: 'GET',
+                credentials: 'include'
+            }
+        ).then((response) => response.json());
     } catch (err) {
         console.error(err);
     }

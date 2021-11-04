@@ -1,7 +1,7 @@
-import logo from './logo.svg';
+import React from 'react';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import './App.css';
 import 'typeface-roboto';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import AppLayout from './layout/AppLayout';
 import SignIn from './layout/login/SignIn';
 import Signup from './layout/login/Signup';
@@ -15,11 +15,22 @@ function App() {
         <MainProvider>
             <BrowserRouter>
                 <Switch>
-                    <ProtectedRoute exact path="/" component={AppLayout} />
+                    <ProtectedRoute
+                        exact
+                        path="/"
+                        component={AppLayout}
+                    />
                     <Route exact path="/signin" component={SignIn} />
                     <Route exact path="/signup" component={Signup} />
-                    <Route exact path="/lost_password" component={LostPassword} />
-                    <Route path="/change_password" component={ChangePassword} />
+                    <Route
+                        exact
+                        path="/lost_password"
+                        component={LostPassword}
+                    />
+                    <Route
+                        path="/change_password"
+                        component={ChangePassword}
+                    />
                 </Switch>
             </BrowserRouter>
         </MainProvider>
