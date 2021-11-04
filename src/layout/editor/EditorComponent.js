@@ -10,10 +10,9 @@ export default function EditorComponent() {
                 <EditorHeader />
             </Grid>
             <Grid sx={{ padding: '20px', height: '86%', overflowY: 'scroll' }}>
-                Contrary to popular belief, Lorem Ipsum is not simply random
-                text. It has roots in a piece of classical Latin literature from
-                45 BC, making it over 2000 years old.
-                <br />
+                
+                CD  seems to work with Github Acti&#128169;!!!
+
                 <br />
                 Richard McClintock, a Latin professor at Hampden-Sydney College
                 in Virginia, looked up one of the more obscure Latin words,
