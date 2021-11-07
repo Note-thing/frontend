@@ -12,7 +12,7 @@ on:
 jobs:
   CI:
     env:
-      CI: true # consider warning as error
+      CI: false # consider warning as error
       
     runs-on: ubuntu-latest
 
