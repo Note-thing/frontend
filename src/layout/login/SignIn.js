@@ -102,7 +102,7 @@ const SignIn = () => {
                                 variant="body2"
                                 onClick={() => redirectPage(CONFIG.lost_password_url)}
                             >
-                                Mot de passe oublié??
+                                Mot de passe oublié?
                             </Link>
                         </Grid>
                         <Grid item>
