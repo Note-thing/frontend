@@ -17,7 +17,7 @@ export default function AppLayout(props) {
                 xs={4}
                 md={2}
                 height="100%"
-                borderRight="0.1rem solid #e9F0F1"
+                borderRight="0.1rem solid #e9F0F0"
             >
                 <MainMenu />
             </Grid>
