@@ -32,7 +32,7 @@ export default function EditorHeader() {
             <Input
                 className="noBorderInput"
                 sx={{ width: '30rem', fontSize: '1.2rem' }}
-                value="Technique de relaxation lorsque GH Action merde"
+                value="07.11.2021"
                 placeholder="Titre de la note"
             />
 
