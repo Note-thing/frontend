@@ -26,6 +26,9 @@ jobs:
 
       - name: Install dependencies
         run : npm install
+        
+      - name: Test app
+        run : npm test
 
       - name: Build app
         run : npm run build --if-present
