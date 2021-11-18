@@ -4,6 +4,7 @@ import './AppLayout.css';
 import MainMenu from './MainMenu/MainMenu';
 import EditorComponent from './editor/EditorComponent';
 
+
 /**
  * Layout of the application
  * @param {*} props
@@ -24,6 +25,7 @@ export default function AppLayout(props) {
             <Grid item xs={8} md={10} height="100%">
                 <EditorComponent />
             </Grid>
+           
         </Grid>
     );
 }

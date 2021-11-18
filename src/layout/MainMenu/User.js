@@ -22,15 +22,10 @@ const User = () => {
         localStorage.removeItem('User');
 
         dispatch({
-            type: 'logout'
+            type: 'dialog',
+            dialog: { id: 'logout', is_open: true }
         });
-        //setTimeout(() => history.push("/"), 2000);
-        history.push('/');
-        /*  setDialog({
-                 [response.dialog_id]: {
-                     is_open: true
-                 }
-             }); */
+        setTimeout(() => history.push('/'), 2000);
     };
     return (
         <Box onClick={ handleMenuOpen } >

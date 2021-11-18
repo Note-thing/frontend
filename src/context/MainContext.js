@@ -5,10 +5,9 @@ const mainReducer = (state, action) => {
         case 'login':
             return { ...state, user: { ...state.user, ...action.user } };
         case 'logout':
-            return {
-                ...state,
-                user: { ...state.user, isAuthenticated: false }
-            };
+            return { ...state, user: { ...state.user, isAuthenticated: false } };
+        case 'dialog':
+            return { ...state, dialog: { ...action.dialog } };
         default:
             return state;
     }
@@ -18,7 +17,8 @@ export const MainContext = createContext();
 
 export const MainProvider = (props) => {
     const [main, dispatch] = useReducer(mainReducer, {
-        user: JSON.parse(localStorage.getItem('User'))
+        user: JSON.parse(localStorage.getItem('User')),
+        dialog: null
     });
 
     return (

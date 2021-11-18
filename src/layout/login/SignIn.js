@@ -36,10 +36,14 @@ const SignIn = () => {
         };
         localStorage.setItem('User', JSON.stringify({ ...main.user, ...tempUser }));
         dispatch({
+            type: 'dialog',
+            dialog: { id: 'login', is_open: true }
+        });
+        dispatch({
             type: 'login',
             user: tempUser
         });
-        history.push('/');
+        setTimeout(() => history.push('/'), 2000);
     };
 
     const redirectPage = (link) => history.push(link);

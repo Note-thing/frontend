@@ -9,6 +9,7 @@ import LostPassword from './layout/login/LostPassword';
 import ChangePassword from './layout/login/ChangePassword';
 import { MainProvider } from './context/MainContext';
 import ProtectedRoute from './layout/ProtectedRoute';
+import Dialog from './layout/Dialog';
 
 function App() {
     return (
@@ -33,6 +34,7 @@ function App() {
                     />
                 </Switch>
             </BrowserRouter>
+            <Dialog />
         </MainProvider>
     );
 }

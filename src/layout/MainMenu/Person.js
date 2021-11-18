@@ -5,8 +5,8 @@ const initials = (fullname) => fullname.split(' ').map((n) => n[0]).join('.');
 
 const Person = ({ user }) => (
     <Box sx={{ display: 'flex' }}>
-        <Avatar className="avatar" sx={{ backgroundColor: '#1E2D40' }}>
-            { initials(`${user.firstname} ${user.lastname}`) }
+        <Avatar className="avatar" sx={{ backgroundColor: '#34568B' }}>
+            <Typography noWrap sx={{ fontSize: '14px' }} >{ initials(`${user.firstname} ${user.lastname}`) }</Typography>
         </Avatar>
         <Box sx={{ ml: '10px', backgroundColor: 'white' }}>
             <Typography noWrap className="full-name" sx={{ fontSize: '14px' }} component="section">
