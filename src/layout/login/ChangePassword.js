@@ -77,22 +77,20 @@ const ChangePassword = () => {
                     </Button>
                     <Grid container>
                         <Grid item xs>
-                            <Link
-                                href="#"
+                            <Button
                                 variant="body2"
                                 onClick={() => redirectPage(CONFIG.signin_url)}
                             >
                                 Se connecter ?
-                            </Link>
+                            </Button>
                         </Grid>
                         <Grid item>
-                            <Link
-                                href="#"
+                            <Button
                                 variant="body2"
                                 onClick={() => redirectPage(CONFIG.signup_url)}
                             >
                                 S'inscrire
-                            </Link>
+                            </Button>
                         </Grid>
                     </Grid>
                     <Box mt={5}>

@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
-    List, Grid, Avatar, Input
+    List, Grid, Input
 } from '@mui/material';
 import { PersonOutline } from '@mui/icons-material';
+import { MainContext } from '../../context/MainContext';
+import User from './User';
 import MainMenuItem from './MainMenuItem';
 
 /**
@@ -12,8 +14,7 @@ import MainMenuItem from './MainMenuItem';
  * @returns
  */
 export default function MainMenu() {
-    const user = {};
-    user.name = 'Frank Letest';
+    const { main: { user }, dispatch} = useContext(MainContext);
     const notesDirectories = [
         {
             name: 'TWEB',
@@ -70,16 +71,7 @@ export default function MainMenu() {
                     sx={{ width: '100%', marginBottom: '1rem' }}
                     placeholder="Rechercher dans les notes"
                 />
-                <Grid
-                    sx={{ width: '100%', alignItems: 'center' }}
-                    display="flex"
-                    justifyContent="space-between"
-                >
-                    <span>{user.name}</span>
-                    <Avatar alt="user-avatar">
-                        <PersonOutline />
-                    </Avatar>
-                </Grid>
+                <User user={user} />
             </Grid>
         </Grid>
     );

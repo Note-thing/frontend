@@ -18,9 +18,8 @@ import { useInput } from '../../hooks/useInput';
 const SignIn = () => {
     const history = useHistory();
 
-    const { dispatch } = useContext(MainContext);
+    const { main, dispatch } = useContext(MainContext);
 
-    
     // keep track of the input states
     // each keystroke (onChange event listener) is saved within the state
     const { value: email, bind: bindEmail } = useInput('');
@@ -28,10 +27,17 @@ const SignIn = () => {
 
     const buttonSignIn = async (e) => {
         e.preventDefault();
-        const response = await Get('/signin');
+        // const response = await Get('/signin');
+        const tempUser = {
+            firstname: 'Stefan',
+            lastname: 'Teofanovic',
+            email,
+            isAuthenticated: true
+        };
+        localStorage.setItem('User', JSON.stringify({ ...main.user, ...tempUser }));
         dispatch({
             type: 'login',
-            user: { email, isAuthenticated: true }
+            user: tempUser
         });
         history.push('/');
     };
@@ -97,22 +103,21 @@ const SignIn = () => {
                     </Button>
                     <Grid container>
                         <Grid item xs>
-                            <Link
-                                href="#"
+                            <Button
                                 variant="body2"
                                 onClick={() => redirectPage(CONFIG.lost_password_url)}
                             >
                                 Mot de passe oublié?
-                            </Link>
+                            </Button>
                         </Grid>
                         <Grid item>
-                            <Link
+                            <Button
                                 href="#"
                                 variant="body2"
                                 onClick={() => redirectPage(CONFIG.signup_url)}
                             >
                                 S'inscrire
-                            </Link>
+                            </Button>
                         </Grid>
                     </Grid>
                     <Box mt={5}>
