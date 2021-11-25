@@ -1,3 +1,5 @@
+import React, { useCallback, useContext } from 'react';
+import PropTypes from 'prop-types';
 import {
     Chip,
     List,
@@ -5,18 +7,26 @@ import {
     ListItemButton,
     ListItemText
 } from '@mui/material';
+import { useHistory } from 'react-router-dom';
 import { KeyboardArrowRight } from '@mui/icons-material';
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import { NoteContext } from '../../context/NoteContext';
 
-export default function MainMenuItem({ directory }) {
-    const [show, setShow] = useState(false);
+export default function MainMenuItem({ directory, show }) {
+    const history = useHistory();
+    const { dispatch } = useContext(NoteContext);
+    const handleDirectoryClick = useCallback((uniqid) => {
+        dispatch({
+            type: 'change_directory',
+            activeDirectory: { uniqid }
+        });
+        history.push(`/directory/${uniqid}`);
+    }, [dispatch]);
     return (
         <>
             <ListItem
+                onClick={() => handleDirectoryClick(directory.uniqid)}
                 button
-                onClick={() => setShow(!show)}
-                key={`${directory.name}idx`}
+                key={`${directory.uniqid}`}
                 secondaryAction={
                     <KeyboardArrowRight
                         sx={{
@@ -72,6 +82,7 @@ export default function MainMenuItem({ directory }) {
 }
 MainMenuItem.propTypes = {
     directory: PropTypes.shape({
+        uniqid: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
         notes: PropTypes.arrayOf(
             PropTypes.shape({
@@ -79,5 +90,6 @@ MainMenuItem.propTypes = {
                 tags: PropTypes.arrayOf(PropTypes.string).isRequired
             })
         ).isRequired
-    }).isRequired
+    }).isRequired,
+    show: PropTypes.bool.isRequired
 };

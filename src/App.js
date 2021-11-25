@@ -16,11 +16,6 @@ function App() {
         <MainProvider>
             <BrowserRouter>
                 <Switch>
-                    <ProtectedRoute
-                        exact
-                        path="/"
-                        component={AppLayout}
-                    />
                     <Route exact path="/signin" component={SignIn} />
                     <Route exact path="/signup" component={Signup} />
                     <Route
@@ -31,6 +26,11 @@ function App() {
                     <Route
                         path="/change_password"
                         component={ChangePassword}
+                    />
+                    <ProtectedRoute
+                        exact
+                        path="/*"
+                        component={AppLayout}
                     />
                 </Switch>
             </BrowserRouter>
