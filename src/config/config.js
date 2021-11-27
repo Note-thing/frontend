@@ -26,6 +26,7 @@ export const Get = async (endpoint, data) => {
         topbar.hide();
         console.error(err);
     }
+    return undefined;
 };
 
 export const Post = async (endpoint, data) => {
@@ -43,4 +44,5 @@ export const Post = async (endpoint, data) => {
         topbar.hide();
         console.error(err);
     }
+    return undefined;
 };
