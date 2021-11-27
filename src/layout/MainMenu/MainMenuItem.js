@@ -27,12 +27,12 @@ export default function MainMenuItem({ directory, show }) {
         });
         history.push(`/directory/${uniqid}`);
     }, [dispatch]);
-    const handleNoteClick = useCallback((uniqid) => {
+    const handleNoteClick = useCallback((note) => {
         dispatch({
             type: 'change_note',
-            note: { uniqid }
+            note
         });
-        history.push(`/directory/${directoryUniqId}/note/${uniqid}`);
+        history.push(`/directory/${directoryUniqId}/note/${note.uniqid}`);
     }, [dispatch, directoryUniqId]);
     return (
         <>
@@ -73,7 +73,7 @@ export default function MainMenuItem({ directory, show }) {
                 {directory.notes.map((note, idx) => (
                     <ListItemButton
                         key={note.uniqid}
-                        onClick={() => handleNoteClick(note.uniqid)}
+                        onClick={() => handleNoteClick(note)}
                     >
                         <ListItemText
                             primary={note.title}

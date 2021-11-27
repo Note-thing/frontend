@@ -27,7 +27,8 @@ const SignIn = () => {
 
     const buttonSignIn = async (e) => {
         e.preventDefault();
-        // const response = await Get('/signin');
+        await Get('/signin');
+
         const tempUser = {
             firstname: 'Stefan',
             lastname: 'Teofanovic',

@@ -2,6 +2,15 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+NPM installs
+
+
+
+```javascript
+npm install topbar --save
+npm install react-html-parser
+```
+
 ## Available Scripts
 
 In the project directory, you can run:
