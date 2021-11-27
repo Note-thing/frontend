@@ -13,14 +13,27 @@ import { NoteContext } from '../../context/NoteContext';
 
 export default function MainMenuItem({ directory, show }) {
     const history = useHistory();
-    const { dispatch } = useContext(NoteContext);
+    const {
+        notes: {
+            directory: {
+                uniqid: directoryUniqId
+            }
+        }, dispatch
+    } = useContext(NoteContext);
     const handleDirectoryClick = useCallback((uniqid) => {
         dispatch({
             type: 'change_directory',
-            activeDirectory: { uniqid }
+            directory: { uniqid }
         });
         history.push(`/directory/${uniqid}`);
     }, [dispatch]);
+    const handleNoteClick = useCallback((uniqid) => {
+        dispatch({
+            type: 'change_note',
+            note: { uniqid }
+        });
+        history.push(`/directory/${directoryUniqId}/note/${uniqid}`);
+    }, [dispatch, directoryUniqId]);
     return (
         <>
             <ListItem
@@ -58,7 +71,10 @@ export default function MainMenuItem({ directory, show }) {
                 data-testid="MainMenu-notesList"
             >
                 {directory.notes.map((note, idx) => (
-                    <ListItemButton key={idx}>
+                    <ListItemButton
+                        key={note.uniqid}
+                        onClick={() => handleNoteClick(note.uniqid)}
+                    >
                         <ListItemText
                             primary={note.title}
                             secondary={note.tags.map((t, idx) => (

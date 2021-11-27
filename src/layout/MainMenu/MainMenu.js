@@ -15,7 +15,7 @@ import MainMenuItem from './MainMenuItem';
  */
 export default function MainMenu() {
     const { main: { user } } = useContext(MainContext);
-    const { note: { directories, activeDirectory } } = useContext(NoteContext);
+    const { notes: { directories, directory } } = useContext(NoteContext);
     return (
         <Grid
             container
@@ -29,7 +29,7 @@ export default function MainMenu() {
                     {directories.map((dir) => (
                         <MainMenuItem
                             key={dir.uniqid}
-                            show={activeDirectory && dir.uniqid === activeDirectory.uniqid}
+                            show={directory && dir.uniqid === directory.uniqid}
                             directory={dir}
                         />
                     ))}

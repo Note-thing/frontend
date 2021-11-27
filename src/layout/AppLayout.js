@@ -1,11 +1,10 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import './AppLayout.css';
 import MainMenu from './MainMenu/MainMenu';
 import EditorComponent from './editor/EditorComponent';
 import { NoteProvider } from '../context/NoteContext';
-
 
 /**
  * Layout of the application
@@ -27,7 +26,7 @@ export default function AppLayout(props) {
                 </Grid>
                 <Grid item xs={8} md={10} height="100%">
                     <Switch>
-                        <Route path="directory/:directoryUniqId" component={EditorComponent} />
+                        <Route path="/directory/**/note/**" component={EditorComponent} />
                     </Switch>
                 </Grid>
             </Grid>

@@ -5,9 +5,17 @@ const reducer = (state, action) => {
         case 'change_directory':
             return {
                 ...state,
-                activeDirectory: {
-                    ...state.activeDirectory,
-                    ...action.activeDirectory
+                directory: {
+                    ...state.directory,
+                    ...action.directory
+                }
+            };
+        case 'change_note':
+            return {
+                ...state,
+                note: {
+                    ...state.note,
+                    ...action.note
                 }
             };
         default:
@@ -17,44 +25,45 @@ const reducer = (state, action) => {
 
 export const NoteContext = createContext();
 
-const getDirectoryURLUniqId = () => {
-    const tokens = window.location.pathname.split('/');
-    if (tokens[1] === 'directory') {
-        return {
-            uniqid: tokens[2]
-        };
-    }
-    return null;
+const getURLUniqId = () => {
+    const [, , directory, , note] = window.location.pathname.split('/');
+    return {
+        directory,
+        note
+    };
 };
 
 export const NoteProvider = (props) => {
-    const [note, dispatch] = useReducer(reducer, {
-        activeDirectory: getDirectoryURLUniqId(),
+    const active = getURLUniqId();
+    const [notes, dispatch] = useReducer(reducer, {
+        directory: { uniqid: active.directory },
+        note: { uniqid: active.note },
         directories: [{
             uniqid: '619f6488babbf',
             name: 'TWEB',
             notes: [
-                { title: 'CSS', tags: ['Web', 'design '] },
-                { title: 'JS', tags: ['JS', 'prototype'] },
-                { title: 'Node', tags: ['JS', 'SSR'] }
+                { uniqid: 'dfgh3245sdfg', title: 'CSS', tags: ['Web', 'design '] },
+                { uniqid: 'awei546fcguuz', title: 'JS', tags: ['JS', 'prototype'] },
+                { uniqid: '345jfhtzdffvret', title: 'Node', tags: ['JS', 'SSR'] }
             ]
         },
         {
             uniqid: '61ddfgg488babbf',
             name: 'PDG',
             notes: [
-                { title: 'Note-thing', tags: ['Web', 'design'] },
-                { title: 'Ruby on Rails', tags: ['Model', 'Controller'] },
-                { title: 'CI/CD', tags: ['Jest.js', 'Unit test'] }
+                { uniqid: 'dfg456fgh456', title: 'Note-thing', tags: ['Web', 'design'] },
+                { uniqid: 'fghfgh345nb', title: 'Ruby on Rails', tags: ['Model', 'Controller'] },
+                { uniqid: 'etz4256dsfh', title: 'CI/CD', tags: ['Jest.js', 'Unit test'] }
             ]
         },
         {
             uniqid: '4566fgg488babbf',
             name: 'AMT',
             notes: [
-                { title: 'Guide de survie total', tags: ['Spring'] },
-                { title: 'Survire en haute mer', tags: ['Spring', 'MVC'] },
+                { uniqid: '789dfg234dfg', title: 'Guide de survie total', tags: ['Spring'] },
+                { uniqid: '456gzuwesdgf', title: 'Survire en haute mer', tags: ['Spring', 'MVC'] },
                 {
+                    uniqid: 'uilert3452dfg',
                     title: 'Apprendre à utiliser une boussole',
                     tags: ['Navigation']
                 }
@@ -63,7 +72,7 @@ export const NoteProvider = (props) => {
     });
 
     return (
-        <NoteContext.Provider value={{ note, dispatch }}>
+        <NoteContext.Provider value={{ notes, dispatch }}>
             { props.children }
         </NoteContext.Provider>
     );
