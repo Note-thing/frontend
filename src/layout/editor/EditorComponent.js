@@ -12,7 +12,7 @@ export default function EditorComponent() {
                 <EditorHeader />
             </Grid>
             <Grid sx={{ padding: '20px', height: '86%', overflowY: 'scroll' }}>
-                { ReactHtmlParser(content) }
+                { content && ReactHtmlParser(content) }
             </Grid>
             <Grid item sx={{ height: '7%' }}>
                 <EditorFooter />

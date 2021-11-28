@@ -7,6 +7,7 @@ import { NoteContext } from '../../context/NoteContext';
 import User from './User';
 import MainMenuItem from './MainMenuItem';
 
+
 /**
  * Main menu of the application (left panel with directories, notes, search and access
  * to user parameters)
@@ -24,7 +25,7 @@ export default function MainMenu() {
             direction="column"
             justifyContent="space-between"
         >
-            <Grid sx={{ height: '80%', overflowY: 'scroll' }}>
+            <Grid sx={{ height: '85%', overflowY: 'scroll' }}>
                 <List>
                     {directories.map((dir) => (
                         <MainMenuItem
@@ -39,7 +40,7 @@ export default function MainMenu() {
                 container
                 sx={{
                     padding: '1rem',
-                    height: '20%',
+                    height: '15%',
                     alignSelf: 'flex-end'
                 }}
             >

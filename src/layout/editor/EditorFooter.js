@@ -1,13 +1,13 @@
-import React from 'react';
-import { Grid, Chip } from '@mui/material';
-import { LocalOffer } from '@mui/icons-material';
+import React, { useContext } from 'react';
+import { Grid, Chip, TextField, Button } from '@mui/material';
+import { NoteContext } from '../../context/NoteContext';
 
 /**
  * Editor Footer. Allows the user to add label to his note
  * @returns
  */
 export default function EditorFooter() {
-    const tags = ['Compound litteral', 'RHH', 'Blanc'];
+    const { notes: { note: { tags } } } = useContext(NoteContext);
     return (
         <Grid
             display="flex"
@@ -17,8 +17,7 @@ export default function EditorFooter() {
             borderTop="0.1rem solid #e9F0F0"
             className="editor-tag-footer"
         >
-            <LocalOffer />
-            {tags.map((tag, idx) => (
+            {tags && tags.map((tag, idx) => (
                 <Chip
                     key={idx}
                     className="tag-chip"
@@ -26,6 +25,13 @@ export default function EditorFooter() {
                     onDelete={() => console.log(`delete${{ tag }}`)}
                 />
             ))}
+            <TextField
+                sx={{ mb: '20px', ml: '24px' }}
+                label="New tag"
+                variant="standard"
+                size="small"
+            />
+            <Button variant="text" size="small">Add</Button>
         </Grid>
     );
 }

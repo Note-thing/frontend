@@ -41,7 +41,7 @@ const data = {
             {
                 uniqid: 'dfgh3245sdfg',
                 title: 'CSS',
-                tags: ['Web', 'design '],
+                tags: ['Web', 'design'],
                 content: `CD  seems to work with Github Acti&#128169;!!! <br />
             Richard McClintock, a Latin professor at Hampden-Sydney College
             in Virginia, looked up one of the more obscure Latin words,
