@@ -25,7 +25,7 @@ export default function MainMenu() {
             direction="column"
             justifyContent="space-between"
         >
-            <Grid sx={{ height: '85%', overflowY: 'scroll' }}>
+            <Grid sx={{ height: '85%' }}>
                 <List>
                     {directories.map((dir) => (
                         <MainMenuItem
