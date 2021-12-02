@@ -1,4 +1,4 @@
-import React, { createContext, useReducer } from 'react';
+import React, { useEffect, createContext, useReducer } from 'react';
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -22,18 +22,9 @@ const reducer = (state, action) => {
 
 export const NoteContext = createContext();
 
-const getURLUniqId = () => {
-    const [, , directory, , note] = window.location.pathname.split('/');
-    return {
-        directory,
-        note
-    };
-};
-const active = getURLUniqId();
-
 const data = {
-    directory: { uniqid: active.directory },
-    note: { uniqid: active.note },
+    directory: { },
+    note: { },
     directories: [{
         uniqid: '619f6488babbf',
         name: 'TWEB',
@@ -149,7 +140,8 @@ const data = {
             1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good
             and Evil) by Cicero, written in 45 BC.
             <br />
-            This book is a treatise on the theory of ethics, very popular` },
+            This book is a treatise on the theory of ethics, very popular`
+            },
             { uniqid: 'awei546fcguuz', title: 'JS', tags: ['JS', 'prototype'] },
             { uniqid: '345jfhtzdffvret', title: 'Node', tags: ['JS', 'SSR'] }
         ]
@@ -178,8 +170,34 @@ const data = {
     }]
 };
 
+const getActiveFromURL = (directories) => {
+    const [, , directoryId, , noteId] = window.location.pathname.split('/');
+    const directory = directories.find((d) => d.uniqid === directoryId);
+    const note = directory && directory.notes.find((n) => n.uniqid === noteId);
+    return {
+        directory,
+        note
+    };
+};
+
 export const NoteProvider = (props) => {
     const [notes, dispatch] = useReducer(reducer, data);
+
+    useEffect(() => {
+        const active = getActiveFromURL(notes.directories);
+        if (active.directory) {
+            dispatch({
+                type: 'change_directory',
+                directory: active.directory
+            });
+        }
+        if (active.note) {
+            dispatch({
+                type: 'change_note',
+                note: active.note
+            });
+        }
+    }, [dispatch, notes]);
 
     return (
         <NoteContext.Provider value={{ notes, dispatch }}>
@@ -187,4 +205,3 @@ export const NoteProvider = (props) => {
         </NoteContext.Provider>
     );
 };
-
