@@ -197,7 +197,7 @@ export const NoteProvider = (props) => {
                 note: active.note
             });
         }
-    }, [dispatch, notes]);
+    }, [dispatch]);
 
     return (
         <NoteContext.Provider value={{ notes, dispatch }}>
