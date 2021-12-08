@@ -5,6 +5,7 @@ import './AppLayout.css';
 import MainMenu from './MainMenu/MainMenu';
 import EditorComponent from './editor/EditorComponent';
 import { NoteProvider } from '../context/NoteContext';
+import SharedNoteComponent from './sharedNote/SharedNoteComponent';
 
 /**
  * Layout of the application
@@ -26,6 +27,7 @@ export default function AppLayout() {
                 <Grid item xs={9} height="100%">
                     <Switch>
                         <Route path="/directory/**/note/**" component={EditorComponent} />
+                        <Route path="/shared_notes/:uuid" component={SharedNoteComponent} />
                     </Switch>
                 </Grid>
             </Grid>
