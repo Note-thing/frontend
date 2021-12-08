@@ -180,7 +180,7 @@ const getActiveFromURL = (directories) => {
     };
 };
 
-export const NoteProvider = (props) => {
+export const NoteProvider = ({ children }) => {
     const [notes, dispatch] = useReducer(reducer, data);
 
     useEffect(() => {
@@ -201,7 +201,7 @@ export const NoteProvider = (props) => {
 
     return (
         <NoteContext.Provider value={{ notes, dispatch }}>
-            { props.children }
+            { children }
         </NoteContext.Provider>
     );
 };

@@ -1,4 +1,4 @@
-import React, { useContext, useCallback } from 'react';
+import React, { useContext } from 'react';
 import {
     List, Grid, Input
 } from '@mui/material';
@@ -6,7 +6,6 @@ import { MainContext } from '../../context/MainContext';
 import { NoteContext } from '../../context/NoteContext';
 import User from './User';
 import MainMenuItem from './MainMenuItem';
-
 
 /**
  * Main menu of the application (left panel with directories, notes, search and access

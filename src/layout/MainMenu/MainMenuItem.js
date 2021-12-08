@@ -77,9 +77,9 @@ export default function MainMenuItem({ directory, show }) {
                     >
                         <ListItemText
                             primary={note.title}
-                            secondary={note.tags.map((t, idx) => (
+                            secondary={note.tags.map((t) => (
                                 <Chip
-                                    key={idx}
+                                    key={note.title.concat(t)}
                                     label={t}
                                     sx={{ marginRight: '0.1rem' }}
                                     size="small"

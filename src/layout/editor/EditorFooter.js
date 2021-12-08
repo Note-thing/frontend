@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
-import { Grid, Chip, TextField, Button } from '@mui/material';
+import {
+    Grid, Chip, TextField, Button
+} from '@mui/material';
 import { NoteContext } from '../../context/NoteContext';
 
 /**
@@ -17,12 +19,12 @@ export default function EditorFooter() {
             borderTop="0.1rem solid #e9F0F0"
             className="editor-tag-footer"
         >
-            {tags && tags.map((tag, idx) => (
+            {tags && tags.map((tag) => (
                 <Chip
-                    key={idx}
+                    key={tag.id}
                     className="tag-chip"
                     label={tag}
-                    onDelete={() => console.log(`delete${{ tag }}`)}
+                    onDelete={() => true /** TODO implémenter logique */}
                 />
             ))}
             <TextField

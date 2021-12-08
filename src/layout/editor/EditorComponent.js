@@ -4,6 +4,7 @@ import ReactHtmlParser from 'react-html-parser';
 import EditorFooter from './EditorFooter';
 import EditorHeader from './EditorHeader';
 import { NoteContext } from '../../context/NoteContext';
+
 export default function EditorComponent() {
     const { notes: { note: { content } } } = useContext(NoteContext);
     return (

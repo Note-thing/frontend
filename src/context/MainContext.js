@@ -15,7 +15,7 @@ const mainReducer = (state, action) => {
 
 export const MainContext = createContext();
 
-export const MainProvider = (props) => {
+export const MainProvider = ({ children }) => {
     const [main, dispatch] = useReducer(mainReducer, {
         user: JSON.parse(localStorage.getItem('User')),
         dialog: null
@@ -23,7 +23,7 @@ export const MainProvider = (props) => {
 
     return (
         <MainContext.Provider value={{ main, dispatch }}>
-            { props.children }
+            { children}
         </MainContext.Provider>
     );
 };

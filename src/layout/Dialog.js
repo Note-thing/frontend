@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Alert, Snackbar, Box } from '@mui/material';
+import { Alert, Snackbar } from '@mui/material';
 import { MainContext } from '../context/MainContext';
 
 const Dialog = () => {
@@ -21,29 +21,32 @@ const Dialog = () => {
         <section>
             {
                 dialog && dialog.id === 'logout'
-                && <Snackbar
-                    anchorOrigin={position}
-                    open={dialog.is_open}
-                    onClose={() => handleClose({ is_open: false })}
-                    autoHideDuration={6000}
-                >
-                    <Alert variant="filled" severity="info">
-                        Déconnecté
-                    </Alert>
-                </Snackbar>
+                && (
+                    <Snackbar
+                        anchorOrigin={position}
+                        open={dialog.is_open}
+                        onClose={() => handleClose({ is_open: false })}
+                        autoHideDuration={6000}
+                    >
+                        <Alert variant="filled" severity="info">
+                            Déconnecté
+                        </Alert>
+                    </Snackbar>)
             }
             {
                 dialog && dialog.id === 'login'
-                && <Snackbar
-                    anchorOrigin={position}
-                    open={dialog.is_open}
-                    onClose={() => handleClose({ is_open: false })}
-                    autoHideDuration={6000}
-                >
-                    <Alert variant="filled" severity="info">
-                        Login success
-                    </Alert>
-                </Snackbar>
+                && (
+                    <Snackbar
+                        anchorOrigin={position}
+                        open={dialog.is_open}
+                        onClose={() => handleClose({ is_open: false })}
+                        autoHideDuration={6000}
+                    >
+                        <Alert variant="filled" severity="info">
+                            Login success
+                        </Alert>
+                    </Snackbar>
+                )
             }
         </section>
     );
