@@ -15,6 +15,14 @@ const reducer = (state, action) => {
                 ...state,
                 note: { ...action.note }
             };
+        // case 'update_directory':
+        //     return {
+        //         ...state,
+        //         directories: {
+        //             ...state.directories.filter((dir) => dir.uniqid !== action.directory.uniqid),
+        //             ...action.directory
+        //         }
+        //     };
         default:
             return state;
     }
@@ -23,17 +31,18 @@ const reducer = (state, action) => {
 export const NoteContext = createContext();
 
 const data = {
-    directory: { },
-    note: { },
-    directories: [{
-        uniqid: '619f6488babbf',
-        name: 'TWEB',
-        notes: [
-            {
-                uniqid: 'dfgh3245sdfg',
-                title: 'CSS',
-                tags: ['Web', 'design'],
-                content: `CD  seems to work with Github Acti&#128169;!!! <br />
+    directory: {},
+    note: {},
+    directories: [
+        {
+            uniqid: '619f6488babbf',
+            name: 'TWEB',
+            notes: [
+                {
+                    uniqid: 'dfgh3245sdfg',
+                    title: 'CSS',
+                    tags: ['Web', 'design'],
+                    content: `CD  seems to work with Github Acti&#128169;!!! <br />
             Richard McClintock, a Latin professor at Hampden-Sydney College
             in Virginia, looked up one of the more obscure Latin words,
             consectetur, from a Lorem Ipsum passage, and going through the
@@ -141,33 +150,34 @@ const data = {
             and Evil) by Cicero, written in 45 BC.
             <br />
             This book is a treatise on the theory of ethics, very popular`
-            },
-            { uniqid: 'awei546fcguuz', title: 'JS', tags: ['JS', 'prototype'] },
-            { uniqid: '345jfhtzdffvret', title: 'Node', tags: ['JS', 'SSR'] }
-        ]
-    },
-    {
-        uniqid: '61ddfgg488babbf',
-        name: 'PDG',
-        notes: [
-            { uniqid: 'dfg456fgh456', title: 'Note-thing', tags: ['Web', 'design'] },
-            { uniqid: 'fghfgh345nb', title: 'Ruby on Rails', tags: ['Model', 'Controller'] },
-            { uniqid: 'etz4256dsfh', title: 'CI/CD', tags: ['Jest.js', 'Unit test'] }
-        ]
-    },
-    {
-        uniqid: '4566fgg488babbf',
-        name: 'AMT',
-        notes: [
-            { uniqid: '789dfg234dfg', title: 'Guide de survie total', tags: ['Spring'] },
-            { uniqid: '456gzuwesdgf', title: 'Survire en haute mer', tags: ['Spring', 'MVC'] },
-            {
-                uniqid: 'uilert3452dfg',
-                title: 'Apprendre à utiliser une boussole',
-                tags: ['Navigation']
-            }
-        ]
-    }]
+                },
+                { uniqid: 'awei546fcguuz', title: 'JS', tags: ['JS', 'prototype'] },
+                { uniqid: '345jfhtzdffvret', title: 'Node', tags: ['JS', 'SSR'] }
+            ]
+        },
+        {
+            uniqid: '61ddfgg488babbf',
+            name: 'PDG',
+            notes: [
+                { uniqid: 'dfg456fgh456', title: 'Note-thing', tags: ['Web', 'design'] },
+                { uniqid: 'fghfgh345nb', title: 'Ruby on Rails', tags: ['Model', 'Controller'] },
+                { uniqid: 'etz4256dsfh', title: 'CI/CD', tags: ['Jest.js', 'Unit test'] }
+            ]
+        },
+        {
+            uniqid: '4566fgg488babbf',
+            name: 'AMT',
+            notes: [
+                { uniqid: '789dfg234dfg', title: 'Guide de survie total', tags: ['Spring'] },
+                { uniqid: '456gzuwesdgf', title: 'Survire en haute mer', tags: ['Spring', 'MVC'] },
+                {
+                    uniqid: 'uilert3452dfg',
+                    title: 'Apprendre à utiliser une boussole',
+                    tags: ['Navigation']
+                }
+            ]
+        }
+    ]
 };
 
 const getActiveFromURL = (directories) => {
@@ -199,9 +209,5 @@ export const NoteProvider = ({ children }) => {
         }
     }, [dispatch]);
 
-    return (
-        <NoteContext.Provider value={{ notes, dispatch }}>
-            { children }
-        </NoteContext.Provider>
-    );
+    return <NoteContext.Provider value={{ notes, dispatch }}>{children}</NoteContext.Provider>;
 };

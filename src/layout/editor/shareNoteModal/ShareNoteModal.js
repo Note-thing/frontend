@@ -31,7 +31,6 @@ export default function ShareNoteModal({ open, setOpen }) {
                 setIsFetching(false);
             } catch (err) {
                 setIsFetching(false);
-
                 // TODO Afficher un toast ou quelque chose
             }
         };

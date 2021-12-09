@@ -19,6 +19,7 @@ export default function CustomModal({
 }) {
     return (
         <Modal
+            sx={{ minWidth: '700px' }}
             open={open}
             onClose={() => onClose(false)}
             aria-labelledby="modal-modal-title"
