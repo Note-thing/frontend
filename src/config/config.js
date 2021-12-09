@@ -35,3 +35,16 @@ export const Post = async (endpoint, data) => {
         console.error(err);
     }
 };
+
+export const Delete = async (endpoint, data) => {
+    try {
+        return await fetch(CONFIG.api_url + endpoint, {
+            method: 'DELETE',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams(data).toString()
+        }).then((response) => response.json());
+    } catch (err) {
+        console.error(err);
+    }
+};

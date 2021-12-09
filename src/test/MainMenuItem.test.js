@@ -82,6 +82,5 @@ it('MainMenuItem should display (opacity = 1, height : auto) notes on click', ()
     });
 });
 it('Presentation CI/CD', () => {
-    
     expect('bonjour').toBe('bonjour');
 });
