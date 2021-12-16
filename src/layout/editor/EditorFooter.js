@@ -3,6 +3,7 @@ import { Grid, Chip } from '@mui/material';
 import { LocalOffer } from '@mui/icons-material';
 import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -56,9 +57,13 @@ export default function EditorFooter() {
             className="editor-tag-footer"
         >
             <Grid item>
-                <LocalOffer
+                <IconButton
+                    color="primary"
+                    label="Ajouter des tags"
                     onClick={handleClickOpen}
-                />
+                >
+                    <LocalOffer />
+                </IconButton>
             </Grid>
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>Nouveaux tags</DialogTitle>
@@ -96,7 +101,7 @@ export default function EditorFooter() {
                                     key={idx}
                                     className="tag-chip"
                                     label={tag}
-                                    color="primary"
+                                    color="secondary"
                                     onDelete={() => {
                                         setTags(tagsList.filter((_, i) => i !== idx));
                                         // Delete('/tags', idx);
@@ -116,7 +121,7 @@ export default function EditorFooter() {
                         key={idx}
                         className="tag-chip"
                         label={tag}
-                        color="primary"
+                        color="secondary"
                         onDelete={() => {
                             setTags(tagsList.filter((_, i) => i !== idx));
                             // Delete('/tags', idx);
