@@ -10,6 +10,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Get, Delete, Post } from '../../config/config';
+import EditorTags from './EditorTags';
+import EditorDialogAddTags from './EditorDialogAddTags';
 
 /**
  * Editor Footer. Allows the user to add label to his note
@@ -21,24 +23,6 @@ export default function EditorFooter() {
 
     const handleClickOpen = () => {
         setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    const handleAddTag = (tag) => {
-        if (tag !== undefined && tag.length > 0 && !tagsList.includes(tag)) {
-            setTags([...tagsList, tag]);
-            // Post('tag', tag);
-        }
-    };
-
-    const handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
-            handleAddTag(e.target.value);
-            e.target.value = '';
-        }
     };
 
     useEffect(() => {
@@ -65,70 +49,16 @@ export default function EditorFooter() {
                     <LocalOffer />
                 </IconButton>
             </Grid>
-            <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Nouveaux tags</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Ajouter de nouveaux tags ci-dessous en rentrant le nom puis en
-                        appuyant sur entrée.
-                    </DialogContentText>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="tag"
-                        label="Tag"
-                        type="text"
-                        fullWidth
-                        variant="standard"
-                        onKeyPress={handleKeyPress}
-                    />
-                    <Grid
-                        spacing={0.5}
-                        container
-                        display="flex"
-                        alignItems="center"
-                        height="100%"
-                        padding="0 1rem 0 1rem"
-                        borderTop="0.1rem solid #e9F0F0"
-                        className="editor-tag-footer"
-                    >
-                        <DialogContentText>
-                            Tags actuelles:
-                        </DialogContentText>
-                        {tagsList.map((tag, idx) => (
-                            <Grid item>
-                                <Chip
-                                    key={idx}
-                                    className="tag-chip"
-                                    label={tag}
-                                    color="secondary"
-                                    onDelete={() => {
-                                        setTags(tagsList.filter((_, i) => i !== idx));
-                                        // Delete('/tags', idx);
-                                    }}
-                                />
-                            </Grid>
-                        ))}
-                    </Grid>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose}>Fermer</Button>
-                </DialogActions>
-            </Dialog>
-            {tagsList.map((tag, idx) => (
-                <Grid item>
-                    <Chip
-                        key={idx}
-                        className="tag-chip"
-                        label={tag}
-                        color="secondary"
-                        onDelete={() => {
-                            setTags(tagsList.filter((_, i) => i !== idx));
-                            // Delete('/tags', idx);
-                        }}
-                    />
-                </Grid>
-            ))}
+            <EditorDialogAddTags
+                tagsList={tagsList}
+                setTags={setTags}
+                open={open}
+                setOpen={setOpen}
+            />
+            <EditorTags
+                tagsList={tagsList}
+                setTags={setTags}
+            />
         </Grid>
     );
 }
