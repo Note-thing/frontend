@@ -7,16 +7,24 @@
     box-sizing: border-box;
     height:100vh;
     width:48px;
-    background-position: center 12px;
+    transition:width 200ms ease-in-out;
+}
+
+.main-menu-container::before{
+    content:' ';
+    display: block;
+    min-width:48px;
+    min-height:48px;
+    background-position: center center;
     background-repeat: no-repeat;
     background-image: url(../../resource/icons/main-menu.svg);
-    transition:width 200ms ease-in-out;
-    
 }
 
 .main-menu-container:hover{
     width:24rem;
-    background-image: none;
+}
+.main-menu-container:hover::before{
+    display: none;
 }
 
 .main-menu-container .main-menu{
