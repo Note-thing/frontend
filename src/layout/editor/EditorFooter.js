@@ -23,7 +23,7 @@ export default function EditorFooter() {
             setTags(notes[0].notes[0].tags.map((tag) => ({ title: tag.title, id: tag.id })));
         });
     }, []);
-
+  
     return (
         <Grid
             spacing={0.5}

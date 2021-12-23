@@ -1,11 +1,12 @@
-import React, { useContext } from 'react';
+import React, { useContext, useCallback } from 'react';
 import {
     List, Grid, Input
 } from '@mui/material';
-import { PersonOutline } from '@mui/icons-material';
 import { MainContext } from '../../context/MainContext';
+import { NoteContext } from '../../context/NoteContext';
 import User from './User';
 import MainMenuItem from './MainMenuItem';
+
 
 /**
  * Main menu of the application (left panel with directories, notes, search and access
@@ -14,36 +15,8 @@ import MainMenuItem from './MainMenuItem';
  * @returns
  */
 export default function MainMenu() {
-    const { main: { user }, dispatch} = useContext(MainContext);
-    const notesDirectories = [
-        {
-            name: 'TWEB',
-            notes: [
-                { title: 'CSS', tags: ['Web', 'design '] },
-                { title: 'JS', tags: ['JS', 'prototype'] },
-                { title: 'Node', tags: ['JS', 'SSR'] }
-            ]
-        },
-        {
-            name: 'PDG',
-            notes: [
-                { title: 'Note-thing', tags: ['Web', 'design'] },
-                { title: 'Ruby on Rails', tags: ['Model', 'Controller'] },
-                { title: 'CI/CD', tags: ['Jest.js', 'Unit test'] }
-            ]
-        },
-        {
-            name: 'AMT',
-            notes: [
-                { title: 'Guide de survie total', tags: ['Spring'] },
-                { title: 'Survire en haute mer', tags: ['Spring', 'MVC'] },
-                {
-                    title: 'Apprendre à utiliser une boussole',
-                    tags: ['Navigation']
-                }
-            ]
-        }
-    ];
+    const { main: { user } } = useContext(MainContext);
+    const { notes: { directories, directory } } = useContext(NoteContext);
     return (
         <Grid
             container
@@ -52,10 +25,14 @@ export default function MainMenu() {
             direction="column"
             justifyContent="space-between"
         >
-            <Grid sx={{ height: '80%', overflowY: 'scroll' }}>
+            <Grid sx={{ height: '85%' }}>
                 <List>
-                    {notesDirectories.map((dir, idx) => (
-                        <MainMenuItem key={idx} directory={dir} />
+                    {directories.map((dir) => (
+                        <MainMenuItem
+                            key={dir.uniqid}
+                            show={directory && dir.uniqid === directory.uniqid}
+                            directory={dir}
+                        />
                     ))}
                 </List>
             </Grid>
@@ -63,7 +40,7 @@ export default function MainMenu() {
                 container
                 sx={{
                     padding: '1rem',
-                    height: '20%',
+                    height: '15%',
                     alignSelf: 'flex-end'
                 }}
             >
