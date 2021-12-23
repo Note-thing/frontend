@@ -31,10 +31,9 @@
 
 .editor-resize-container .editor-pannel-separator:active::after{
     content: " ";
-    width:300px;
-    height:100%;
-    position:absolute;
-    left:-145px;
+    position:fixed;
+    width:100vw;
+    height:100vh;
 }
 
 .editor-resize-container .editor-pannel-handle{

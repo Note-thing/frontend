@@ -5,10 +5,7 @@ const ResizePannel = ({leftPannel, rightPannel}) => {
     const [drag, setDrag] = useState(false);
     const [width, setWidth] = useState(50);
 
-    const handleDrag = (state) => {
-        console.log('handleDrag', state);
-        setDrag(state);
-    };
+    const handleDrag = (state) => setDrag(state);
 
     const handleMouseMove = (ev) => {
         if (drag) {
@@ -16,9 +13,9 @@ const ResizePannel = ({leftPannel, rightPannel}) => {
             ev.preventDefault();
             const container = editorContainer.current;
             const bounds = container.getBoundingClientRect();
-            const containerWidth = container.clientWidth;
+            const totalWidth = container.clientWidth;
             const partialWidth = ev.clientX - bounds.left + 4;
-            setWidth(100 - (100 * partialWidth) / containerWidth);
+            setWidth(100 - (100 * partialWidth) / totalWidth);
         }
     };
     return (
