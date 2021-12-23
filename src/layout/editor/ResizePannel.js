@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
-const ResizePannel = () => {
+const ResizePannel = ({leftPannel, rightPannel}) => {
+    const editorContainer = useRef(null);
     const [drag, setDrag] = useState(false);
-    const [width, setWidth] = useState(300);
+    const [width, setWidth] = useState(50);
 
     const handleDrag = (state) => {
         console.log('handleDrag', state);
@@ -11,12 +12,18 @@ const ResizePannel = () => {
 
     const handleMouseMove = (ev) => {
         if (drag) {
-            console.log('handleMouseMove', ev);
+            ev.stopPropagation();
+            ev.preventDefault();
+            const container = editorContainer.current;
+            const bounds = container.getBoundingClientRect();
+            const containerWidth = container.clientWidth;
+            const partialWidth = ev.clientX - bounds.left + 4;
+            setWidth(100 - (100 * partialWidth) / containerWidth);
         }
     };
     return (
-        <div className="editor-resize-container">
-            <div className="editor-pannel-grow">Grow</div>
+        <div className="editor-resize-container" ref={editorContainer}>
+            <div className="editor-pannel-grow">{leftPannel}</div>
             <div
                 className="editor-pannel-separator"
                 role="button"
@@ -27,8 +34,8 @@ const ResizePannel = () => {
             >
                 <div className="editor-pannel-handle" />
             </div>
-            <div className="editor-pannel-resizable" style={{ width: `${width}px` }}>
-                Resize
+            <div className="editor-pannel-resizable" style={{ width: `${width}%` }}>
+                {rightPannel}
             </div>
         </div>
     );

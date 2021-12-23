@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { Grid } from '@mui/material';
-import ResizePannel from './ResizePannel';
 import TextareaMarkdown from 'textarea-markdown';
+import ResizePannel from './ResizePannel';
 import EditorFooter from './EditorFooter';
 import EditorHeader from './EditorHeader';
 import { NoteContext } from '../../context/NoteContext';
@@ -22,20 +22,20 @@ export default function EditorComponent() {
             <Grid item sx={{ height: '7%' }}>
                 <EditorHeader />
             </Grid>
-            <Grid item sx={{ p: '20px', height: '86%', overflowY: 'scroll' }}>
-                <ResizePannel />
-                <div>
-                    <textarea
-                        className="editor-textarea"
-                        id="editor"
-                        data-preview="#preview"
-                        {...bindNoteTextArea}
-                    />
-                </div>
-                <div>
-                    <h2>Preview</h2>
-                    <div id="preview" />
-                </div>
+            <Grid item sx={{ height: '86%' }}>
+                <ResizePannel
+                    leftPannel={
+                        <textarea
+                            className="editor-textarea"
+                            id="editor"
+                            data-preview="#preview"
+                            {...bindNoteTextArea}
+                        />
+                    }
+                    rightPannel={
+                        <div className="editor-preview-pannel" id="preview" />
+                    }
+                />
             </Grid>
             <Grid item sx={{ height: '7%' }}>
                 <EditorFooter />
