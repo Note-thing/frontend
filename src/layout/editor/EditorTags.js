@@ -1,5 +1,6 @@
 import React from 'react';
 import { Grid, Chip } from '@mui/material';
+import { Get, Delete } from '../../config/config';
 
 /**
  * Editor Tags. Show all current tags for the selected note
@@ -7,16 +8,16 @@ import { Grid, Chip } from '@mui/material';
  */
 export default function EditorTags({ tagsList, setTags }) {
     return (
-        tagsList.map((tag, idx) => (
+        tagsList.map((tag) => (
             <Grid item>
                 <Chip
-                    key={idx}
+                    key={tag.id}
                     className="tag-chip"
-                    label={tag}
+                    label={tag.title}
                     color="secondary"
                     onDelete={() => {
-                        setTags(tagsList.filter((_, i) => i !== idx));
-                        // Delete('/tags', idx);
+                        setTags(tagsList.filter((t) => t.id !== tag.id));
+                        Delete(`/tags/${tag.id}`);
                     }}
                 />
             </Grid>

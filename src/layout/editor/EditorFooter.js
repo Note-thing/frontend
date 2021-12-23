@@ -1,15 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Chip } from '@mui/material';
+import { Grid } from '@mui/material';
 import { LocalOffer } from '@mui/icons-material';
-import Dialog from '@mui/material/Dialog';
-import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import TextField from '@mui/material/TextField';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import { Get, Delete, Post } from '../../config/config';
+import { Get } from '../../config/config';
 import EditorTags from './EditorTags';
 import EditorDialogAddTags from './EditorDialogAddTags';
 
@@ -18,7 +11,7 @@ import EditorDialogAddTags from './EditorDialogAddTags';
  * @returns
  */
 export default function EditorFooter() {
-    const [tagsList, setTags] = useState(['CD', 'Git', 'JS']);
+    const [tagsList, setTags] = useState([]);
     const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
@@ -26,7 +19,9 @@ export default function EditorFooter() {
     };
 
     useEffect(() => {
-        // setTags(Get('/tags'));
+        Get('/structure/1').then((notes) => {
+            setTags(notes[0].notes[0].tags.map((tag) => ({ title: tag.title, id: tag.id })));
+        });
     }, []);
 
     return (
@@ -50,6 +45,7 @@ export default function EditorFooter() {
                 </IconButton>
             </Grid>
             <EditorDialogAddTags
+                noteId={1}
                 tagsList={tagsList}
                 setTags={setTags}
                 open={open}

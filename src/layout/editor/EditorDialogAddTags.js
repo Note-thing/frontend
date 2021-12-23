@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, PropTypes } from '@mui/material';
+import { Grid } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -8,20 +8,26 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import EditorTags from './EditorTags';
+import { Post } from '../../config/config';
 
 /**
  * Editor Dialog Add Tags. Show a dialog to the user to add more tags to his note
  * @returns
  */
-export default function EditorDialogAddTags({ tagsList, setTags, open, setOpen }) {
+export default function EditorDialogAddTags({
+    noteId, tagsList, setTags, open, setOpen
+}) {
     const handleClose = () => {
         setOpen(false);
     };
 
     const handleAddTag = (tag) => {
-        if (tag !== undefined && tag.length > 0 && !tagsList.includes(tag)) {
-            setTags([...tagsList, tag]);
-            // Post('tag', tag);
+        if (tag !== undefined
+            && tag.length > 0
+            && !tagsList.map((t) => t.title).includes(tag)) {
+            Post('/tags', { title: tag, note_id: noteId }).then((t) => {
+                setTags([...tagsList, { title: t.title, id: t.id }]);
+            });
         }
     };
 
