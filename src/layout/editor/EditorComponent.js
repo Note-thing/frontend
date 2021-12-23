@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { Grid } from '@mui/material';
-import ReactHtmlParser from 'react-html-parser';
+import ResizePannel from './ResizePannel';
 import TextareaMarkdown from 'textarea-markdown';
 import EditorFooter from './EditorFooter';
 import EditorHeader from './EditorHeader';
@@ -10,11 +10,11 @@ import { useInput } from '../../hooks/useInput';
 export default function EditorComponent() {
     const { notes: { note: { content } } } = useContext(NoteContext);
     const { value: noteTextArea, bind: bindNoteTextArea } = useInput(content);
-
+    const runEditor = (area) => new TextareaMarkdown(area);
     useEffect(() => {
         const textarea = document.querySelector('textarea#editor');
         textarea.value = content;
-        new TextareaMarkdown(textarea);
+        runEditor(textarea);
     }, [content]);
 
     return (
@@ -23,13 +23,19 @@ export default function EditorComponent() {
                 <EditorHeader />
             </Grid>
             <Grid item sx={{ p: '20px', height: '86%', overflowY: 'scroll' }}>
-                <textarea
-                    id="editor"
-                    data-preview="#preview"
-                    {...bindNoteTextArea}
-                />
-                <h2>Preview</h2>
-                <div id="preview" />
+                <ResizePannel />
+                <div>
+                    <textarea
+                        className="editor-textarea"
+                        id="editor"
+                        data-preview="#preview"
+                        {...bindNoteTextArea}
+                    />
+                </div>
+                <div>
+                    <h2>Preview</h2>
+                    <div id="preview" />
+                </div>
             </Grid>
             <Grid item sx={{ height: '7%' }}>
                 <EditorFooter />
