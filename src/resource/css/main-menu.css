@@ -20,7 +20,7 @@
 }
 
 .main-menu-container .main-menu{
-    transition:opacity 200ms ease-in-out;
+    transition:opacity 300ms ease-in-out;
     visibility:hidden;
     opacity:0;
 }
