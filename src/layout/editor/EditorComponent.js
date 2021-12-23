@@ -6,6 +6,7 @@ import EditorFooter from './EditorFooter';
 import EditorHeader from './EditorHeader';
 import { NoteContext } from '../../context/NoteContext';
 import { useInput } from '../../hooks/useInput';
+import '../../resource/css/editor.css';
 
 export default function EditorComponent() {
     const { notes: { note: { content } } } = useContext(NoteContext);
