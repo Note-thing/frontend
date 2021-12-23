@@ -19,19 +19,19 @@ const ResizePannel = ({leftPannel, rightPannel}) => {
         }
     };
     return (
-        <div className="editor-resize-container" ref={editorContainer}>
-            <div className="editor-pannel-grow">{leftPannel}</div>
+        <div className="resize-pannel-container" ref={editorContainer}>
+            <div className="pannel-grow">{leftPannel}</div>
             <div
-                className="editor-pannel-separator"
+                className="pannel-separator"
                 role="button"
                 tabIndex={0}
                 onMouseMove={(ev) => handleMouseMove(ev)}
                 onMouseDown={() => handleDrag(true)}
                 onMouseUp={() => handleDrag(false)}
             >
-                <div className="editor-pannel-handle" />
+                <div className="pannel-handle" />
             </div>
-            <div className="editor-pannel-resizable" style={{ width: `${width}%` }}>
+            <div className="pannel-resizable" style={{ width: `${width}%` }}>
                 {rightPannel}
             </div>
         </div>

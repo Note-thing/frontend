@@ -19,7 +19,7 @@ export default function EditorComponent() {
     }, [content]);
 
     return (
-        <Grid container direction="column" height="100%">
+        <Grid className="editor" direction="column">
             <Grid item sx={{ height: '7%' }}>
                 <EditorHeader />
             </Grid>
@@ -34,7 +34,7 @@ export default function EditorComponent() {
                         />
                     }
                     rightPannel={
-                        <div className="editor-preview-pannel" id="preview" />
+                        <div className="preview-pannel" id="preview" />
                     }
                 />
             </Grid>

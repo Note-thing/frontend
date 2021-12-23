@@ -1,18 +1,26 @@
-.editor-resize-container{
+.editor{
+    position: absolute;
+    box-sizing: border-box;
+    left:48px;
+    width:calc(100vw - 48px);
+    height: 100vh;
+}
+
+.resize-pannel-container{
     display:flex;
     height:100%;
     overflow: hidden;
 }
 
-.editor-resize-container .editor-preview-pannel{
+.resize-pannel-container .preview-pannel{
     padding:1rem;
 }
 
-.editor-resize-container .editor-pannel-grow{
+.resize-pannel-container .pannel-grow{
     flex-grow: 1;
 }
 
-.editor-resize-container .editor-pannel-separator{
+.resize-pannel-container .pannel-separator{
     cursor: ew-resize;
     display:flex;
     direction:column;
@@ -21,29 +29,28 @@
     border-right: 1px solid #e9f0f0;
     justify-content: center;
     align-items: center;
-    position: relative;
+    position: relative; 
 }
 
-.editor-resize-container .editor-pannel-separator:active {
-    border-left: 1px solid rgba(0, 0, 0, 0.2);
-    border-right: 1px solid rgba(0, 0, 0, 0.2);
+.resize-pannel-container .pannel-separator:active {
+    box-shadow: rgba(0, 0, 0, 0.01) 0px 2px 24px 0px, rgba(0, 0, 0, 0.04) 0px 0px 0px 1px;
 }
 
-.editor-resize-container .editor-pannel-separator:active::after{
+.resize-pannel-container .pannel-separator:active::after{
     content: " ";
     position:fixed;
     width:100vw;
     height:100vh;
 }
 
-.editor-resize-container .editor-pannel-handle{
+.resize-pannel-container .pannel-handle{
     width:0.25rem;
     height:3rem;
-    border-left:1px solid rgba(0, 0, 0, 0.2);
-    border-right:1px solid rgba(0, 0, 0, 0.2);
+    border-left:1px solid rgba(0, 0, 0, 0.15);
+    border-right:1px solid rgba(0, 0, 0, 0.15);
 }
 
-.editor-resize-container .editor-pannel-resizable{
+.resize-pannel-container .pannel-resizable{
     overflow:auto;
     height:100%;
 }
@@ -59,7 +66,7 @@
     resize:none;
 }
 .editor-textarea::-webkit-scrollbar,
-.editor-pannel-resizable::-webkit-scrollbar {
+.pannel-resizable::-webkit-scrollbar {
     display: none;
 }
 
