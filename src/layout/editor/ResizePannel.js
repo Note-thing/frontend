@@ -14,7 +14,7 @@ const ResizePannel = ({leftPannel, rightPannel}) => {
             const container = editorContainer.current;
             const bounds = container.getBoundingClientRect();
             const totalWidth = container.clientWidth;
-            const partialWidth = ev.clientX - bounds.left + 4;
+            const partialWidth = ev.clientX - bounds.left + 9;
             setWidth(100 - (100 * partialWidth) / totalWidth);
         }
     };
