@@ -16,13 +16,20 @@ const ResizePannel = ({ leftPannel, rightPannel }) => {
             ev.preventDefault();
             const bounds = container.current.getBoundingClientRect();
             const totalWidth = container.current.clientWidth;
-            const partialWidth = ev.clientX - bounds.left + (separator.current.clientWidth / 2);
-            setWidth(100 - (100 * partialWidth) / totalWidth);
+            const partialWidth = ev.clientX - bounds.left - (separator.current.clientWidth / 2);
+            const widthPercentage = 100 - (100 * partialWidth) / totalWidth;
+            if (widthPercentage > 90) {
+                setWidth(100);
+            } else if (widthPercentage < 10) {
+                setWidth(0);
+            } else {
+                setWidth(widthPercentage);
+            }
         }
     };
     return (
         <div className="resize-pannel-container" ref={container}>
-            <div className="pannel-grow">{leftPannel}</div>
+            <div className="pannel-resizable" style={{ width: `${100 - width}%` }}>{leftPannel}</div>
             <div
                 className="pannel-separator"
                 ref={separator}
