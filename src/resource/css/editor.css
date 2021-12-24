@@ -12,12 +12,13 @@
     overflow: hidden;
 }
 
-.resize-pannel-container .preview-pannel{
-    padding:1rem;
+.resize-pannel-container .pannel-resizable{
+    overflow:auto;
+    height:100%;
 }
 
-.resize-pannel-container .pannel-grow{
-    flex-grow: 1;
+.resize-pannel-container .pannel-resizable.magnetic{
+    transition: width 300ms ease;
 }
 
 .resize-pannel-container .pannel-separator{
@@ -51,10 +52,6 @@
     border-right:1px solid rgba(0, 0, 0, 0.15);
 }
 
-.resize-pannel-container .pannel-resizable{
-    overflow:auto;
-    height:100%;
-}
 
 .editor-textarea{
     font-family: "Segoe UI";

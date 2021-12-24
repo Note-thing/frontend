@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-const ResizePannel = ({ leftPannel, rightPannel }) => {
+const ResizePannel = ({ magneticMargin, leftPannel, rightPannel }) => {
     const container = useRef(null);
     const separator = useRef(null);
 
@@ -18,9 +18,9 @@ const ResizePannel = ({ leftPannel, rightPannel }) => {
             const totalWidth = container.current.clientWidth;
             const partialWidth = ev.clientX - bounds.left - (separator.current.clientWidth / 2);
             const widthPercentage = 100 - (100 * partialWidth) / totalWidth;
-            if (widthPercentage > 90) {
+            if (widthPercentage + magneticMargin >= 100) {
                 setWidth(100);
-            } else if (widthPercentage < 10) {
+            } else if (widthPercentage - magneticMargin <= 0) {
                 setWidth(0);
             } else {
                 setWidth(widthPercentage);
@@ -29,7 +29,7 @@ const ResizePannel = ({ leftPannel, rightPannel }) => {
     };
     return (
         <div className="resize-pannel-container" ref={container}>
-            <div className="pannel-resizable" style={{ width: `${100 - width}%` }}>{leftPannel}</div>
+            <div className={`pannel-resizable ${width === 100 ? ' magnetic' : ''}`} style={{ width: `${100 - width}%` }}>{leftPannel}</div>
             <div
                 className="pannel-separator"
                 ref={separator}
@@ -41,14 +41,19 @@ const ResizePannel = ({ leftPannel, rightPannel }) => {
             >
                 <div className="pannel-handle" />
             </div>
-            <div className="pannel-resizable" style={{ width: `${width}%` }}>
+            <div className={`pannel-resizable ${width === 0 ? ' magnetic' : ''}`} style={{ width: `${width}%` }}>
                 {rightPannel}
             </div>
         </div>
     );
 };
 
+ResizePannel.defaultProps = {
+    magneticMargin: 20
+};
+
 ResizePannel.propTypes = {
+    magneticMargin: PropTypes.number,
     leftPannel: PropTypes.element.isRequired,
     rightPannel: PropTypes.element.isRequired
 };
