@@ -1,10 +1,10 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { Grid } from '@mui/material';
 import './AppLayout.css';
 import MainMenu from './MainMenu/MainMenu';
 import Editor from './editor/Editor';
 import { NoteProvider } from '../context/NoteContext';
+import noteInitialState from '../context/state/noteState';
 
 /**
  * Layout of the application
@@ -13,7 +13,7 @@ import { NoteProvider } from '../context/NoteContext';
  */
 export default function AppLayout() {
     return (
-        <NoteProvider>
+        <NoteProvider noteInitialState={noteInitialState}>
             <MainMenu />
             <Switch>
                 <Route path="/directory/**/note/**" component={Editor} />

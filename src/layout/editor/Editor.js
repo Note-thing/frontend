@@ -19,7 +19,7 @@ export default function Editor() {
     }, [content]);
 
     return (
-        <Grid className="editor" direction="column">
+        <Grid container className="editor" data-testid="editor-component" direction="column">
             <Grid item sx={{ height: '7%' }}>
                 <EditorHeader />
             </Grid>
