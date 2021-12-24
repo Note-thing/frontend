@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
+import PropTypes from 'prop-types';
 
-const ResizePannel = ({leftPannel, rightPannel}) => {
+const ResizePannel = ({ leftPannel, rightPannel }) => {
     const editorContainer = useRef(null);
     const [drag, setDrag] = useState(false);
     const [width, setWidth] = useState(50);
@@ -36,6 +37,11 @@ const ResizePannel = ({leftPannel, rightPannel}) => {
             </div>
         </div>
     );
+};
+
+ResizePannel.propTypes = {
+    leftPannel: PropTypes.element.isRequired,
+    rightPannel: PropTypes.element.isRequired,
 };
 
 export default ResizePannel;
