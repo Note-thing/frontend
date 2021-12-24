@@ -41,7 +41,7 @@ const ResizePannel = ({ leftPannel, rightPannel }) => {
 
 ResizePannel.propTypes = {
     leftPannel: PropTypes.element.isRequired,
-    rightPannel: PropTypes.element.isRequired,
+    rightPannel: PropTypes.element.isRequired
 };
 
 export default ResizePannel;
