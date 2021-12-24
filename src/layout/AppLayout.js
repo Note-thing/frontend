@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import './AppLayout.css';
 import MainMenu from './MainMenu/MainMenu';
-import EditorComponent from './editor/EditorComponent';
+import Editor from './editor/Editor';
 import { NoteProvider } from '../context/NoteContext';
 
 /**
@@ -16,7 +16,7 @@ export default function AppLayout() {
         <NoteProvider>
             <MainMenu />
             <Switch>
-                <Route path="/directory/**/note/**" component={EditorComponent} />
+                <Route path="/directory/**/note/**" component={Editor} />
             </Switch>
         </NoteProvider>
     );

@@ -8,7 +8,7 @@ import { NoteContext } from '../../context/NoteContext';
 import { useInput } from '../../hooks/useInput';
 import '../../resource/css/editor.css';
 
-export default function EditorComponent() {
+export default function Editor() {
     const { notes: { note: { content } } } = useContext(NoteContext);
     const { value: noteTextArea, bind: bindNoteTextArea } = useInput(content);
     const runEditor = (area) => new TextareaMarkdown(area);
