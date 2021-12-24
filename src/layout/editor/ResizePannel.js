@@ -2,7 +2,9 @@ import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 const ResizePannel = ({ leftPannel, rightPannel }) => {
-    const editorContainer = useRef(null);
+    const container = useRef(null);
+    const separator = useRef(null);
+
     const [drag, setDrag] = useState(false);
     const [width, setWidth] = useState(50);
 
@@ -12,18 +14,18 @@ const ResizePannel = ({ leftPannel, rightPannel }) => {
         if (drag) {
             ev.stopPropagation();
             ev.preventDefault();
-            const container = editorContainer.current;
-            const bounds = container.getBoundingClientRect();
-            const totalWidth = container.clientWidth;
-            const partialWidth = ev.clientX - bounds.left + 9;
+            const bounds = container.current.getBoundingClientRect();
+            const totalWidth = container.current.clientWidth;
+            const partialWidth = ev.clientX - bounds.left + (separator.current.clientWidth / 2);
             setWidth(100 - (100 * partialWidth) / totalWidth);
         }
     };
     return (
-        <div className="resize-pannel-container" ref={editorContainer}>
+        <div className="resize-pannel-container" ref={container}>
             <div className="pannel-grow">{leftPannel}</div>
             <div
                 className="pannel-separator"
+                ref={separator}
                 role="button"
                 tabIndex={0}
                 onMouseMove={(ev) => handleMouseMove(ev)}
