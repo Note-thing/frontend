@@ -16,7 +16,7 @@ const ResizePannel = ({ magneticMargin, leftPannel, rightPannel }) => {
             ev.preventDefault();
             const bounds = container.current.getBoundingClientRect();
             const totalWidth = container.current.clientWidth;
-            const partialWidth = ev.clientX - bounds.left - (separator.current.clientWidth / 2);
+            const partialWidth = ev.clientX - bounds.left;
             const widthPercentage = 100 - (100 * partialWidth) / totalWidth;
             if (widthPercentage + magneticMargin >= 100) {
                 setWidth(100);
@@ -28,7 +28,7 @@ const ResizePannel = ({ magneticMargin, leftPannel, rightPannel }) => {
         }
     };
     return (
-        <div className="resize-pannel-container" ref={container}>
+        <div className="resize-pannel-container" data-testid="resize-pannel" ref={container}>
             <div className={`pannel-resizable ${width === 100 ? ' magnetic' : ''}`} style={{ width: `${100 - width}%` }}>{leftPannel}</div>
             <div
                 className="pannel-separator"

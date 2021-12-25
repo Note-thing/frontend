@@ -13,7 +13,7 @@ import noteInitialState from '../context/state/noteState';
  */
 export default function AppLayout() {
     return (
-        <NoteProvider noteInitialState={noteInitialState}>
+        <NoteProvider initialState={noteInitialState}>
             <MainMenu />
             <Switch>
                 <Route path="/directory/**/note/**" component={Editor} />

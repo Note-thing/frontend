@@ -34,8 +34,8 @@ const reducer = (state, action) => {
 };
 
 export const NoteProvider = (props) => {
-    const { noteInitialState, children } = props;
-    const [notes, dispatch] = useReducer(reducer, noteInitialState);
+    const { initialState, children } = props;
+    const [notes, dispatch] = useReducer(reducer, initialState);
 
     useEffect(() => {
         const active = getActiveFromURL(notes.directories);
@@ -62,5 +62,5 @@ export const NoteProvider = (props) => {
 
 NoteProvider.propTypes = {
     children: PropTypes.element.isRequired,
-    noteInitialState: PropTypes.shape.isRequired
+    initialState: PropTypes.shape.isRequired
 };
