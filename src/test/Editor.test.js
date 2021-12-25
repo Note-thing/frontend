@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, cleanup  } from '@testing-library/react';
 import { NoteProvider } from '../context/NoteContext';
 import Editor from '../layout/editor/Editor';
 import noteInitialState from '../context/state/noteState';
@@ -29,6 +29,9 @@ const { container, queryByTestId, queryByPlaceholderName } = render(
     </NoteProvider>
 );
 describe('Editor Component', () => {
+    afterAll(() => {
+        cleanup();
+    });
     it('All layout components present', () => {
         // testing layout
         expect(queryByTestId('editor-component')).toBeTruthy();
