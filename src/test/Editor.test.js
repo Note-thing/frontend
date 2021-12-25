@@ -28,7 +28,7 @@ const { container, queryByTestId, queryByPlaceholderName } = render(
         <Editor />
     </NoteProvider>
 );
-describe("Editor Component", () => {
+describe('Editor Component', () => {
     it('All layout components present', () => {
         // testing layout
         expect(queryByTestId('editor-component')).toBeTruthy();
@@ -42,6 +42,6 @@ describe("Editor Component", () => {
         // testing layout
         expect(queryByTestId('resize-pannel')).toBeTruthy();
         const resizePannel = queryByTestId('resize-pannel');
-        //expect(resizePannel.getElementsByClassName('pannel-resizable').length).toBe(2);
+        // expect(resizePannel.getElementsByClassName('pannel-resizable').length).toBe(2);
     });
 });
