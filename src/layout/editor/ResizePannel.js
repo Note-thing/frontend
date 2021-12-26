@@ -32,7 +32,7 @@ const ResizePannel = ({
                 setWidth(widthPercentage);
             }
         }
-    }, [container, magneticMargin, setWidth, drag]);
+    }, [drag, container, magneticMargin, setWidth]);
     return useMemo(() => (
         <div className="resize-pannel-container" data-testid="resize-pannel" ref={container}>
             <div className={`pannel-resizable ${width === 100 ? ' magnetic' : ''}`} style={{ width: `${100 - width}%` }}>{leftPannel}</div>
