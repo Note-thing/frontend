@@ -16,23 +16,11 @@ import noteInitialState from '../context/state/noteState';
 export default function AppLayout() {
     return (
         <NoteProvider initialState={noteInitialState}>
-            <Grid container height="100vh">
-                <Grid
-                    item
-                    xs={3}
-                    height="100%"
-                    borderRight="0.1rem solid #e9F0F0"
-                >
-                    <MainMenu />
-                </Grid>
-                <Grid item xs={9} height="100%">
-                    <Switch>
-                        <Route path="/directory/**/note/**" component={EditorComponent} />
-                        <Route path="/shared_notes/:uuid" component={SharedNoteComponent} />
-                    </Switch>
-                </Grid>
-            </Grid>
-
+            <MainMenu />
+            <Switch>
+                <Route path="/directory/**/note/**" component={EditorComponent} />
+                <Route path="/shared_notes/:uuid" component={SharedNoteComponent} />
+            </Switch>
         </NoteProvider>
     );
 }
