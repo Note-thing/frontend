@@ -39,7 +39,6 @@ export default function MainMenuItem({ directory, show }) {
             <ListItem
                 onClick={() => handleDirectoryClick(directory.uniqid)}
                 button
-                key={`${directory.uniqid}`}
                 secondaryAction={
                     <KeyboardArrowRight
                         sx={{
@@ -72,14 +71,14 @@ export default function MainMenuItem({ directory, show }) {
             >
                 {directory.notes.map((note, idx) => (
                     <ListItemButton
-                        key={note.uniqid}
+                        key={`MainMenu-btn-item-${note.uniqid}`}
                         onClick={() => handleNoteClick(note)}
                     >
                         <ListItemText
                             primary={note.title}
-                            secondary={note.tags.map((t, idx) => (
+                            secondary={note.tags.map((t) => (
                                 <Chip
-                                    key={idx}
+                                    key={note.uniqid + note.title.concat(t)}
                                     label={t}
                                     sx={{ marginRight: '0.1rem' }}
                                     size="small"

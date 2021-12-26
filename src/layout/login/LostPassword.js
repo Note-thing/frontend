@@ -44,7 +44,6 @@ const LostPassword = () => {
                     align="center"
                 >
                     <HelpOutlineIcon align="center" />
-                    {' '}
                     Perdu le mot de passe?
                 </Typography>
 

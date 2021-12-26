@@ -28,6 +28,14 @@ const reducer = (state, action) => {
                 ...state,
                 note: { ...action.note }
             };
+        // case 'update_directory':
+        //     return {
+        //         ...state,
+        //         directories: {
+        //             ...state.directories.filter((dir) => dir.uniqid !== action.directory.uniqid),
+        //             ...action.directory
+        //         }
+        //     };
         default:
             return state;
     }
