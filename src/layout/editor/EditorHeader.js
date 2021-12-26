@@ -32,11 +32,11 @@ export default function EditorHeader({ setPreviewWidth }) {
                 <Button size="small" onClick={() => handleViewModeClick(0)}>
                     <Code />
                 </Button>
-                <Button size="small" onClick={() => handleViewModeClick(100)}>
-                    <View />
-                </Button>
                 <Button size="small" onClick={() => handleViewModeClick(50)}>
                     <Split />
+                </Button>
+                <Button size="small" onClick={() => handleViewModeClick(100)}>
+                    <View />
                 </Button>
             </Grid>
 
