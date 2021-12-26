@@ -1,19 +1,15 @@
 import React from 'react';
-import { render, unmountComponentAtNode } from 'react-dom';
-import {
-    fireEvent
-} from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
-import { NoteProvider } from '../context/NoteContext';
+import {
+    fireEvent, render, screen, waitFor
+} from '@testing-library/react';
+import { NoteContext } from '../context/NoteContext';
 import MainMenuItem from '../layout/MainMenu/MainMenuItem';
 import DEFAULT_MOCK_DATA from './data';
 
-const stateChangeWait = () => new Promise((r) => setTimeout(r, 300));
-
-let rootContainer = null;
+const rootContainer = null;
 // TODO voir comment faire des vrais mocks
 const mockDirectory = {
-    uniqid: '619f6488babbf',
     name: 'WEB',
     uniqid: 'ajskldfjasdlkf-sadfsadf',
     notes: [{ title: 'JS', tags: ['JS', 'Jest.js'] }]
@@ -25,33 +21,21 @@ const dispatch = jest.fn((type, data) => {
         notes.directories.append(data);
     }
 });
-const useHistory = jest.fn((type, data) => {
-    if (type === 'update_directory') {
-        notes.directories.append(data);
-    }
-});
 
-const menuItem = (show) => render(
-    <NoteProvider initialState={{
-        directory: {
-            uniqid: '619f6488babbf'
-        },
-        directories: [{
-            uniqid: '619f6488babbf',
-            name: 'TWEB',
-            notes: [
-                { uniqid: 'awei546fcguuz', title: 'JS', tags: ['JS', 'prototype'] },
-                { uniqid: '345jfhtzdffvret', title: 'Node', tags: ['JS', 'SSR'] }
-            ]
-        }]
-    }}
-    >
-        <MainMenuItem directory={mockDirectory} show={show} />
-    </NoteProvider>, rootContainer
-);
+jest.mock('react-router-dom', () => ({
+    useHistory: () => ({
+        push: () => ''
+    })
+}));
 
-it('Main menu item should display the directory and its notes', () => {
-    menuItem(true);
+test('Main menu item should display the directory and its notes', () => {
+    act(() => {
+        render(
+            <NoteContext.Provider value={{ notes, dispatch }}>
+                <MainMenuItem uniqid={mockDirectory.uniqid} show directory={mockDirectory} />
+            </NoteContext.Provider>
+        );
+    });
 
     const listItem = screen.getByTestId('MainMenu-directoryItem');
     expect(listItem.querySelector('span').textContent).toBe(mockDirectory.name);
@@ -68,13 +52,17 @@ it('Main menu item should display the directory and its notes', () => {
             .concat('...')
     );
 });
-/*
-it('MainMenuItem should display (opacity = 1, height : auto) notes on click', async () => {
-    menuItem(false);
 
-    const listItem = rootContainer.querySelector(
-        '[data-testid=MainMenu-directoryItem]'
-    );
+test('MainMenuItem should display (opacity = 1, height : auto) notes on click', async () => {
+    act(() => {
+        render(
+            <NoteContext.Provider value={{ notes, dispatch }}>
+                <MainMenuItem uniqid={mockDirectory.uniqid} show directory={mockDirectory} />
+            </NoteContext.Provider>
+        );
+    });
+
+    const listItem = screen.getByTestId('MainMenu-directoryItem');
 
     // Check the notes list isn't visible
     const notesList = screen.getByTestId('MainMenu-notesList');
@@ -84,9 +72,11 @@ it('MainMenuItem should display (opacity = 1, height : auto) notes on click', as
     act(() => {
         fireEvent.click(listItem);
     });
-    await stateChangeWait();
-    // Check the notes list IS visible
-    expect(window.getComputedStyle(notesList).opacity).toBe('1');
+
+    // TODO : Stéfan: répare le test ou fais en un autre ou ...
+    // Ne fonctionnera pas ... la logique d'affichage ayant changé (A voir avec Stéfan)
+    // await waitFor(expect(window.getComputedStyle(notesList).opacity).toBe('0'));
+    // // Check the notes list IS visible
 
     // mockDirectory.notes.forEach((note, noteIdx) => {
     //     const noteItem = rootContainer.querySelector(
@@ -100,8 +90,4 @@ it('MainMenuItem should display (opacity = 1, height : auto) notes on click', as
     //         ).toBe(tag);
     //     });
     // });
-});
-*/
-it('Presentation CI/CD', () => {
-    expect('bonjour').toBe('bonjour');
 });
