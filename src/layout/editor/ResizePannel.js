@@ -1,18 +1,26 @@
-import React, { useState, useRef } from 'react';
+import React, {
+    useState, useRef, useEffect, useMemo, useCallback
+} from 'react';
 import PropTypes from 'prop-types';
 
-const ResizePannel = ({ magneticMargin, leftPannel, rightPannel }) => {
+const ResizePannel = ({
+    magneticMargin, leftPannel, rightPannel, rightWidth
+}) => {
     const container = useRef(null);
     const separator = useRef(null);
 
     const [drag, setDrag] = useState(false);
-    const [width, setWidth] = useState(50);
+    const [width, setWidth] = useState(rightWidth);
 
-    const handleDrag = (state) => {
+    useEffect(() => {
+        setWidth(rightWidth);
+    }, [rightWidth]);
+
+    const handleDrag = useCallback((state) => {
         setDrag(state);
-    };
+    }, [setDrag]);
 
-    const handleMouseMove = (ev) => {
+    const handleMouseMove = useCallback((ev) => {
         if (drag) {
             ev.stopPropagation();
             ev.preventDefault();
@@ -28,8 +36,8 @@ const ResizePannel = ({ magneticMargin, leftPannel, rightPannel }) => {
                 setWidth(widthPercentage);
             }
         }
-    };
-    return (
+    }, [container, magneticMargin, setWidth]);
+    return useMemo(() => (
         <div className="resize-pannel-container" data-testid="resize-pannel" ref={container}>
             <div className={`pannel-resizable ${width === 100 ? ' magnetic' : ''}`} style={{ width: `${100 - width}%` }}>{leftPannel}</div>
             <div
@@ -46,18 +54,19 @@ const ResizePannel = ({ magneticMargin, leftPannel, rightPannel }) => {
             <div className={`pannel-resizable ${width === 0 ? ' magnetic' : ''}`} style={{ width: `${width}%` }}>
                 {rightPannel}
             </div>
-        </div>
-    );
+        </div>), [container, leftPannel, separator, rightPannel, width]);
 };
 
 ResizePannel.defaultProps = {
-    magneticMargin: 20
+    magneticMargin: 20,
+    rightWidth: 50
 };
 
 ResizePannel.propTypes = {
     magneticMargin: PropTypes.number,
     leftPannel: PropTypes.element.isRequired,
-    rightPannel: PropTypes.element.isRequired
+    rightPannel: PropTypes.element.isRequired,
+    rightWidth: PropTypes.number
 };
 
 export default ResizePannel;

@@ -1,4 +1,6 @@
-import React, { useContext, useEffect } from 'react';
+import React, {
+    useContext, useEffect, useState, useMemo, useCallback
+} from 'react';
 import { Grid } from '@mui/material';
 import TextareaMarkdown from 'textarea-markdown';
 import ResizePannel from './ResizePannel';
@@ -11,20 +13,25 @@ import '../../resource/css/editor.css';
 export default function Editor() {
     const { notes: { note: { content } } } = useContext(NoteContext);
     const { value: noteTextArea, bind: bindNoteTextArea } = useInput(content);
+    const [previewWidth, setPreviewWidth] = useState(50);
     const runEditor = (area) => new TextareaMarkdown(area);
     useEffect(() => {
         const textarea = document.querySelector('textarea#editor');
         textarea.value = content;
         runEditor(textarea);
     }, [content]);
+    const handlePreviewWidth = useCallback((width) => {
+        setPreviewWidth(width);
+    }, [setPreviewWidth]);
 
-    return (
+    return useMemo(() => (
         <Grid container className="editor" data-testid="editor-component" direction="column">
-            <Grid item sx={{ height: '7%' }}>
-                <EditorHeader />
+            <Grid item sx={{ height: '48px' }}>
+                <EditorHeader setPreviewWidth={handlePreviewWidth} />
             </Grid>
-            <Grid item sx={{ height: '86%' }}>
+            <Grid item sx={{ height: 'calc(100vh - 96px)' }}>
                 <ResizePannel
+                    rightWidth={previewWidth}
                     leftPannel={
                         <textarea
                             className="editor-textarea"
@@ -39,9 +46,8 @@ export default function Editor() {
                     }
                 />
             </Grid>
-            <Grid item sx={{ height: '7%' }}>
+            <Grid item sx={{ height: '48px' }}>
                 <EditorFooter />
             </Grid>
-        </Grid>
-    );
+        </Grid>), [previewWidth, handlePreviewWidth, bindNoteTextArea]);
 }
