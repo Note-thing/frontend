@@ -5,7 +5,7 @@ import { useState } from 'react';
     for example see the usage in : layout/LoginLayout.js
 */
 
-export const useInput = (data) => {
+const useInput = (data) => {
     const [value, setValue] = useState(data);
     const [error, setError] = useState({
         error: false,
@@ -28,3 +28,4 @@ export const useInput = (data) => {
         }
     };
 };
+export default useInput;

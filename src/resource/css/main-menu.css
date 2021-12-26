@@ -1,0 +1,39 @@
+.main-menu-container{
+    cursor:pointer;
+    position: fixed;
+    z-index: 1000;
+    background-color:white;
+    border-right: 0.1rem solid #e9f0f0;
+    box-sizing: border-box;
+    height:100vh;
+    width:48px;
+    transition:width 200ms ease-in-out;
+}
+
+.main-menu-container::before{
+    content:' ';
+    display: block;
+    min-width:48px;
+    min-height:48px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-image: url(../../resource/icons/main-menu.svg);
+}
+
+.main-menu-container:hover{
+    width:24rem;
+}
+.main-menu-container:hover::before{
+    display: none;
+}
+
+.main-menu-container .main-menu{
+    transition:opacity 300ms ease-in-out;
+    visibility:hidden;
+    opacity:0;
+}
+
+.main-menu-container:hover .main-menu{
+    visibility:visible;
+    opacity:1;
+}

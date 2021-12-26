@@ -12,7 +12,7 @@
     "@mui/material": "^5.0.6",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
-    "@testing-library/user-event": "^12.8.3",
+    "history": "^5.2.0",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -21,6 +21,8 @@
     "react-router-dom": "^5.3.0",
     "react-scripts": "^4.0.3",
     "react-top-loading-bar": "^2.1.0",
+    "resizable-panels-react": "^2.0.8",
+    "textarea-markdown": "^1.3.1",
     "topbar": "^1.0.1",
     "typeface-roboto": "^1.1.13",
     "web-vitals": "^1.1.2"
@@ -52,6 +54,10 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/dom": "^8.11.1",
+    "@testing-library/user-event": "^13.5.0",
+    "@wojtekmaj/enzyme-adapter-react-17": "^0.6.6",
+    "enzyme": "^3.11.0",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-import": "^2.25.2",

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { Grid } from '@mui/material';
 import './AppLayout.css';
 import MainMenu from './MainMenu/MainMenu';
-import EditorComponent from './editor/EditorComponent';
+import Editor from './editor/Editor';
 import { NoteProvider } from '../context/NoteContext';
+import noteInitialState from '../context/state/noteState';
 
 /**
  * Layout of the application
@@ -13,22 +13,11 @@ import { NoteProvider } from '../context/NoteContext';
  */
 export default function AppLayout() {
     return (
-        <NoteProvider>
-            <Grid container height="100vh">
-                <Grid
-                    item
-                    xs={3}
-                    height="100%"
-                    borderRight="0.1rem solid #e9F0F0"
-                >
-                    <MainMenu />
-                </Grid>
-                <Grid item xs={9} height="100%">
-                    <Switch>
-                        <Route path="/directory/**/note/**" component={EditorComponent} />
-                    </Switch>
-                </Grid>
-            </Grid>
+        <NoteProvider initialState={noteInitialState}>
+            <MainMenu />
+            <Switch>
+                <Route path="/directory/**/note/**" component={Editor} />
+            </Switch>
         </NoteProvider>
     );
 }

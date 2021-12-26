@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { CONFIG, Get } from '../../config/config';
 import { MainContext } from '../../context/MainContext';
-import { useInput } from '../../hooks/useInput';
+import useInput from '../../hooks/useInput';
 
 const SignIn = () => {
     const history = useHistory();
