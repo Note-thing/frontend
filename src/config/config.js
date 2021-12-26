@@ -1,4 +1,5 @@
 import topbar from 'topbar';
+import throwHttpError from '../errors/HttpErrorUtils';
 
 export const CONFIG = {
     api_url: 'http://localhost:3001/api/v1',
@@ -8,9 +9,12 @@ export const CONFIG = {
     frontend_url: 'http://localhost:3000/',
     shared_note_url: 'http://localhost:3000/shared_notes/'
 };
-
+const handleError = (response) => {
+    if (!(response.status >= 200 && response.status < 400)) {
+        throwHttpError(response.status, 'Erreur http');
+    }
+};
 const requestWithBody = async (method, endpoint, data) => {
-    topbar.show();
     try {
         const response = await fetch(CONFIG.api_url + endpoint, {
             method,
@@ -18,21 +22,20 @@ const requestWithBody = async (method, endpoint, data) => {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: new URLSearchParams(data).toString()
         });
-        topbar.hide();
+        handleError(response);
+
         return response.json();
     } catch (err) {
-        topbar.hide();
         throw err;
     }
 };
 
 export const Get = async (endpoint, data) => {
-    topbar.show();
     try {
         const response = await fetch(
-            CONFIG.api_url
-                + endpoint
-                + (typeof data !== 'undefined'
+            CONFIG.api_url +
+                endpoint +
+                (typeof data !== 'undefined'
                     ? '?'.concat(new URLSearchParams(data)).toString()
                     : ''),
             {
@@ -40,10 +43,10 @@ export const Get = async (endpoint, data) => {
                 credentials: 'include'
             }
         );
-        topbar.hide();
+        handleError(response);
+
         return response.json();
     } catch (err) {
-        topbar.hide();
         throw err;
     }
 };
