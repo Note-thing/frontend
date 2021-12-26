@@ -5,7 +5,7 @@ import ResizePannel from './ResizePannel';
 import EditorFooter from './EditorFooter';
 import EditorHeader from './EditorHeader';
 import { NoteContext } from '../../context/NoteContext';
-import { useInput } from '../../hooks/useInput';
+import useInput from '../../hooks/useInput';
 import '../../resource/css/editor.css';
 
 export default function Editor() {
@@ -30,7 +30,8 @@ export default function Editor() {
                             className="editor-textarea"
                             id="editor"
                             data-preview="#preview"
-                            {...bindNoteTextArea}
+                            value={bindNoteTextArea.value}
+                            onChange={bindNoteTextArea.onChange}
                         />
                     }
                     rightPannel={

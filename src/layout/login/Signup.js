@@ -6,7 +6,7 @@ import {
 } from '@mui/material';
 import { CONFIG } from '../../config/config';
 import { MainContext } from '../../context/MainContext';
-import { useInput } from '../../hooks/useInput';
+import useInput from '../../hooks/useInput';
 
 const Signup = () => {
     const history = useHistory();

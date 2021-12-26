@@ -8,14 +8,16 @@ const ResizePannel = ({ magneticMargin, leftPannel, rightPannel }) => {
     const [drag, setDrag] = useState(false);
     const [width, setWidth] = useState(50);
 
-    const handleDrag = (state) => setDrag(state);
+    const handleDrag = (state) => {
+        setDrag(state);
+    };
 
     const handleMouseMove = (ev) => {
         if (drag) {
             ev.stopPropagation();
             ev.preventDefault();
             const bounds = container.current.getBoundingClientRect();
-            const totalWidth = container.current.clientWidth;
+            const totalWidth = bounds.width;
             const partialWidth = ev.clientX - bounds.left;
             const widthPercentage = 100 - (100 * partialWidth) / totalWidth;
             if (widthPercentage + magneticMargin >= 100) {
