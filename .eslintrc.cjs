@@ -15,6 +15,7 @@ module.exports = {
     plugins: ['react', 'jest', 'only-warn'],
     rules: {
         indent: ['warn', 4, { SwitchCase: 1 }],
+        'linebreak-style': [0],
         'react/prop-types': [0],
         'react/no-unescaped-entities': [0],
         'react/jsx-props-no-spreading': [0],

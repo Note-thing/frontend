@@ -1,4 +1,3 @@
-import topbar from 'topbar';
 import throwHttpError from '../errors/HttpErrorUtils';
 
 export const CONFIG = {
@@ -15,40 +14,32 @@ const handleError = (response) => {
     }
 };
 const requestWithBody = async (method, endpoint, data) => {
-    try {
-        const response = await fetch(CONFIG.api_url + endpoint, {
-            method,
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams(data).toString()
-        });
-        handleError(response);
+    const response = await fetch(CONFIG.api_url + endpoint, {
+        method,
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(data).toString()
+    });
+    handleError(response);
 
-        return response.json();
-    } catch (err) {
-        throw err;
-    }
+    return response.json();
 };
 
 export const Get = async (endpoint, data) => {
-    try {
-        const response = await fetch(
-            CONFIG.api_url +
-                endpoint +
-                (typeof data !== 'undefined'
+    const response = await fetch(
+        CONFIG.api_url
+                + endpoint
+                + (typeof data !== 'undefined'
                     ? '?'.concat(new URLSearchParams(data)).toString()
                     : ''),
-            {
-                method: 'GET',
-                credentials: 'include'
-            }
-        );
-        handleError(response);
+        {
+            method: 'GET',
+            credentials: 'include'
+        }
+    );
+    handleError(response);
 
-        return response.json();
-    } catch (err) {
-        throw err;
-    }
+    return response.json();
 };
 
 export const Post = (endpoint, data) => requestWithBody('POST', endpoint, data);

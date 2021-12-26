@@ -1,8 +1,9 @@
 import React from 'react';
+import { Grid } from '@mui/material';
 import { Switch, Route } from 'react-router-dom';
 import './AppLayout.css';
 import MainMenu from './MainMenu/MainMenu';
-import Editor from './editor/Editor';
+import EditorComponent from './editor/Editor';
 import { NoteProvider } from '../context/NoteContext';
 import SharedNoteComponent from './sharedNote/SharedNoteComponent';
 import noteInitialState from '../context/state/noteState';
@@ -14,7 +15,7 @@ import noteInitialState from '../context/state/noteState';
  */
 export default function AppLayout() {
     return (
-        <NoteProvider>
+        <NoteProvider initialState={noteInitialState}>
             <Grid container height="100vh">
                 <Grid
                     item
@@ -31,7 +32,7 @@ export default function AppLayout() {
                     </Switch>
                 </Grid>
             </Grid>
-        <NoteProvider initialState={noteInitialState}>
+
         </NoteProvider>
     );
 }

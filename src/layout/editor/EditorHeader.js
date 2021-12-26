@@ -1,9 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Grid, Input, Button } from '@mui/material';
 import {
-
-    Preview,
-    VerticalSplit,
     PictureAsPdf,
     Share,
     Delete
@@ -18,7 +15,9 @@ import ShareNoteModal from './shareNoteModal/ShareNoteModal';
  * Header of the editor containing the note menu (display switch, PDF export, delete the note etc.).
  * @returns
  */
-export default function EditorHeader() {
+export default function EditorHeader({ setPreviewWidth }) {
+    const [showShareModal, setShowShareModal] = useState(false);
+    const handleViewModeClick = (width) => setPreviewWidth(width);
     return (
         <Grid
             display="flex"
@@ -30,10 +29,6 @@ export default function EditorHeader() {
         >
             <ShareNoteModal open={showShareModal} setOpen={setShowShareModal} />
 
-            <Grid display="flex" justifyContent="space-around" width="10%">
-                <Code className="menu-icon-item" />
-                <Preview className="menu-icon-item" />
-                <VerticalSplit className="menu-icon-item" />
             <Grid display="flex" justifyContent="space-around">
                 <Button size="small" onClick={() => handleViewModeClick(0)}>
                     <Code />

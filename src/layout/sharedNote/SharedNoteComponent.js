@@ -64,7 +64,6 @@ export default function SharedNoteComponent() {
             setHasBeenCopied(true);
         } catch (err) {
             setHasError(true);
-            console.log(err)
             if (err instanceof NotFoundError) {
                 // dispatch({
                 //     type: 'dialog',
