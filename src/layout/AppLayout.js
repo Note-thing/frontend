@@ -1,5 +1,4 @@
 import React from 'react';
-import { Grid } from '@mui/material';
 import { Switch, Route } from 'react-router-dom';
 import './AppLayout.css';
 import MainMenu from './MainMenu/MainMenu';
