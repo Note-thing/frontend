@@ -4,13 +4,14 @@ import {
 } from '@testing-library/react';
 import ResizePannel from '../layout/editor/ResizePannel';
 
-const stateChangeWait = () => new Promise((r) => setTimeout(r, 300));
+const stateChangeWait = () => new Promise((r) => setTimeout(r, 1000));
 const pannelBounds = {
     width: 1000,
     height: 1000
 };
 const resizePannel = () => render(
     <ResizePannel
+        rightWidth={50}
         leftPannel={
             <div>Left Pannel</div>
         }

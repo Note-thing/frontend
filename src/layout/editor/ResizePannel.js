@@ -12,13 +12,9 @@ const ResizePannel = ({
     const [drag, setDrag] = useState(false);
     const [width, setWidth] = useState(rightWidth);
 
-    useEffect(() => {
-        setWidth(rightWidth);
-    }, [rightWidth]);
+    useEffect(() => setWidth(rightWidth), [rightWidth]);
 
-    const handleDrag = useCallback((state) => {
-        setDrag(state);
-    }, [setDrag]);
+    const handleDrag = useCallback((state) => setDrag(state), [setDrag]);
 
     const handleMouseMove = useCallback((ev) => {
         if (drag) {
@@ -36,7 +32,7 @@ const ResizePannel = ({
                 setWidth(widthPercentage);
             }
         }
-    }, [container, magneticMargin, setWidth]);
+    }, [container, magneticMargin, setWidth, drag]);
     return useMemo(() => (
         <div className="resize-pannel-container" data-testid="resize-pannel" ref={container}>
             <div className={`pannel-resizable ${width === 100 ? ' magnetic' : ''}`} style={{ width: `${100 - width}%` }}>{leftPannel}</div>
@@ -54,7 +50,9 @@ const ResizePannel = ({
             <div className={`pannel-resizable ${width === 0 ? ' magnetic' : ''}`} style={{ width: `${width}%` }}>
                 {rightPannel}
             </div>
-        </div>), [container, leftPannel, separator, rightPannel, width]);
+        </div>), [
+        container, leftPannel, separator, rightPannel, width, handleMouseMove, handleDrag
+    ]);
 };
 
 ResizePannel.defaultProps = {
