@@ -14,17 +14,9 @@ const style = {
     boxShadow: 24,
     p: 4
 };
-export default function CustomModal({
-    open, onClose, title, children
-}) {
+export default function CustomModal({ open, onClose, title, children }) {
     return (
-        <Modal
-            sx={{ minWidth: '700px' }}
-            open={open}
-            onClose={() => onClose(false)}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-        >
+        <Modal sx={{ minWidth: '700px' }} open={open} onClose={() => onClose(false)}>
             <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
                     {title}
