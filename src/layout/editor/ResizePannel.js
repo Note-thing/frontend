@@ -18,8 +18,6 @@ const ResizePannel = ({
 
     const handleMouseMove = useCallback((ev) => {
         if (drag) {
-            ev.stopPropagation();
-            ev.preventDefault();
             const bounds = container.current.getBoundingClientRect();
             const totalWidth = bounds.width;
             const partialWidth = ev.clientX - bounds.left;
@@ -36,15 +34,17 @@ const ResizePannel = ({
     return useMemo(() => (
         <div className="resize-pannel-container" data-testid="resize-pannel" ref={container}>
             <div className={`pannel-resizable ${width === 100 ? ' magnetic' : ''}`} style={{ width: `${100 - width}%` }}>{leftPannel}</div>
-            <div
-                className="pannel-separator"
-                ref={separator}
-                role="button"
-                tabIndex={0}
-                onMouseMove={(ev) => handleMouseMove(ev)}
-                onMouseDown={() => handleDrag(true)}
-                onMouseUp={() => handleDrag(false)}
-            >
+            <div className="pannel-separator">
+                <div
+                    ref={separator}
+                    className="pannel-drag-handle"
+                    role="button"
+                    tabIndex={0}
+                    label="drag handle"
+                    onMouseMove={(ev) => handleMouseMove(ev)}
+                    onMouseDown={() => handleDrag(true)}
+                    onMouseUp={() => handleDrag(false)}
+                />
                 <div className="pannel-handle" />
             </div>
             <div className={`pannel-resizable ${width === 0 ? ' magnetic' : ''}`} style={{ width: `${width}%` }}>
