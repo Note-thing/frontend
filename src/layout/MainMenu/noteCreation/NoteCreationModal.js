@@ -1,54 +1,61 @@
 import React, { useState, useContext } from 'react';
-import { TextField, Button, Alert, Grid } from '@mui/material';
+import {
+    TextField, Button, Alert, Grid
+} from '@mui/material';
 import CustomModal from '../../common/Modal';
 import { Post } from '../../../config/config';
 import HttpError from '../../../errors/HttpError';
 import { NoteContext } from '../../../context/NoteContext';
 
 /**
- * Modal for creating a new folder
+ * Modal for creating a new note
  * @param {Object} props : showModal if the modal should be displayed, onClose fn to close the
  * modal
  * @returns
  */
-export default function FolderCreationModal({ showModal, onClose }) {
-    const [newFolderName, setNewFolderName] = useState('');
+export default function NoteCreationModal({ showModal, onClose }) {
+    const [newNoteName, setNewNoteName] = useState('');
     const [error, setError] = useState('');
-    const { dispatch } = useContext(NoteContext);
-    const handleNewFolderNameChange = (ev) => {
-        setNewFolderName(ev.target.value);
+    const {
+        notes: {
+            directory: { uniqid: directoryUniqId }
+        },
+        dispatch
+    } = useContext(NoteContext);
+    const handleNewNoteNameChange = (ev) => {
+        setNewNoteName(ev.target.value);
     };
 
     /**
-     * Check the text input and send a request to create the folder.
+     * Check the text input and send a request to create the note.
      * @returns
      */
-    const handleFolderCreationFolder = async () => {
-        if (newFolderName === '') {
+    const handleCreationNote = async () => {
+        if (newNoteName === '') {
             setError('Ne peut pas être vide');
             return;
         }
-        if (newFolderName.length > 50) {
+        if (newNoteName.length > 50) {
             setError('Ne doit pas dépasser 50 caractère');
             return;
         }
 
         try {
-            const response = await Post('/folders', { title: newFolderName });
+            const response = await Post('/notes', { title: newNoteName, body: '', folder_id: directoryUniqId });
             dispatch({
-                type: 'update_directory',
-                directory: response
+                type: 'update_note',
+                note: response
             });
             onClose(false);
         } catch (err) {
-            // TODO should probably use 
+            // TODO should probably use
             if (err instanceof HttpError) {
                 setError(err.getMessage());
             }
         }
     };
     return (
-        <CustomModal title="Nouveau dossier" open={showModal} onClose={onClose}>
+        <CustomModal title="Nouvelle note" open={showModal} onClose={onClose}>
             <Grid container spacing={2}>
                 <Grid item md={12} justifyContent="center">
                     {error !== '' && <Alert severity="error">{error}</Alert>}
@@ -57,17 +64,17 @@ export default function FolderCreationModal({ showModal, onClose }) {
                     <TextField
                         variant="outlined"
                         sx={{ width: '100%' }}
-                        label="Nom du dossier"
-                        placeholder="Entrez le nom du dossier"
-                        value={newFolderName}
-                        onChange={handleNewFolderNameChange}
+                        label="Nom de la note"
+                        placeholder="Entrez le nom de la note"
+                        value={newNoteName}
+                        onChange={handleNewNoteNameChange}
                     />
                 </Grid>
                 <Grid item md={12}>
                     <Button
                         variant="outlined"
                         sx={{ width: '100%' }}
-                        onClick={handleFolderCreationFolder}
+                        onClick={handleCreationNote}
                     >
                         Créer
                     </Button>

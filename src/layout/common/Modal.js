@@ -14,7 +14,16 @@ const style = {
     boxShadow: 24,
     p: 4
 };
-export default function CustomModal({ open, onClose, title, children }) {
+/**
+ * Basic modal
+ * @param {Object} props open: boolean to control whether the modal is displayed,
+ *                       onClose fn to close the modal
+ *                       title: ...title of the modal
+ *                       children: body of the modal
+ */
+export default function CustomModal({
+    open, onClose, title, children
+}) {
     return (
         <Modal sx={{ minWidth: '700px' }} open={open} onClose={() => onClose(false)}>
             <Box sx={style}>

@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 import { ListItem, ListItemText } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
-import FolderCreationModal from './FolderCreationModal';
+import NoteAddIcon from '@mui/icons-material/NoteAdd';
+import FolderCreationModal from './NoteCreationModal';
+
 /**
- * This component is a item in the menu which show the modal for the creation of folder
+ * This component is a item in the menu which show the modal for the creation of note
  */
-export default function FolderCreationMainMenuItem() {
+export default function NoteCreationMainMenuItem() {
     const [showModal, setShowModal] = useState(false);
     return (
         <>
             <ListItem
                 onClick={() => setShowModal(true)}
                 button
-                secondaryAction={<CreateNewFolderIcon />}
+                secondaryAction={<NoteAddIcon />}
                 data-testid="MainMenu-directoryItem"
             >
-                <ListItemText primary="Nouveau dossier" secondary="Créer un nouveau dossier" />
+                <ListItemText primary="Nouvelle note" secondary="Créer un nouvelle note" />
             </ListItem>
             <FolderCreationModal showModal={showModal} onClose={setShowModal} />
         </>

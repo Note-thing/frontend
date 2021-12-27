@@ -71,6 +71,31 @@ const Dialog = () => {
                     </Alert>
                 </Snackbar>
             )}
+
+            {dialog && dialog.id === 'cannotDeleteFolder' && (
+                <Snackbar
+                    anchorOrigin={position}
+                    open={dialog.is_open}
+                    onClose={() => handleClose({ is_open: false })}
+                    autoHideDuration={6000}
+                >
+                    <Alert variant="filled" severity="error">
+                        Un problème est survenu lors de la suppression du dossier
+                    </Alert>
+                </Snackbar>
+            )}
+            {dialog && dialog.id === 'cannotEditFolder' && (
+                <Snackbar
+                    anchorOrigin={position}
+                    open={dialog.is_open}
+                    onClose={() => handleClose({ is_open: false })}
+                    autoHideDuration={6000}
+                >
+                    <Alert variant="filled" severity="error">
+                        Un problème est survenu lors de la mise à jour du dossier
+                    </Alert>
+                </Snackbar>
+            )}
         </section>
     );
 };

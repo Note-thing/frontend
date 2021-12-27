@@ -6,6 +6,7 @@ import EditorComponent from './editor/Editor';
 import { NoteProvider } from '../context/NoteContext';
 import SharedNoteComponent from './sharedNote/SharedNoteComponent';
 import noteInitialState from '../context/state/noteState';
+import DirectorySettingsComponent from './DirectorySettings/DirectorySettingsComponent';
 
 /**
  * Layout of the application
@@ -17,6 +18,7 @@ export default function AppLayout() {
         <NoteProvider initialState={noteInitialState}>
             <MainMenu />
             <Switch>
+                <Route path="/directory/:directoryId/settings" component={DirectorySettingsComponent} />
                 <Route path="/directory/**/note/**" component={EditorComponent} />
                 <Route path="/shared_notes/:uuid" component={SharedNoteComponent} />
             </Switch>
