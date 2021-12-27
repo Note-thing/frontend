@@ -1,0 +1,55 @@
+import React, { useState, useContext } from 'react';
+import {
+    TextField, Button, Alert, Grid
+} from '@mui/material';
+import CustomModal from '../../common/Modal';
+import { Post } from '../../../config/config';
+import HttpError from '../../../errors/HttpError';
+import { NoteContext } from '../../../context/NoteContext';
+
+export default function FolderCreationModal({ showModal, onClose }) {
+    const [newFolderName, setNewFolderName] = useState('');
+    const [error, setError] = useState('');
+    const { dispatch } = useContext(NoteContext);
+    const handleNewFolderNameChange = (ev) => {
+        setNewFolderName(ev.target.value);
+    };
+    const handleFolderCreationFolder = async () => {
+        if (newFolderName === '') {
+            setError('Ne peut pas être vide');
+            return;
+        }
+        if (newFolderName.length > 50) {
+            setError('Ne doit pas dépasser 50 caractère');
+            return;
+        }
+
+        try {
+            const response = await Post('/folders', { title: newFolderName });
+            dispatch({
+                type: 'update_directory',
+                directory: response
+            });
+            onClose(false);
+        } catch (err) {
+            if (err instanceof HttpError) { setError(err.getMessage()); }
+        }
+    };
+    return (
+        <CustomModal title="Nouveau dossier" open={showModal} onClose={onClose}>
+            <Grid container spacing={2}>
+                <Grid item md={12} justifyContent="center">
+                    { error !== '' && <Alert severity="error">{error}</Alert>}
+                </Grid>
+                <Grid item md={12}>
+                    <TextField variant="outlined" sx={{ width: '100%' }} label="Nom du dossier" placeholder="Entrez le nom du dossier" value={newFolderName} onChange={handleNewFolderNameChange} />
+                </Grid>
+                <Grid item md={12}>
+                    <Button variant="outlined" sx={{ width: '100%' }} onClick={handleFolderCreationFolder}>Créer</Button>
+
+                </Grid>
+            </Grid>
+
+        </CustomModal>
+    );
+}

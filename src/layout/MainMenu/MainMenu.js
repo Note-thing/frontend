@@ -6,6 +6,7 @@ import { MainContext } from '../../context/MainContext';
 import { NoteContext } from '../../context/NoteContext';
 import User from './User';
 import MainMenuItem from './MainMenuItem';
+import FolderCreationMainMenuItem from './FolderCreation/FolderCreationMainMenuItem';
 import '../../resource/css/main-menu.css';
 
 /**
@@ -36,6 +37,7 @@ export default function MainMenu() {
                                 directory={dir}
                             />
                         ))}
+                        <FolderCreationMainMenuItem />
                     </List>
                 </Grid>
                 <Grid

@@ -17,8 +17,8 @@ const requestWithBody = async (method, endpoint, data) => {
     const response = await fetch(CONFIG.api_url + endpoint, {
         method,
         credentials: 'include',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(data).toString()
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
     });
     handleError(response);
 
