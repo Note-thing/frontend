@@ -49,7 +49,7 @@ describe('ResizePannel', () => {
 
     it('ResizePannel | Resize normal smaller then', async () => {
         const { container } = resizePannel();
-        const separator = container.getElementsByClassName('pannel-separator')[0];
+        const separator = container.getElementsByClassName('pannel-drag-handle')[0];
         const [leftPannel, rightPannel] = container.getElementsByClassName('pannel-resizable');
         expect(getComputedStyle(leftPannel).width).toBe('50%');
         expect(getComputedStyle(rightPannel).width).toBe('50%');
@@ -69,7 +69,7 @@ describe('ResizePannel', () => {
 
     it('ResizePannel | Resize normal bigger then', async () => {
         const { container } = resizePannel();
-        const separator = container.getElementsByClassName('pannel-separator')[0];
+        const separator = container.getElementsByClassName('pannel-drag-handle')[0];
         const [leftPannel, rightPannel] = container.getElementsByClassName('pannel-resizable');
         expect(getComputedStyle(leftPannel).width).toBe('50%');
         expect(getComputedStyle(rightPannel).width).toBe('50%');
@@ -89,7 +89,7 @@ describe('ResizePannel', () => {
 
     it('ResizePannel | Resize full left', async () => {
         const { container } = resizePannel();
-        const separator = container.getElementsByClassName('pannel-separator')[0];
+        const separator = container.getElementsByClassName('pannel-drag-handle')[0];
         const [leftPannel, rightPannel] = container.getElementsByClassName('pannel-resizable');
         expect(getComputedStyle(leftPannel).width).toBe('50%');
         expect(getComputedStyle(rightPannel).width).toBe('50%');
@@ -108,7 +108,7 @@ describe('ResizePannel', () => {
 
     it('ResizePannel | Resize full right', async () => {
         const { container } = resizePannel();
-        const separator = container.getElementsByClassName('pannel-separator')[0];
+        const separator = container.getElementsByClassName('pannel-drag-handle')[0];
         const [leftPannel, rightPannel] = container.getElementsByClassName('pannel-resizable');
         expect(getComputedStyle(leftPannel).width).toBe('50%');
         expect(getComputedStyle(rightPannel).width).toBe('50%');
@@ -127,7 +127,7 @@ describe('ResizePannel', () => {
 
     it('ResizePannel | Resize magnetic left', async () => {
         const { container } = resizePannel();
-        const separator = container.getElementsByClassName('pannel-separator')[0];
+        const separator = container.getElementsByClassName('pannel-drag-handle')[0];
         const [leftPannel, rightPannel] = container.getElementsByClassName('pannel-resizable');
         expect(getComputedStyle(leftPannel).width).toBe('50%');
         expect(getComputedStyle(rightPannel).width).toBe('50%');
@@ -146,7 +146,7 @@ describe('ResizePannel', () => {
 
     it('ResizePannel | Resize magnetic right', async () => {
         const { container } = resizePannel();
-        const separator = container.getElementsByClassName('pannel-separator')[0];
+        const separator = container.getElementsByClassName('pannel-drag-handle')[0];
         const [leftPannel, rightPannel] = container.getElementsByClassName('pannel-resizable');
         expect(getComputedStyle(leftPannel).width).toBe('50%');
         expect(getComputedStyle(rightPannel).width).toBe('50%');

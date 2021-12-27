@@ -14,9 +14,7 @@ const ResizePannel = ({
 
     useEffect(() => setWidth(rightWidth), [rightWidth]);
 
-    const handleDrag = useCallback((state) => {
-        setDrag(state);
-    }, [setDrag]);
+    const handleDrag = useCallback((state) => setDrag(state), [setDrag]);
 
     const handleMouseMove = useCallback((ev) => {
         if (drag) {
