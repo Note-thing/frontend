@@ -43,4 +43,5 @@ export const Get = async (endpoint, data) => {
 };
 
 export const Post = (endpoint, data) => requestWithBody('POST', endpoint, data);
+export const Patch = (endpoint, data) => requestWithBody('PATCH', endpoint, data);
 export const Delete = (endpoint, data) => requestWithBody('DELETE', endpoint, data);
