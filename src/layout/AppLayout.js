@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import './AppLayout.css';
 import MainMenu from './MainMenu/MainMenu';
@@ -6,6 +6,8 @@ import EditorComponent from './editor/Editor';
 import { NoteProvider } from '../context/NoteContext';
 import SharedNoteComponent from './sharedNote/SharedNoteComponent';
 import noteInitialState from '../context/state/noteState';
+import DirectorySettingsComponent from './DirectorySettings/DirectorySettingsComponent';
+import { MainContext } from '../context/MainContext';
 
 /**
  * Layout of the application
@@ -13,8 +15,9 @@ import noteInitialState from '../context/state/noteState';
  * @returns
  */
 export default function AppLayout() {
+    const { main, dispatch } = useContext(MainContext);
     return (
-        <NoteProvider initialState={noteInitialState}>
+        <NoteProvider initialState={noteInitialState} user={main.user} mainDispatch={dispatch}>
             <MainMenu />
             <Switch>
                 <Route path="/directory/**/note/**" component={EditorComponent} />

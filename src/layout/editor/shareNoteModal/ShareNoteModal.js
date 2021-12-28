@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
@@ -15,6 +15,7 @@ import Modal from '../../common/Modal';
 import {
     CONFIG, Delete, Get, Post
 } from '../../../config/config';
+import { MainContext } from '../../../context/MainContext';
 
 export default function ShareNoteModal({ open, setOpen }) {
     const [sharedNotesList, setSharedNotesList] = useState([]);
@@ -22,6 +23,7 @@ export default function ShareNoteModal({ open, setOpen }) {
     const [isCreatingSharedNote, setIsCreatingSharedNote] = useState(false);
     const [isDeletingSharedNote, setIsDeletingSharedNote] = useState(false);
     const [isCopied, setIsCopied] = useState(false);
+    const { dispatch } = useContext(MainContext);
     useEffect(() => {
         const fetchSharedNotes = async () => {
             try {
@@ -110,8 +112,12 @@ export default function ShareNoteModal({ open, setOpen }) {
     };
     const createNewSharedNote = async () => {
         setIsCreatingSharedNote(true);
-        const newSharedNotes = await Post('/shared_notes', { id: 1 });
-        setSharedNotesList([newSharedNotes, ...sharedNotesList]);
+        try {
+            const newSharedNotes = await Post('/shared_notes', { id: 1 });
+            setSharedNotesList([newSharedNotes, ...sharedNotesList]);
+        } catch (err) {
+            dispatch({ type: 'dialog', dialog: { id: 'cannotCopySharedNote', is_open: true } });
+        }
         setIsCreatingSharedNote(false);
     };
     return (

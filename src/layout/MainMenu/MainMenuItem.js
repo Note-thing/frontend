@@ -1,5 +1,4 @@
 import React, { useCallback, useContext } from 'react';
-import PropTypes from 'prop-types';
 import {
     Chip,
     List,
@@ -20,7 +19,38 @@ export default function MainMenuItem({ directory, show }) {
             }
         }, dispatch
     } = useContext(NoteContext);
-    const handleDirectoryClick = useCallback((uniqid) => {
+    const directoryid = notes.directory.id;
+    /**
+     * Handle directory click.
+     */
+    const handleDirectoryClick = useCallback(
+        (id) => {
+            const destDirectory = notes.directories.find((dir) => dir.id === id);
+            dispatch({
+                type: 'change_directory',
+                directory: { ...destDirectory }
+            });
+            console.log(destDirectory);
+            history.push(`/directory/${id}`);
+        },
+        [dispatch]
+    );
+    /**
+     * Handle note click
+     */
+    const handleNoteClick = useCallback(
+        (note) => {
+            dispatch({
+                type: 'change_note',
+                note
+            });
+            history.push(`/directory/${directoryid}/note/${note.id}`);
+        },
+        [dispatch, directoryid]
+    );
+    const handleSettingBtnClicked = (e, directoryId) => {
+        e.preventDefault();
+        e.stopPropagation();
         dispatch({
             type: 'change_directory',
             directory: { uniqid }
@@ -37,7 +67,7 @@ export default function MainMenuItem({ directory, show }) {
     return (
         <>
             <ListItem
-                onClick={() => handleDirectoryClick(directory.uniqid)}
+                onClick={() => handleDirectoryClick(directory.id)}
                 button
                 secondaryAction={
                     <KeyboardArrowRight
@@ -50,13 +80,21 @@ export default function MainMenuItem({ directory, show }) {
                 data-testid="MainMenu-directoryItem"
             >
                 <ListItemText
-                    primary={directory.name}
+                    primary={directory.title}
                     secondary={directory.notes
                         .map((w) => w.title)
                         .join(' - ')
                         .slice(0, 35)
                         .concat('...')}
                 />
+                {show && (
+                    <ListItemIcon onClick={(e) => handleSettingBtnClicked(e, directory.id)}>
+                        <IconButton>
+                            <SettingsIcon sx={{ cursor: 'pointer' }} mr={50} />
+                        </IconButton>
+                    </ListItemIcon>
+                )}
+
             </ListItem>
             <List
                 sx={{
@@ -71,14 +109,14 @@ export default function MainMenuItem({ directory, show }) {
             >
                 {directory.notes.map((note, idx) => (
                     <ListItemButton
-                        key={`MainMenu-btn-item-${note.uniqid}`}
+                        key={`MainMenu-btn-item-${note.id}`}
                         onClick={() => handleNoteClick(note)}
                     >
                         <ListItemText
                             primary={note.title}
                             secondary={note.tags.map((t) => (
                                 <Chip
-                                    key={note.uniqid + note.title.concat(t)}
+                                    key={note.id + note.title.concat(t)}
                                     label={t}
                                     sx={{ marginRight: '0.1rem' }}
                                     size="small"
@@ -95,16 +133,3 @@ export default function MainMenuItem({ directory, show }) {
         </>
     );
 }
-MainMenuItem.propTypes = {
-    directory: PropTypes.shape({
-        uniqid: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        notes: PropTypes.arrayOf(
-            PropTypes.shape({
-                title: PropTypes.string.isRequired,
-                tags: PropTypes.arrayOf(PropTypes.string).isRequired
-            })
-        ).isRequired
-    }).isRequired,
-    show: PropTypes.bool.isRequired
-};
