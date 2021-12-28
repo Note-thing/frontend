@@ -18,7 +18,6 @@ import '../../resource/css/main-menu.css';
 export default function MainMenu() {
     const { main: { user } } = useContext(MainContext);
     const { notes: { directories, directory } } = useContext(NoteContext);
-    console.log(directory);
     return (
         <section className="main-menu-container">
             <Grid
