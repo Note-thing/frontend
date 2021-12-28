@@ -40,12 +40,13 @@ export default function SharedNoteComponent() {
      * jour avant le clique de notre bouton.
      * A noter que nous le mettons dans un tableau pour pouvoir utiliser la méthode find
      * inexistante sur le html collection
-     * @returns id du
+     * The purpose of the function is to get the value of the select (html element) via its ref. 
+     * @returns id du 
      */
     const getSelectValue = () => [...selectInput.current.children].find((e) => e.localName === 'input').value;
     const copyHandler = async () => {
         // Cannot use state since we have no garanty the state is updated.
-        const folderId = getSelectValue();
+        const folderId = directoriesList[getSelectValue()].id;
         setIsCopying(true);
         setHasError(false);
         try {
@@ -55,21 +56,9 @@ export default function SharedNoteComponent() {
                 contextDirectory.notes.push(note);
                 dispatch('update_directory', contextDirectory);
             }
-
-            // // TODO : Stéfan, peux-tu réparer ça ?
-            // dispatch({
-            //     type: 'dialog',
-            //     dialog: { id: 'copySharedNoteSucceed', is_open: true }
-            // });
             setHasBeenCopied(true);
         } catch (err) {
             setHasError(true);
-            if (err instanceof NotFoundError) {
-                // dispatch({
-                //     type: 'dialog',
-                //     dialog: { id: 'cannotCopySharedNote', is_open: true }
-                // });
-            }
         }
 
         // TODO call context note pour ajouter la note
@@ -87,7 +76,6 @@ export default function SharedNoteComponent() {
         </Grid>
     );
     const displayForm = () => (
-
         <>
             {hasError && (
                 <Grid item md={12} sx={{ color: 'red' }}>
@@ -106,11 +94,14 @@ export default function SharedNoteComponent() {
                         defaultValue=""
                         onChange={(ev) => directoryChangedHandler(ev.target.value)}
                         SelectDisplayProps={{ 'data-testid': 'folder-dropdown' }}
-
                     >
                         {directoriesList.map((dir, idx) => (
-                            <MenuItem key={dir.id} value={idx} data-testid={`folder-item-${dir.id}`}>
-                                {dir.name}
+                            <MenuItem
+                                key={dir.id}
+                                value={idx}
+                                data-testid={`folder-item-${dir.id}`}
+                            >
+                                {dir.title}
                             </MenuItem>
                         ))}
                     </Select>
