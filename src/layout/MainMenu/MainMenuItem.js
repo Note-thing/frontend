@@ -89,6 +89,7 @@ export default function MainMenuItem({ directory, show }) {
                 )}
 
             </ListItem>
+            
             <List
                 sx={{
                     opacity: show ? '1' : '0',
