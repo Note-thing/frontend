@@ -124,7 +124,7 @@ export default function ShareNoteModal({ open, setOpen }) {
         <Modal
             title="Partager votre note"
             open={open}
-            onClose={() => setOpen(false)}
+            onClose={setOpen}
         >
             <Grow in={isCopied}>
                 <Alert

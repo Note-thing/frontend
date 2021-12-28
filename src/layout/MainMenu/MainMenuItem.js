@@ -1,37 +1,36 @@
 import React, { useCallback, useContext } from 'react';
 import {
-    Chip,
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemText
+    Chip, List, ListItem, ListItemButton, ListItemText, ListItemIcon, IconButton
 } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import { KeyboardArrowRight } from '@mui/icons-material';
+import SettingsIcon from '@mui/icons-material/Settings';
 import { NoteContext } from '../../context/NoteContext';
+import NoteCreationMainMenuItem from './noteCreation/NoteCreationMainMenuItem';
 
+/**
+ *
+ * @param {Object} props the directory object and show, a boolean whether the item is collasped
+ * or note
+ */
 export default function MainMenuItem({ directory, show }) {
     const history = useHistory();
     const {
-        notes: {
-            directory: {
-                uniqid: directoryUniqId
-            }
-        }, dispatch
+        notes,
+        dispatch
     } = useContext(NoteContext);
-    const directoryid = notes.directory.id;
+    const directoryUniqId = notes.directory.uniqid;
     /**
      * Handle directory click.
      */
     const handleDirectoryClick = useCallback(
-        (id) => {
-            const destDirectory = notes.directories.find((dir) => dir.id === id);
+        (uniqid) => {
+            const destDirectory = notes.directories.find((dir) => dir.uniqid === uniqid);
             dispatch({
                 type: 'change_directory',
                 directory: { ...destDirectory }
             });
-            console.log(destDirectory);
-            history.push(`/directory/${id}`);
+            history.push(`/directory/${uniqid}`);
         },
         [dispatch]
     );
@@ -44,26 +43,20 @@ export default function MainMenuItem({ directory, show }) {
                 type: 'change_note',
                 note
             });
-            history.push(`/directory/${directoryid}/note/${note.id}`);
+            history.push(`/directory/${directoryUniqId}/note/${note.uniqid}`);
         },
-        [dispatch, directoryid]
+        [dispatch, directoryUniqId]
     );
     const handleSettingBtnClicked = (e, directoryId) => {
         e.preventDefault();
         e.stopPropagation();
         dispatch({
             type: 'change_directory',
-            directory: { uniqid }
+            directory: { directoryId }
         });
-        history.push(`/directory/${uniqid}`);
-    }, [dispatch]);
-    const handleNoteClick = useCallback((note) => {
-        dispatch({
-            type: 'change_note',
-            note
-        });
-        history.push(`/directory/${directoryUniqId}/note/${note.uniqid}`);
-    }, [dispatch, directoryUniqId]);
+        history.push(`/directory/${directoryId}/settings`);
+    };
+
     return (
         <>
             <ListItem
@@ -88,7 +81,7 @@ export default function MainMenuItem({ directory, show }) {
                         .concat('...')}
                 />
                 {show && (
-                    <ListItemIcon onClick={(e) => handleSettingBtnClicked(e, directory.id)}>
+                    <ListItemIcon onClick={(e) => handleSettingBtnClicked(e, directory.uniqid)}>
                         <IconButton>
                             <SettingsIcon sx={{ cursor: 'pointer' }} mr={50} />
                         </IconButton>
@@ -101,9 +94,7 @@ export default function MainMenuItem({ directory, show }) {
                     opacity: show ? '1' : '0',
                     height: show ? 'auto' : '0 !important',
                     padding: show ? 'auto' : '0 !important',
-                    transition: show
-                        ? '0.2s opacity ease-out'
-                        : '0.1s  ease-out'
+                    transition: show ? '0.2s opacity ease-out' : '0.1s  ease-out'
                 }}
                 data-testid="MainMenu-notesList"
             >
@@ -128,6 +119,8 @@ export default function MainMenuItem({ directory, show }) {
                         />
                     </ListItemButton>
                 ))}
+                <NoteCreationMainMenuItem />
+
             </List>
             {show && <hr size={1} color="#e9f0f0" />}
         </>

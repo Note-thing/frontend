@@ -2,11 +2,11 @@ const noteInitialState = {
     directory: { },
     note: { },
     directories: [{
-        uniqid: '619f6488babbf',
+        id: '619f6488babbf',
         name: 'TWEB',
         notes: [
             {
-                uniqid: 'dfgh3245sdfg',
+                id: 'dfgh3245sdfg',
                 title: 'CSS',
                 tags: ['Web', 'design'],
                 content: `# Getting Started with Create React App
@@ -82,27 +82,27 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 `
             },
-            { uniqid: 'awei546fcguuz', title: 'JS', tags: ['JS', 'prototype'] },
-            { uniqid: '345jfhtzdffvret', title: 'Node', tags: ['JS', 'SSR'] }
+            { id: 'awei546fcguuz', title: 'JS', tags: ['JS', 'prototype'] },
+            { id: '345jfhtzdffvret', title: 'Node', tags: ['JS', 'SSR'] }
         ]
     },
     {
-        uniqid: '61ddfgg488babbf',
+        id: '61ddfgg488babbf',
         name: 'PDG',
         notes: [
-            { uniqid: 'dfg456fgh456', title: 'Note-thing', tags: ['Web', 'design'] },
-            { uniqid: 'fghfgh345nb', title: 'Ruby on Rails', tags: ['Model', 'Controller'] },
-            { uniqid: 'etz4256dsfh', title: 'CI/CD', tags: ['Jest.js', 'Unit test'] }
+            { id: 'dfg456fgh456', title: 'Note-thing', tags: ['Web', 'design'] },
+            { id: 'fghfgh345nb', title: 'Ruby on Rails', tags: ['Model', 'Controller'] },
+            { id: 'etz4256dsfh', title: 'CI/CD', tags: ['Jest.js', 'Unit test'] }
         ]
     },
     {
-        uniqid: '4566fgg488babbf',
+        id: '4566fgg488babbf',
         name: 'AMT',
         notes: [
-            { uniqid: '789dfg234dfg', title: 'Guide de survie total', tags: ['Spring'] },
-            { uniqid: '456gzuwesdgf', title: 'Survire en haute mer', tags: ['Spring', 'MVC'] },
+            { id: '789dfg234dfg', title: 'Guide de survie total', tags: ['Spring'] },
+            { id: '456gzuwesdgf', title: 'Survire en haute mer', tags: ['Spring', 'MVC'] },
             {
-                uniqid: 'uilert3452dfg',
+                id: 'uilert3452dfg',
                 title: 'Apprendre à utiliser une boussole',
                 tags: ['Navigation']
             }

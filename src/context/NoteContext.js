@@ -32,6 +32,7 @@ const reducer = (state, action) => {
                 }
             };
         case 'change_note':
+
             return {
                 ...state,
                 note: { ...action.note }
@@ -110,9 +111,10 @@ export const NoteProvider = ({
                 note: active.note
             });
         }
-    }, [notes.note, notes.directory]);
+    }, [notes.note?.id, notes.directory?.id]);
 
     useEffect(() => {
+        console.log('#############');
         const getFolder = async () => {
             try {
                 const folders = await Get('/structure');

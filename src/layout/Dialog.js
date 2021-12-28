@@ -96,7 +96,6 @@ const Dialog = () => {
                     </Alert>
                 </Snackbar>
             )}
-
         </section>
     );
 };

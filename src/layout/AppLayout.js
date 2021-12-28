@@ -18,11 +18,14 @@ export default function AppLayout() {
     const { main, dispatch } = useContext(MainContext);
     return (
         <NoteProvider initialState={noteInitialState} user={main.user} mainDispatch={dispatch}>
-            <MainMenu />
-            <Switch>
-                <Route path="/directory/**/note/**" component={EditorComponent} />
-                <Route path="/shared_notes/:uuid" component={SharedNoteComponent} />
-            </Switch>
+            <>
+                <MainMenu />
+                <Switch>
+                    <Route path="/directory/:directoryId/settings" component={DirectorySettingsComponent} />
+                    <Route path="/directory/**/note/**" component={EditorComponent} />
+                    <Route path="/shared_notes/:uuid" component={SharedNoteComponent} />
+                </Switch>
+            </>
         </NoteProvider>
     );
 }
