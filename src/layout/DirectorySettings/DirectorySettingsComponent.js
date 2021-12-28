@@ -112,7 +112,6 @@ export default function DirectorySettingsComponent() {
                             disabled={isDeletingFolder}
                             variant="outlined"
                             color="error"
-                            onClick={handleDeleteDirectory}
                             onClick={() => setShowConfirmationModal(true)}
                         >
                             Supprimer le dossier

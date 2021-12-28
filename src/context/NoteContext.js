@@ -23,7 +23,6 @@ const reducer = (state, action) => {
                 directories: action.directories
             };
         case 'change_directory':
-
             return {
                 ...state,
                 directory: {
@@ -32,7 +31,6 @@ const reducer = (state, action) => {
                 }
             };
         case 'change_note':
-
             return {
                 ...state,
                 note: { ...action.note }
@@ -41,10 +39,7 @@ const reducer = (state, action) => {
             const dir = action.directory;
             return {
                 ...state,
-                directories: [
-                    ...state.directories.filter((d) => d.id !== action.directory.id),
-                    dir
-                ]
+                directories: [...state.directories.filter((d) => d.id !== action.directory.id), dir]
             };
         }
         case 'delete_directory': {
@@ -54,22 +49,17 @@ const reducer = (state, action) => {
                 // If the opened directory is the deleted one, unset directory key
                 // and remove it from the directories key list.
                 directory: dir.id === state.directory.id ? {} : state.directory,
-                directories: [
-                    ...state.directories.filter((d) => d.id !== dir.id)
-                ]
+                directories: [...state.directories.filter((d) => d.id !== dir.id)]
             };
         }
         case 'update_note': {
-            const dir = state.directories.find((d) => d.id !== action.note.folder_id);
+            const dir = state.directories.find((d) => d.id === action.note.folder_id);
             dir.notes.push(action.note);
             return {
                 ...state,
                 // Update the open note.
-                note: (action.note.id === state.note.id ? action.note : state.note),
-                directories: [
-                    ...state.directories.filter((d) => d.id !== dir.id),
-                    dir
-                ]
+                note: action.note.id === state.note.id ? action.note : state.note,
+                directories: [...state.directories.filter((d) => d.id !== dir.id), dir]
             };
         }
         case 'delete_note': {
@@ -80,11 +70,8 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 note: action.note.id === state.note.id ? {} : state.note,
-                directory: (dir.id === state.directory.id ? dir : state.directory),
-                directories: [
-                    ...state.directories.filter((d) => d.id !== dir.id),
-                    dir
-                ]
+                directory: dir.id === state.directory.id ? dir : state.directory,
+                directories: [...state.directories.filter((d) => d.id !== dir.id), dir]
             };
         }
         default:
@@ -92,9 +79,7 @@ const reducer = (state, action) => {
     }
 };
 
-export const NoteProvider = ({
-    user, initialState, children, mainDispatch
-}) => {
+export const NoteProvider = ({ user, initialState, children, mainDispatch }) => {
     const [notes, dispatch] = useReducer(reducer, initialState);
 
     useEffect(() => {
@@ -119,16 +104,15 @@ export const NoteProvider = ({
                 const folders = await Get('/structure');
                 dispatch({ type: 'reset', directories: folders });
             } catch (err) {
-                mainDispatch({ type: 'dialog', dialog: { id: 'cannotLoadStructure', is_open: true } });
+                mainDispatch({
+                    type: 'dialog',
+                    dialog: { id: 'cannotLoadStructure', is_open: true }
+                });
             }
         };
         getFolder();
     }, [user?.email]);
-    return (
-        <NoteContext.Provider value={{ notes, dispatch }}>
-            { children }
-        </NoteContext.Provider>
-    );
+    return <NoteContext.Provider value={{ notes, dispatch }}>{children}</NoteContext.Provider>;
 };
 
 NoteProvider.propTypes = {

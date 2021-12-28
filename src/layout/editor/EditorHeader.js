@@ -1,7 +1,5 @@
-import React, { useState, useContext } from 'react';
-import {
-    Grid, Input, Button
-} from '@mui/material';
+import React, { useState, useContext, useEffect } from 'react';
+import { Grid, Input, Button } from '@mui/material';
 import { PictureAsPdf, Share, Delete as DeleteIcon } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import { ReactComponent as Code } from '../../resource/icons/editor-viewmode-code.svg';
@@ -11,7 +9,7 @@ import ShareNoteModal from './shareNoteModal/ShareNoteModal';
 import ConfirmationModal from '../common/ConfirmationModal';
 import { NoteContext } from '../../context/NoteContext';
 import { MainContext } from '../../context/MainContext';
-import { Delete } from '../../config/config';
+import { Delete, Patch } from '../../config/config';
 /**
  * Header of the editor containing the note menu (display switch, PDF export, delete the note etc.).
  * @returns
@@ -21,7 +19,8 @@ export default function EditorHeader({ setPreviewWidth }) {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const { notes, dispatch: noteDispatch } = useContext(NoteContext);
     const { dispatch: mainDispatch } = useContext(MainContext);
-    const handleViewModeClick = (width) => setPreviewWidth(width);
+    const [noteTitle, setNoteTitle] = useState('');
+    const handleViewModeClic = (width) => setPreviewWidth(width);
     const handleNoteSuppression = async () => {
         try {
             await Delete(`/notes/${1}`, {});
@@ -36,6 +35,21 @@ export default function EditorHeader({ setPreviewWidth }) {
             });
         }
     };
+    const handleChangeTitle = async (ev) => {
+        setNoteTitle(ev.target.value);
+        try {
+            const note = await Patch(`/notes/${notes.note.id}`, { title: noteTitle });
+            const oldNote = notes.note;
+            console.log('n0te', note);
+            noteDispatch({ type: 'update_note', note: { ...oldNote, ...note } });
+        } catch (err) {
+            mainDispatch({ type: 'dialog', dialog: { id: 'update_name_note', is_open: true } });
+        }
+    };
+    useEffect(() => {
+        console.log('UPPPPPPDATE EFFECT');
+        setNoteTitle(notes.note.title);
+    }, [notes.note.id]);
     return (
         <Grid
             display="flex"
@@ -68,7 +82,8 @@ export default function EditorHeader({ setPreviewWidth }) {
             <Input
                 className="noBorderInput"
                 sx={{ width: '10rem', fontSize: '1.2rem' }}
-                value="07.11.2021"
+                value={noteTitle}
+                onChange={handleChangeTitle}
                 placeholder="Titre de la note"
             />
 
