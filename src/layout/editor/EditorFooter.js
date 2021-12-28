@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
 import { LocalOffer } from '@mui/icons-material';

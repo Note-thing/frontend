@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { CONFIG } from '../../config/config';
 import { MainContext } from '../../context/MainContext';
-import { useInput } from '../../hooks/useInput';
+import useInput from '../../hooks/useInput';
 
 const LostPassword = () => {
     const history = useHistory();
@@ -44,7 +44,6 @@ const LostPassword = () => {
                     align="center"
                 >
                     <HelpOutlineIcon align="center" />
-                    {' '}
                     Perdu le mot de passe?
                 </Typography>
 

@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
 import {
-    Typography, Box, Grid, TextField, Button, Link
+    Typography, Box, Grid, TextField, Button
 } from '@mui/material';
 import { CONFIG } from '../../config/config';
 import { MainContext } from '../../context/MainContext';
-import { useInput } from '../../hooks/useInput';
+import useInput from '../../hooks/useInput';
 
 const Signup = () => {
     const history = useHistory();
@@ -127,23 +127,23 @@ const Signup = () => {
                         size="large"
                         onClick={buttonSignUp}
                     >
-                        S'inscrire
+                        S\'inscrire
                     </Button>
                     <Grid container>
                         <Grid item xs>
                             <Link
-                                href="#"
+                                to={CONFIG.signin_url}
                                 variant="body2"
-                                onClick={() => redirectPage(CONFIG.signin_url)}
+                                // onClick={() => redirectPage(CONFIG.signin_url)}
                             >
                                 Se connecter
                             </Link>
                         </Grid>
                         <Grid item>
                             <Link
-                                href="#"
+                                to={CONFIG.lost_password_url}
                                 variant="body2"
-                                onClick={() => redirectPage(CONFIG.lost_password_url)}
+                                // onClick={() => redirectPage(CONFIG.lost_password_url)}
                             >
                                 Mot de passe oublié ?
                             </Link>
@@ -162,7 +162,7 @@ function Copyright() {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
             {'Copyright © '}
-            <Link color="inherit" href="https://heig-vd.ch//">
+            <Link color="inherit" href="https://heig-vd.ch/">
                 HEIG-VD
             </Link>
             {' '}
