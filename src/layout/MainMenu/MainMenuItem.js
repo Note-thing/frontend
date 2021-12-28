@@ -19,7 +19,7 @@ export default function MainMenuItem({ directory, show }) {
         notes,
         dispatch
     } = useContext(NoteContext);
-    const directoryid = notes.directory.id;
+
     /**
      * Handle directory click.
      */
@@ -38,14 +38,8 @@ export default function MainMenuItem({ directory, show }) {
      * Handle note click
      */
     const handleNoteClick = useCallback(
-        (note) => {
-            dispatch({
-                type: 'change_note',
-                note
-            });
-            history.push(`/directory/${directoryid}/note/${note.id}`);
-        },
-        [dispatch, directoryid]
+        (note) => history.push(`/directory/${notes.directory.id}/note/${note.id}`),
+        [dispatch, notes?.directory?.id]
     );
     const handleSettingBtnClicked = (e, directoryId) => {
         e.preventDefault();
@@ -98,27 +92,35 @@ export default function MainMenuItem({ directory, show }) {
                 }}
                 data-testid="MainMenu-notesList"
             >
-                {directory.notes.map((note, idx) => (
-                    <ListItemButton
-                        key={`MainMenu-btn-item-${note.id}`}
-                        onClick={() => handleNoteClick(note)}
-                    >
-                        <ListItemText
-                            primary={note.title}
-                            secondary={note.tags.map((t) => (
-                                <Chip
-                                    key={note.id + note.title.concat(t)}
-                                    label={t}
-                                    sx={{ marginRight: '0.1rem' }}
-                                    size="small"
-                                    component="span" // to avoid warning because secondary is wrapped in a <p>
-                                    data-testid={`MainMenu-notesList-item-tag-${idx}`}
-                                />
-                            ))}
-                            data-testid={`MainMenu-notesList-item-${idx}`}
-                        />
-                    </ListItemButton>
-                ))}
+                <>
+                    {
+                        directory && directory.notes && directory.notes.length > 0
+                    && directory.notes.map((note, idx) => (
+                        <ListItemButton
+                            key={`MainMenu-btn-item-${note.id}`}
+                            onClick={() => handleNoteClick(note)}
+                        >
+                            <ListItemText
+                                primary={note.title}
+                                secondary={
+                                    note.tags && note.tags.length > 0
+                                    && note.tags.map((t, idxt) => (
+                                        <Chip
+                                            key={note.id + note.title.concat(t.id)}
+                                            label={t.title}
+                                            sx={{ marginRight: '0.1rem' }}
+                                            size="small"
+                                            component="span" // to avoid warning because secondary is wrapped in a <p>
+                                            data-testid={`MainMenu-notesList-item-tag-${idxt}`}
+                                        />
+                                    ))
+                                }
+                                data-testid={`MainMenu-notesList-item-${idx}`}
+                            />
+                        </ListItemButton>
+                    ))
+                    }
+                </>
                 <NoteCreationMainMenuItem />
 
             </List>

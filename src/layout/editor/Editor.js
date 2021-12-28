@@ -11,15 +11,17 @@ import useInput from '../../hooks/useInput';
 import '../../resource/css/editor.css';
 
 export default function Editor() {
-    const { notes: { note: { content } } } = useContext(NoteContext);
-    const { value: noteTextArea, bind: bindNoteTextArea } = useInput(content);
+    const { notes: { note: { body } } } = useContext(NoteContext);
+    const { value: noteTextArea, bind: bindNoteTextArea } = useInput(body);
     const [previewWidth, setPreviewWidth] = useState(50);
     const runEditor = (area) => new TextareaMarkdown(area);
     useEffect(() => {
-        const textarea = document.querySelector('textarea#editor');
-        textarea.value = content;
-        runEditor(textarea);
-    }, [content]);
+        if (body) {
+            const textarea = document.querySelector('textarea#editor');
+            textarea.value = body;
+            runEditor(textarea);
+        }
+    }, [body]);
     const handlePreviewWidth = useCallback((width) => {
         setPreviewWidth(width);
     }, [setPreviewWidth]);
@@ -29,23 +31,26 @@ export default function Editor() {
             <Grid item sx={{ height: '48px' }}>
                 <EditorHeader setPreviewWidth={handlePreviewWidth} />
             </Grid>
-            <Grid item sx={{ height: 'calc(100vh - 96px)' }}>
-                <ResizePannel
-                    rightWidth={previewWidth}
-                    leftPannel={
-                        <textarea
-                            className="editor-textarea"
-                            id="editor"
-                            data-preview="#preview"
-                            value={bindNoteTextArea.value}
-                            onChange={bindNoteTextArea.onChange}
-                        />
-                    }
-                    rightPannel={
-                        <div className="preview-pannel" id="preview" />
-                    }
-                />
-            </Grid>
+            {
+                body && 
+                <Grid item sx={{ height: 'calc(100vh - 96px)' }}>
+                    <ResizePannel
+                        rightWidth={previewWidth}
+                        leftPannel={
+                            <textarea
+                                className="editor-textarea"
+                                id="editor"
+                                data-preview="#preview"
+                                value={bindNoteTextArea.value}
+                                onChange={bindNoteTextArea.onChange}
+                            />
+                        }
+                        rightPannel={
+                            <div className="preview-pannel" id="preview" />
+                        }
+                    />
+                </Grid>
+            }
             <Grid item sx={{ height: '48px' }}>
                 <EditorFooter />
             </Grid>
