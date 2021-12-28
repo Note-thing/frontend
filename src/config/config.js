@@ -34,7 +34,9 @@ export const Get = async (endpoint, data) => {
                     : ''),
         {
             method: 'GET',
-            credentials: 'include'
+            headers: new Headers({
+                token: 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NDA3OTE2MDd9.kmZw2lcjLoj4JSmf2v4MiNmIaELAXotEkZX06HK8p3o'
+            })
         }
     );
     handleError(response);

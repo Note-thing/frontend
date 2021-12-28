@@ -20,41 +20,42 @@ export default function MainMenu() {
     const { notes: { directories, directory } } = useContext(NoteContext);
     return (
         <section className="main-menu-container">
-            <Grid
-                container
-                className="main-menu"
-                sx={{ height: '100%', width: '100%' }}
-                display="flex"
-                direction="column"
-                justifyContent="space-between"
-            >
-                <Grid sx={{ height: '85%' }}>
-                    <List>
-                        {directories.map((dir) => (
-                            <MainMenuItem
-                                key={dir.id}
-                                show={directory && dir.id === directory.id}
-                                directory={dir}
-                            />
-                        ))}
-                        <FolderCreationMainMenuItem />
-                    </List>
-                </Grid>
-                <Grid
+            { directories && directories.length > 0
+                && <Grid
                     container
-                    sx={{
-                        padding: '1rem',
-                        height: '15%',
-                        alignSelf: 'flex-end'
-                    }}
+                    className="main-menu"
+                    sx={{ height: '100%', width: '100%' }}
+                    display="flex"
+                    direction="column"
+                    justifyContent="space-between"
                 >
-                    <Input
-                        sx={{ width: '100%', marginBottom: '1rem' }}
-                        placeholder="Rechercher dans les notes"
-                    />
-                    <User user={user} />
-                </Grid>
-            </Grid>
+                    <Grid sx={{ height: '85%' }}>
+                        <List>
+                            {directories && directories.length > 0 && directories.map((dir) => (
+                                <MainMenuItem
+                                    key={dir.id}
+                                    show={directory && dir.id === directory.id}
+                                    directory={dir}
+                                />
+                            ))}
+                            <FolderCreationMainMenuItem />
+                        </List>
+                    </Grid>
+                    <Grid
+                        container
+                        sx={{
+                            padding: '1rem',
+                            height: '15%',
+                            alignSelf: 'flex-end'
+                        }}
+                    >
+                        <Input
+                            sx={{ width: '100%', marginBottom: '1rem' }}
+                            placeholder="Rechercher dans les notes"
+                        />
+                        <User user={user} />
+                    </Grid>
+                </Grid>}
         </section>
     );
 }

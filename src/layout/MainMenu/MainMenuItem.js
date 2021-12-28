@@ -21,8 +21,11 @@ import NoteCreationMainMenuItem from './noteCreation/NoteCreationMainMenuItem';
  */
 export default function MainMenuItem({ directory, show }) {
     const history = useHistory();
-    const { notes, dispatch } = useContext(NoteContext);
-    const directoryid = notes.directory.id;
+    const {
+        notes,
+        dispatch
+    } = useContext(NoteContext);
+
     /**
      * Handle directory click.
      */
@@ -41,14 +44,8 @@ export default function MainMenuItem({ directory, show }) {
      * Handle note click
      */
     const handleNoteClick = useCallback(
-        (note) => {
-            dispatch({
-                type: 'change_note',
-                note
-            });
-            history.push(`/directory/${directoryid}/note/${note.id}`);
-        },
-        [dispatch, directoryid]
+        (note) => history.push(`/directory/${notes.directory.id}/note/${note.id}`),
+        [dispatch, notes?.directory?.id]
     );
     const handleSettingBtnClicked = (e, directoryId) => {
         e.preventDefault();
@@ -100,8 +97,7 @@ export default function MainMenuItem({ directory, show }) {
                 }}
                 data-testid="MainMenu-notesList"
             >
-                {directory.notes
-                    .sort((a, b) => a.title > b.title)
+                { directory?.notes?.sort((a, b) => a.title > b.title)
                     .map((note, idx) => (
                         <ListItemButton
                             key={`MainMenu-btn-item-${note.id}`}
@@ -109,14 +105,14 @@ export default function MainMenuItem({ directory, show }) {
                         >
                             <ListItemText
                                 primary={note.title}
-                                secondary={note.tags.map((t) => (
+                                secondary={note.tags?.map((t, tagsIdx) => (
                                     <Chip
                                         key={note.id + note.title.concat(t)}
-                                        label={t}
+                                        label={t.title}
                                         sx={{ marginRight: '0.1rem' }}
                                         size="small"
                                         component="span" // to avoid warning because secondary is wrapped in a <p>
-                                        data-testid={`MainMenu-notesList-item-tag-${idx}`}
+                                        data-testid={`MainMenu-notesList-item-tag-${tagsIdx}`}
                                     />
                                 ))}
                                 data-testid={`MainMenu-notesList-item-${idx}`}

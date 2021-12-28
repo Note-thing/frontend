@@ -1,16 +1,15 @@
 import React, { useEffect, createContext, useReducer } from 'react';
-import PropTypes from 'prop-types';
+import { useLocation } from 'react-router-dom';
 import { Get } from '../config/config';
 
 export const NoteContext = createContext();
 
 const getActiveFromURL = (directories) => {
     const [, , directoryId, , noteId] = window.location.pathname.split('/');
-    const directory = directories.find((d) => d.id == directoryId);
-    const note = directory && directory.notes.find((n) => n.id == noteId);
+    const directory = directories.find((d) => d.id === directoryId);
     return {
         directory,
-        note
+        noteId
     };
 };
 
@@ -80,25 +79,10 @@ const reducer = (state, action) => {
     }
 };
 
-export const NoteProvider = ({ user, initialState, children, mainDispatch }) => {
+export const NoteProvider = ({ user, children, mainDispatch, initialState
+}) => {
+    const location = useLocation();
     const [notes, dispatch] = useReducer(reducer, initialState);
-
-    useEffect(() => {
-        const active = getActiveFromURL(notes.directories);
-        if (active.directory) {
-            dispatch({
-                type: 'change_directory',
-                directory: active.directory
-            });
-        }
-        if (active.note) {
-            dispatch({
-                type: 'change_note',
-                note: active.note
-            });
-        }
-    }, [notes.note?.id, notes.directory?.id, notes.directories]);
-
     useEffect(() => {
         const getFolder = async () => {
             try {
@@ -112,11 +96,36 @@ export const NoteProvider = ({ user, initialState, children, mainDispatch }) => 
             }
         };
         getFolder();
-    }, [user?.email]);
-    return <NoteContext.Provider value={{ notes, dispatch }}>{children}</NoteContext.Provider>;
-};
+    }, []);
 
-NoteProvider.propTypes = {
-    children: PropTypes.element.isRequired,
-    initialState: PropTypes.shape.isRequired
+    useEffect(() => {
+        if (notes.directories) {
+            const active = getActiveFromURL(notes.directories);
+            if (active.directory) {
+                dispatch({
+                    type: 'change_directory',
+                    directory: active.directory
+                });
+            }
+            if (active.noteId) {
+                (async () => {
+                    try {
+                        const data = await Get(`/notes/${active.noteId}`);
+                        dispatch({
+                            type: 'change_note',
+                            note: data
+                        });
+                    } catch (err) {
+                        mainDispatch({ type: 'dialog', dialog: { id: 'cannotLoadStructure', is_open: true } });
+                    }
+                })();
+            }
+        }
+    }, [location?.pathname]);
+
+    return (
+        <NoteContext.Provider value={{ notes, dispatch }}>
+            { children }
+        </NoteContext.Provider>
+    );
 };
