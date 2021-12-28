@@ -11,7 +11,7 @@ const rootContainer = null;
 // TODO voir comment faire des vrais mocks
 const mockDirectory = {
     name: 'WEB',
-    uniqid: 'ajskldfjasdlkf-sadfsadf',
+    id: 'ajskldfjasdlkf-sadfsadf',
     notes: [{ title: 'JS', tags: ['JS', 'Jest.js'] }]
 };
 const notes = DEFAULT_MOCK_DATA;
@@ -32,7 +32,7 @@ test('Main menu item should display the directory and its notes', () => {
     act(() => {
         render(
             <NoteContext.Provider value={{ notes, dispatch }}>
-                <MainMenuItem uniqid={mockDirectory.uniqid} show directory={mockDirectory} />
+                <MainMenuItem id={mockDirectory.id} show directory={mockDirectory} />
             </NoteContext.Provider>
         );
     });
@@ -57,7 +57,7 @@ test('MainMenuItem should display (opacity = 1, height : auto) notes on click', 
     act(() => {
         render(
             <NoteContext.Provider value={{ notes, dispatch }}>
-                <MainMenuItem uniqid={mockDirectory.uniqid} show directory={mockDirectory} />
+                <MainMenuItem id={mockDirectory.id} show directory={mockDirectory} />
             </NoteContext.Provider>
         );
     });

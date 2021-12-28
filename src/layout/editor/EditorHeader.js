@@ -26,7 +26,7 @@ export default function EditorHeader({ setPreviewWidth }) {
         try {
             await Delete(`/notes/${1}`, {});
             const { directory } = notes;
-            directory.notes = directory.notes.filter((note) => note.uniqid !== notes.note.uniqid);
+            directory.notes = directory.notes.filter((note) => note.id !== notes.note.id);
             noteDispatch({ type: 'update_directory', directory });
             setShowDeleteModal(false);
         } catch (err) {

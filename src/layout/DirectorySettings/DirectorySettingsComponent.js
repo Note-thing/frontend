@@ -29,7 +29,7 @@ export default function DirectorySettingsComponent() {
      */
     const handleSaveName = async () => {
         try {
-            const folder = await Patch(`/folders/${notes.directory.uniqid}`, {
+            const folder = await Patch(`/folders/${notes.directory.id}`, {
                 title: name
             });
             dispatchNote({ type: 'update_directory', directory: folder });
@@ -43,7 +43,7 @@ export default function DirectorySettingsComponent() {
      */
     const handleDeleteDirectory = async () => {
         try {
-            await Delete(`/folders/${notes.directory.uniqid}`);
+            await Delete(`/folders/${notes.directory.id}`);
             dispatchNote({ type: 'update_directory', directory: notes.directory });
         } catch (err) {
             dispatchMain({ type: 'dialog', dialog: { id: 'cannotDeleteFolder', is_open: true } });

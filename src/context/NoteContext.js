@@ -6,8 +6,8 @@ export const NoteContext = createContext();
 
 const getActiveFromURL = (directories) => {
     const [, , directoryId, , noteId] = window.location.pathname.split('/');
-    const directory = directories.find((d) => d.uniqid === directoryId);
-    const note = directory && directory.notes.find((n) => n.uniqid === noteId);
+    const directory = directories.find((d) => d.id == directoryId);
+    const note = directory && directory.notes.find((n) => n.id == noteId);
     return {
         directory,
         note
@@ -42,7 +42,7 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 directories: [
-                    ...state.directories.filter((d) => d.uniqid !== action.directory.uniqid),
+                    ...state.directories.filter((d) => d.id !== action.directory.id),
                     dir
                 ]
             };
@@ -53,36 +53,36 @@ const reducer = (state, action) => {
                 ...state,
                 // If the opened directory is the deleted one, unset directory key
                 // and remove it from the directories key list.
-                directory: dir.uniqid === state.directory.uniqid ? {} : state.directory,
+                directory: dir.id === state.directory.id ? {} : state.directory,
                 directories: [
-                    ...state.directories.filter((d) => d.uniqid !== dir.uniqid)
+                    ...state.directories.filter((d) => d.id !== dir.id)
                 ]
             };
         }
         case 'update_note': {
-            const dir = state.directories.find((d) => d.uniqid !== action.note.folder_id);
+            const dir = state.directories.find((d) => d.id !== action.note.folder_id);
             dir.notes.push(action.note);
             return {
                 ...state,
                 // Update the open note.
-                note: (action.note.uniqid === state.note.uniqid ? action.note : state.note),
+                note: (action.note.id === state.note.id ? action.note : state.note),
                 directories: [
-                    ...state.directories.filter((d) => d.uniqid !== dir.uniqid),
+                    ...state.directories.filter((d) => d.id !== dir.id),
                     dir
                 ]
             };
         }
         case 'delete_note': {
-            const dir = state.directories.find((d) => d.uniqid !== action.note.folder_id);
-            dir.notes = dir.notes.filter((n) => n.uniqid !== action.note.id);
+            const dir = state.directories.find((d) => d.id !== action.note.folder_id);
+            dir.notes = dir.notes.filter((n) => n.id !== action.note.id);
             // Update the directory and the directories (list): we delete the note in the
             // containing directory
             return {
                 ...state,
-                note: action.note.uniqid === state.note.uniqid ? {} : state.note,
-                directory: (dir.uniqid === state.directory.uniqid ? dir : state.directory),
+                note: action.note.id === state.note.id ? {} : state.note,
+                directory: (dir.id === state.directory.id ? dir : state.directory),
                 directories: [
-                    ...state.directories.filter((d) => d.uniqid !== dir.uniqid),
+                    ...state.directories.filter((d) => d.id !== dir.id),
                     dir
                 ]
             };
@@ -111,10 +111,9 @@ export const NoteProvider = ({
                 note: active.note
             });
         }
-    }, [notes.note?.id, notes.directory?.id]);
+    }, [notes.note?.id, notes.directory?.id, notes.directories]);
 
     useEffect(() => {
-        console.log('#############');
         const getFolder = async () => {
             try {
                 const folders = await Get('/structure');
@@ -124,7 +123,7 @@ export const NoteProvider = ({
             }
         };
         getFolder();
-    }, [user?.id]);
+    }, [user?.email]);
     return (
         <NoteContext.Provider value={{ notes, dispatch }}>
             { children }

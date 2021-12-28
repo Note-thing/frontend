@@ -19,18 +19,18 @@ export default function MainMenuItem({ directory, show }) {
         notes,
         dispatch
     } = useContext(NoteContext);
-    const directoryUniqId = notes.directory.uniqid;
+    const directoryid = notes.directory.id;
     /**
      * Handle directory click.
      */
     const handleDirectoryClick = useCallback(
-        (uniqid) => {
-            const destDirectory = notes.directories.find((dir) => dir.uniqid === uniqid);
+        (id) => {
+            const destDirectory = notes.directories.find((dir) => dir.id === id);
             dispatch({
                 type: 'change_directory',
                 directory: { ...destDirectory }
             });
-            history.push(`/directory/${uniqid}`);
+            history.push(`/directory/${id}`);
         },
         [dispatch]
     );
@@ -43,9 +43,9 @@ export default function MainMenuItem({ directory, show }) {
                 type: 'change_note',
                 note
             });
-            history.push(`/directory/${directoryUniqId}/note/${note.uniqid}`);
+            history.push(`/directory/${directoryid}/note/${note.id}`);
         },
-        [dispatch, directoryUniqId]
+        [dispatch, directoryid]
     );
     const handleSettingBtnClicked = (e, directoryId) => {
         e.preventDefault();
@@ -81,7 +81,7 @@ export default function MainMenuItem({ directory, show }) {
                         .concat('...')}
                 />
                 {show && (
-                    <ListItemIcon onClick={(e) => handleSettingBtnClicked(e, directory.uniqid)}>
+                    <ListItemIcon onClick={(e) => handleSettingBtnClicked(e, directory.id)}>
                         <IconButton>
                             <SettingsIcon sx={{ cursor: 'pointer' }} mr={50} />
                         </IconButton>

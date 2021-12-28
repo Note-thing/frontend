@@ -50,7 +50,7 @@ export default function SharedNoteComponent() {
         setHasError(false);
         try {
             const note = await Post(`/shared_notes/${uuid}/copy`, { folderId });
-            const contextDirectory = directoriesList.find((dir) => dir.uniqid === folderId);
+            const contextDirectory = directoriesList.find((dir) => dir.id === folderId);
             if (contextDirectory !== undefined) {
                 contextDirectory.notes.push(note);
                 dispatch('update_directory', contextDirectory);
@@ -76,7 +76,7 @@ export default function SharedNoteComponent() {
         setIsCopying(false);
     };
     const directoryChangedHandler = async (directoryId) => {
-        const dir = directoriesList.find((d) => d.uniqid === directoryId);
+        const dir = directoriesList.find((d) => d.id === directoryId);
         if (dir !== undefined) {
             setDirectory(dir);
         }
@@ -101,7 +101,7 @@ export default function SharedNoteComponent() {
                     <Select
                         labelId="select-label"
                         ref={selectInput}
-                        value={directory.uniqid}
+                        value={directory.id}
                         label="Dossier de destination"
                         defaultValue=""
                         onChange={(ev) => directoryChangedHandler(ev.target.value)}
@@ -109,7 +109,7 @@ export default function SharedNoteComponent() {
 
                     >
                         {directoriesList.map((dir, idx) => (
-                            <MenuItem key={dir.uniqid} value={idx} data-testid={`folder-item-${dir.uniqid}`}>
+                            <MenuItem key={dir.id} value={idx} data-testid={`folder-item-${dir.id}`}>
                                 {dir.name}
                             </MenuItem>
                         ))}

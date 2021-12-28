@@ -18,7 +18,7 @@ export default function NoteCreationModal({ showModal, onClose }) {
     const [error, setError] = useState('');
     const {
         notes: {
-            directory: { uniqid: directoryUniqId }
+            directory: { id: directoryid }
         },
         dispatch
     } = useContext(NoteContext);
@@ -41,7 +41,7 @@ export default function NoteCreationModal({ showModal, onClose }) {
         }
 
         try {
-            const response = await Post('/notes', { title: newNoteName, body: '', folder_id: directoryUniqId });
+            const response = await Post('/notes', { title: newNoteName, body: '', folder_id: directoryid });
             dispatch({
                 type: 'update_note',
                 note: response

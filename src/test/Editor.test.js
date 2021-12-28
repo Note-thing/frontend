@@ -8,17 +8,17 @@ import Editor from '../layout/editor/Editor';
 const editor = () => render(
     <NoteProvider initialState={{
         note: {
-            uniqid: 'dfgh3245sdfg',
+            id: 'dfgh3245sdfg',
             title: 'CSS',
             tags: ['Web', 'design'],
             content: '# Getting Started with Create React App'
         },
         directories: [{
-            uniqid: '619f6488babbf',
+            id: '619f6488babbf',
             name: 'TWEB',
             notes: [
                 {
-                    uniqid: 'dfgh3245sdfg',
+                    id: 'dfgh3245sdfg',
                     title: 'CSS',
                     tags: ['Web', 'design'],
                     content: '# Getting Started with Create React App'

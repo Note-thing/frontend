@@ -18,6 +18,7 @@ import '../../resource/css/main-menu.css';
 export default function MainMenu() {
     const { main: { user } } = useContext(MainContext);
     const { notes: { directories, directory } } = useContext(NoteContext);
+    console.log(directory);
     return (
         <section className="main-menu-container">
             <Grid
@@ -32,8 +33,8 @@ export default function MainMenu() {
                     <List>
                         {directories.map((dir) => (
                             <MainMenuItem
-                                key={dir.uniqid}
-                                show={directory && dir.uniqid === directory.uniqid}
+                                key={dir.id}
+                                show={directory && dir.id === directory.id}
                                 directory={dir}
                             />
                         ))}
