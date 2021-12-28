@@ -54,6 +54,7 @@ const reducer = (state, action) => {
         }
         case 'update_note': {
             const dir = state.directories.find((d) => d.id === action.note.folder_id);
+            dir.notes = dir.notes.filter((n) => n.id !== action.note.id);
             dir.notes.push(action.note);
             return {
                 ...state,

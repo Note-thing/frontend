@@ -1,6 +1,12 @@
 import React, { useCallback, useContext } from 'react';
 import {
-    Chip, List, ListItem, ListItemButton, ListItemText, ListItemIcon, IconButton
+    Chip,
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemText,
+    ListItemIcon,
+    IconButton
 } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import { KeyboardArrowRight } from '@mui/icons-material';
@@ -15,10 +21,7 @@ import NoteCreationMainMenuItem from './noteCreation/NoteCreationMainMenuItem';
  */
 export default function MainMenuItem({ directory, show }) {
     const history = useHistory();
-    const {
-        notes,
-        dispatch
-    } = useContext(NoteContext);
+    const { notes, dispatch } = useContext(NoteContext);
     const directoryid = notes.directory.id;
     /**
      * Handle directory click.
@@ -87,9 +90,7 @@ export default function MainMenuItem({ directory, show }) {
                         </IconButton>
                     </ListItemIcon>
                 )}
-
             </ListItem>
-            
             <List
                 sx={{
                     opacity: show ? '1' : '0',
@@ -99,29 +100,30 @@ export default function MainMenuItem({ directory, show }) {
                 }}
                 data-testid="MainMenu-notesList"
             >
-                {directory.notes.map((note, idx) => (
-                    <ListItemButton
-                        key={`MainMenu-btn-item-${note.id}`}
-                        onClick={() => handleNoteClick(note)}
-                    >
-                        <ListItemText
-                            primary={note.title}
-                            secondary={note.tags.map((t) => (
-                                <Chip
-                                    key={note.id + note.title.concat(t)}
-                                    label={t}
-                                    sx={{ marginRight: '0.1rem' }}
-                                    size="small"
-                                    component="span" // to avoid warning because secondary is wrapped in a <p>
-                                    data-testid={`MainMenu-notesList-item-tag-${idx}`}
-                                />
-                            ))}
-                            data-testid={`MainMenu-notesList-item-${idx}`}
-                        />
-                    </ListItemButton>
-                ))}
+                {directory.notes
+                    .sort((a, b) => a.title > b.title)
+                    .map((note, idx) => (
+                        <ListItemButton
+                            key={`MainMenu-btn-item-${note.id}`}
+                            onClick={() => handleNoteClick(note)}
+                        >
+                            <ListItemText
+                                primary={note.title}
+                                secondary={note.tags.map((t) => (
+                                    <Chip
+                                        key={note.id + note.title.concat(t)}
+                                        label={t}
+                                        sx={{ marginRight: '0.1rem' }}
+                                        size="small"
+                                        component="span" // to avoid warning because secondary is wrapped in a <p>
+                                        data-testid={`MainMenu-notesList-item-tag-${idx}`}
+                                    />
+                                ))}
+                                data-testid={`MainMenu-notesList-item-${idx}`}
+                            />
+                        </ListItemButton>
+                    ))}
                 <NoteCreationMainMenuItem />
-
             </List>
             {show && <hr size={1} color="#e9f0f0" />}
         </>

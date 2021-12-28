@@ -38,16 +38,14 @@ export default function EditorHeader({ setPreviewWidth }) {
     const handleChangeTitle = async (ev) => {
         setNoteTitle(ev.target.value);
         try {
-            const note = await Patch(`/notes/${notes.note.id}`, { title: noteTitle });
+            const note = await Patch(`/notes/${notes.note.id}`, { title: ev.target.value });
             const oldNote = notes.note;
-            console.log('n0te', note);
             noteDispatch({ type: 'update_note', note: { ...oldNote, ...note } });
         } catch (err) {
             mainDispatch({ type: 'dialog', dialog: { id: 'update_name_note', is_open: true } });
         }
     };
     useEffect(() => {
-        console.log('UPPPPPPDATE EFFECT');
         setNoteTitle(notes.note.title);
     }, [notes.note.id]);
     return (
