@@ -1,10 +1,10 @@
 :root {
-    --menu-width: 48px;
+    --app-menu-width: 48px;
     --app-border:0.1rem solid #e9f0f0;
 }
 
 .main{
-    margin-left:var(--menu-width);
+    margin-left:var(--app-menu-width);
 }
 
 .main-menu-container{
@@ -12,10 +12,10 @@
     position: fixed;
     z-index: 1000;
     background-color:white;
-    border-right: 0.1rem solid #e9f0f0;
+    border-right: var(--app-border);
     box-sizing: border-box;
     height:100vh;
-    width:var(--menu-width);
+    width:var(--app-menu-width);
     transition:width 200ms ease-in-out;
 }
 
