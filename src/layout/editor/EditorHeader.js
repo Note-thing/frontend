@@ -20,7 +20,7 @@ export default function EditorHeader({ setPreviewWidth }) {
     const { notes, dispatch: noteDispatch } = useContext(NoteContext);
     const { dispatch: mainDispatch } = useContext(MainContext);
     const [noteTitle, setNoteTitle] = useState('');
-    const handleViewModeClic = (width) => setPreviewWidth(width);
+    const handleViewModeClick = (width) => setPreviewWidth(width);
     const handleNoteSuppression = async () => {
         try {
             await Delete(`/notes/${1}`, {});
