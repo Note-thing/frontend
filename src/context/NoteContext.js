@@ -6,7 +6,7 @@ export const NoteContext = createContext();
 
 const getActiveFromURL = (directories) => {
     const [, , directoryId, , noteId] = window.location.pathname.split('/');
-    const directory = directories.find((d) => d.id === directoryId);
+    const directory = directories.find((d) => d.id === parseInt(directoryId, 10));
     return {
         directory,
         noteId
@@ -20,6 +20,15 @@ const reducer = (state, action) => {
                 directory: {},
                 note: {},
                 directories: action.directories
+            };
+        case 'change_note_and_directory':
+            return {
+                ...state,
+                directory: {
+                    ...state.directory,
+                    ...action.directory
+                },
+                note: { ...action.note }
             };
         case 'change_directory':
             return {
@@ -79,10 +88,13 @@ const reducer = (state, action) => {
     }
 };
 
-export const NoteProvider = ({ user, children, mainDispatch, initialState
-}) => {
+export const NoteProvider = ({ user, children, mainDispatch }) => {
     const location = useLocation();
-    const [notes, dispatch] = useReducer(reducer, initialState);
+    const [notes, dispatch] = useReducer(reducer, {
+        directories: [],
+        directory: {},
+        note: {}
+    });
     useEffect(() => {
         const getFolder = async () => {
             try {
@@ -99,7 +111,7 @@ export const NoteProvider = ({ user, children, mainDispatch, initialState
     }, []);
 
     useEffect(() => {
-        if (notes.directories) {
+        if (notes.directories && notes.directories.length > 0) {
             const active = getActiveFromURL(notes.directories);
             if (active.directory) {
                 dispatch({
@@ -107,6 +119,7 @@ export const NoteProvider = ({ user, children, mainDispatch, initialState
                     directory: active.directory
                 });
             }
+
             if (active.noteId) {
                 (async () => {
                     try {
@@ -121,11 +134,12 @@ export const NoteProvider = ({ user, children, mainDispatch, initialState
                 })();
             }
         }
-    }, [location?.pathname]);
+    }, [location?.pathname, notes.directories]);
 
     return (
-        <NoteContext.Provider value={{ notes, dispatch }}>
+        notes && notes.directories && notes.directories.length > 0
+        && <NoteContext.Provider value={{ notes, dispatch }}>
             { children }
-        </NoteContext.Provider>
+           </NoteContext.Provider>
     );
 };

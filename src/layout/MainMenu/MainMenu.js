@@ -31,7 +31,7 @@ export default function MainMenu() {
                 >
                     <Grid sx={{ height: '85%' }}>
                         <List>
-                            {directories && directories.length > 0 && directories.map((dir) => (
+                            { directories?.map((dir) => (
                                 <MainMenuItem
                                     key={dir.id}
                                     show={directory && dir.id === directory.id}
