@@ -66,14 +66,7 @@ export default function EditorHeader({ setPreviewWidth }) {
         setNoteTitle(notes.note.title);
     }, [notes.note.id]);
     return (
-        <Grid
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            height="100%"
-            padding="0 1rem 0 1rem"
-            borderBottom="0.1rem solid #e9f0f0"
-        >
+        <Grid className="editor-header">
             <ShareNoteModal open={showShareModal} setOpen={setShowShareModal} />
             <ConfirmationModal
                 open={showDeleteModal}

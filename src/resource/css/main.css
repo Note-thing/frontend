@@ -1,5 +1,6 @@
 :root {
     --menu-width: 48px;
+    --app-border:0.1rem solid #e9f0f0;
 }
 
 .main{

@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import './AppLayout.css';
 import MainMenu from './MainMenu/MainMenu';
 import EditorComponent from './editor/Editor';
 import { NoteProvider } from '../context/NoteContext';

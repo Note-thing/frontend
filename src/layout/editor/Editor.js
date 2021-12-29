@@ -28,9 +28,7 @@ export default function Editor() {
 
     return useMemo(() => (
         <Grid container className="editor" data-testid="editor-component" direction="column">
-            <Grid item className="editor-header">
-                <EditorHeader setPreviewWidth={handlePreviewWidth} />
-            </Grid>
+            <EditorHeader setPreviewWidth={handlePreviewWidth} />
             {
                 body
                 && <Grid item className="editor-content">
