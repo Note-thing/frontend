@@ -2,7 +2,7 @@ import throwHttpError from '../errors/HttpErrorUtils';
 
 export const CONFIG = {
     api_url: 'http://localhost:3001/api/v1',
-    signin_url: '/signin',
+    signin_url: '/login',
     lost_password_url: '/lost_password',
     signup_url: '/signup',
     frontend_url: 'http://localhost:3000/',

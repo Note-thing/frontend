@@ -11,7 +11,7 @@ import {
     Button,
     Link
 } from '@mui/material';
-import { CONFIG, Get } from '../../config/config';
+import { CONFIG, Get, Post } from '../../config/config';
 import { MainContext } from '../../context/MainContext';
 import useInput from '../../hooks/useInput';
 
@@ -27,24 +27,40 @@ const SignIn = () => {
 
     const buttonSignIn = async (e) => {
         e.preventDefault();
-       // await Get('/signin');
+        let token = null;
+        try {
+            token = await Post(CONFIG.signin_url, { "email": email, "password": password });
+        } catch (error) {
+            //TODO: gestion erreur, à voir comment faire
+            console.log("error", error)
+            dispatch({
+                type: 'dialog',
+                dialog: {id: 'login_failed', is_open: true}
+            })
+        }
 
-        const tempUser = {
-            firstname: 'Stefan',
-            lastname: 'Teofanovic',
-            email,
-            isAuthenticated: true
-        };
-        localStorage.setItem('User', JSON.stringify({ ...main.user, ...tempUser }));
-        dispatch({
-            type: 'dialog',
-            dialog: { id: 'login', is_open: true }
-        });
-        dispatch({
-            type: 'login',
-            user: tempUser
-        });
-        setTimeout(() => history.push('/'), 2000);
+        console.log("token = ", token);
+        if(token != null){
+            const tempUser = {
+                email: email,
+                isAuthenticated: true
+            };
+
+            localStorage.setItem('User', JSON.stringify({ ...main.user, ...tempUser }));
+            localStorage.setItem('Token', token);
+
+            dispatch({
+                type: 'dialog',
+                dialog: { id: 'login', is_open: true }
+            });
+
+            dispatch({
+                type: 'login',
+                user: tempUser
+            });
+
+            setTimeout(() => history.push('/'), 2000);
+        }
     };
 
     const redirectPage = (link) => history.push(link);
