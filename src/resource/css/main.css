@@ -5,6 +5,7 @@
 
 .main{
     margin-left:var(--app-menu-width);
+    width:calc(100% - var(--app-menu-width));
 }
 
 .main-menu-container{

@@ -23,6 +23,13 @@
     height:calc(100vh - (var(--editor-footer-height) + var(--editor-header-height) + 1px)); 
 }
 
+.editor-content .preview-pannel{
+    box-sizing: border-box;
+    width: 100%;
+    overflow-wrap: anywhere;
+    padding: 0 1rem 0 0;
+}
+
 .editor{
     box-sizing: border-box;
     height: 100vh;
