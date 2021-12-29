@@ -1,4 +1,4 @@
-import React, { useEffect, createContext, useReducer } from 'react';
+import React, { useEffect, createContext, useReducer, useMemo, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Get } from '../config/config';
 
@@ -96,7 +96,8 @@ export const NoteProvider = ({ user, children, mainDispatch }) => {
         note: {}
     });
     useEffect(() => {
-        const getFolder = async () => {
+        // initial run -> fetch folder structure
+        (async () => {
             try {
                 const folders = await Get('/structure');
                 dispatch({ type: 'reset', directories: folders });
@@ -106,11 +107,11 @@ export const NoteProvider = ({ user, children, mainDispatch }) => {
                     dialog: { id: 'cannotLoadStructure', is_open: true }
                 });
             }
-        };
-        getFolder();
+        })();
     }, []);
 
     useEffect(() => {
+        // url change or page refresh -> restore context based on current url
         if (notes.directories && notes.directories.length > 0) {
             const active = getActiveFromURL(notes.directories);
             if (active.directory) {
@@ -136,10 +137,9 @@ export const NoteProvider = ({ user, children, mainDispatch }) => {
         }
     }, [location?.pathname, notes.directories]);
 
-    return (
+    return useMemo(() => (
         notes && notes.directories && notes.directories.length > 0
         && <NoteContext.Provider value={{ notes, dispatch }}>
             { children }
-           </NoteContext.Provider>
-    );
+        </NoteContext.Provider>), [notes, dispatch]);
 };
