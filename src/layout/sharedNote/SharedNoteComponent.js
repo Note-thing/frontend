@@ -40,13 +40,18 @@ export default function SharedNoteComponent() {
      * jour avant le clique de notre bouton.
      * A noter que nous le mettons dans un tableau pour pouvoir utiliser la méthode find
      * inexistante sur le html collection
-     * The purpose of the function is to get the value of the select (html element) via its ref. 
-     * @returns id du 
+     * The purpose of the function is to get the value of the select (html element) via its ref.
+     * @returns id du
      */
     const getSelectValue = () => [...selectInput.current.children].find((e) => e.localName === 'input').value;
     const copyHandler = async () => {
         // Cannot use state since we have no garanty the state is updated.
-        const folderId = directoriesList[getSelectValue()].id;
+        const selectedFolderId = getSelectValue();
+        if (selectedFolderId === '') {
+            setHasError(true);
+            return;
+        }
+        const folderId = directoriesList[selectedFolderId].id;
         setIsCopying(true);
         setHasError(false);
         try {
@@ -83,17 +88,18 @@ export default function SharedNoteComponent() {
                 </Grid>
             )}
             <Grid item md={12}>
+                <input data-testid="tamere" value="rien" />
                 <p>Veuillez choisir un dossier dans lequel copier votre note</p>
                 <FormControl fullWidth>
                     <InputLabel id="select-label">Dossier destination</InputLabel>
                     <Select
                         labelId="select-label"
+                        SelectDisplayProps={{ 'data-testid': 'select-dest-folder' }}
                         ref={selectInput}
                         value={directory.id}
                         label="Dossier de destination"
                         defaultValue=""
                         onChange={(ev) => directoryChangedHandler(ev.target.value)}
-                        SelectDisplayProps={{ 'data-testid': 'folder-dropdown' }}
                     >
                         {directoriesList.map((dir, idx) => (
                             <MenuItem

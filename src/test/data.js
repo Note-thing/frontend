@@ -4,7 +4,7 @@ const DEFAULT_MOCK_DATA = {
     directories: [
         {
             id: '619f6488babbf',
-            name: 'TWEB',
+            title: 'TWEB',
             notes: [
                 {
                     id: 'dfgh3245sdfg',
@@ -125,7 +125,7 @@ const DEFAULT_MOCK_DATA = {
         },
         {
             id: '61ddfgg488babbf',
-            name: 'PDG',
+            title: 'PDG',
             notes: [
                 { id: 'dfg456fgh456', title: 'Note-thing', tags: ['Web', 'design'] },
                 { id: 'fghfgh345nb', title: 'Ruby on Rails', tags: ['Model', 'Controller'] },
@@ -134,7 +134,7 @@ const DEFAULT_MOCK_DATA = {
         },
         {
             id: '4566fgg488babbf',
-            name: 'AMT',
+            title: 'AMT',
             notes: [
                 { id: '789dfg234dfg', title: 'Guide de survie total', tags: ['Spring'] },
                 { id: '456gzuwesdgf', title: 'Survire en haute mer', tags: ['Spring', 'MVC'] },

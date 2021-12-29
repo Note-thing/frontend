@@ -5,6 +5,13 @@ import {
 import { NoteProvider } from '../context/NoteContext';
 import Editor from '../layout/editor/Editor';
 
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useLocation: () => ({
+        pathname: 'http://localhost/directory/1/note/1'
+    })
+}));
+
 const editor = () => render(
     <NoteProvider initialState={{
         note: {
