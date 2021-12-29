@@ -16,6 +16,7 @@ import {
     CONFIG, Delete, Get, Post
 } from '../../../config/config';
 import { MainContext } from '../../../context/MainContext';
+import { NoteContext } from '../../../context/NoteContext';
 
 export default function ShareNoteModal({ open, setOpen }) {
     const [sharedNotesList, setSharedNotesList] = useState([]);
@@ -24,11 +25,12 @@ export default function ShareNoteModal({ open, setOpen }) {
     const [isDeletingSharedNote, setIsDeletingSharedNote] = useState(false);
     const [isCopied, setIsCopied] = useState(false);
     const { dispatch } = useContext(MainContext);
+    const { notes } = useContext(NoteContext);
     useEffect(() => {
         const fetchSharedNotes = async () => {
             try {
                 setIsFetching(true);
-                const sharedNotes = await Get('/notes/1/shared_notes');
+                const sharedNotes = await Get(`/notes/${notes.note.id}/shared_notes`);
                 setSharedNotesList(sharedNotes);
                 setIsFetching(false);
             } catch (err) {
@@ -37,7 +39,7 @@ export default function ShareNoteModal({ open, setOpen }) {
             }
         };
         fetchSharedNotes();
-    }, []);
+    }, [notes.note.id]);
     const displaySpinner = () => (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <CircularProgress />
@@ -59,19 +61,14 @@ export default function ShareNoteModal({ open, setOpen }) {
     const deleteBtnHandler = async (sharedNote) => {
         setIsDeletingSharedNote(true);
         await Delete(`/shared_notes/${sharedNote.id}`);
-        setSharedNotesList(
-            sharedNotesList.filter((note) => note.id !== sharedNote.id)
-        );
+        setSharedNotesList(sharedNotesList.filter((note) => note.id !== sharedNote.id));
         setIsDeletingSharedNote(false);
     };
 
     const displayNotesList = () => {
         if (sharedNotesList.length > 0) {
             return (
-                <List
-                    dense={false}
-                    sx={{ maxHeight: '200px', overflowY: 'scroll' }}
-                >
+                <List dense={false} sx={{ maxHeight: '200px', overflowY: 'scroll' }}>
                     {sharedNotesList
                         .sort((a, b) => a.created_at < b.created_at)
                         .map((sharedNote) => (
@@ -113,7 +110,7 @@ export default function ShareNoteModal({ open, setOpen }) {
     const createNewSharedNote = async () => {
         setIsCreatingSharedNote(true);
         try {
-            const newSharedNotes = await Post('/shared_notes', { id: 1 });
+            const newSharedNotes = await Post('/shared_notes', { id: notes.note?.id });
             setSharedNotesList([newSharedNotes, ...sharedNotesList]);
         } catch (err) {
             dispatch({ type: 'dialog', dialog: { id: 'cannotCopySharedNote', is_open: true } });
@@ -121,11 +118,7 @@ export default function ShareNoteModal({ open, setOpen }) {
         setIsCreatingSharedNote(false);
     };
     return (
-        <Modal
-            title="Partager votre note"
-            open={open}
-            onClose={setOpen}
-        >
+        <Modal title="Partager votre note" open={open} onClose={setOpen}>
             <Grow in={isCopied}>
                 <Alert
                     sx={{
@@ -136,10 +129,7 @@ export default function ShareNoteModal({ open, setOpen }) {
                 </Alert>
             </Grow>
             {isFetching ? displaySpinner() : displayNotesList()}
-            <Button
-                onClick={() => createNewSharedNote()}
-                disabled={isCreatingSharedNote}
-            >
+            <Button onClick={() => createNewSharedNote()} disabled={isCreatingSharedNote}>
                 {isCreatingSharedNote && <CircularProgress />}
                 Générer un nouveau lien
             </Button>
