@@ -32,8 +32,8 @@ export default function Editor() {
                 <EditorHeader setPreviewWidth={handlePreviewWidth} />
             </Grid>
             {
-                body && 
-                <Grid item sx={{ height: 'calc(100vh - 96px)' }}>
+                body
+                && <Grid item sx={{ height: 'calc(100vh - 96px)' }}>
                     <ResizePannel
                         rightWidth={previewWidth}
                         leftPannel={

@@ -1,4 +1,6 @@
-import React, { useEffect, createContext, useReducer, useMemo, useCallback } from 'react';
+import React, {
+    useEffect, createContext, useReducer, useMemo, useCallback
+} from 'react';
 import { useLocation } from 'react-router-dom';
 import { Get } from '../config/config';
 
@@ -95,6 +97,9 @@ export const NoteProvider = ({ user, children, mainDispatch }) => {
         directory: {},
         note: {}
     });
+    /**
+     * Get folders / notes to display in the main menu
+     */
     useEffect(() => {
         // initial run -> fetch folder structure
         (async () => {
@@ -110,6 +115,9 @@ export const NoteProvider = ({ user, children, mainDispatch }) => {
         })();
     }, []);
 
+    /**
+     * Update the state (current opened folder and/or  current opened note) when the location change
+     */
     useEffect(() => {
         // url change or page refresh -> restore context based on current url
         if (notes.directories && notes.directories.length > 0) {
@@ -130,16 +138,22 @@ export const NoteProvider = ({ user, children, mainDispatch }) => {
                             note: data
                         });
                     } catch (err) {
-                        mainDispatch({ type: 'dialog', dialog: { id: 'cannotLoadStructure', is_open: true } });
+                        mainDispatch({
+                            type: 'dialog',
+                            dialog: { id: 'cannotLoadStructure', is_open: true }
+                        });
                     }
                 })();
             }
         }
     }, [location?.pathname, notes.directories]);
 
-    return useMemo(() => (
-        notes && notes.directories && notes.directories.length > 0
-        && <NoteContext.Provider value={{ notes, dispatch }}>
-            { children }
-        </NoteContext.Provider>), [notes, dispatch]);
+    return useMemo(
+        () => notes
+            && notes.directories
+            && notes.directories.length > 0 && (
+            <NoteContext.Provider value={{ notes, dispatch }}>{children}</NoteContext.Provider>
+        ),
+        [notes, dispatch]
+    );
 };

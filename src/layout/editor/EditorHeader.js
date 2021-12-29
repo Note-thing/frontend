@@ -1,7 +1,10 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, {
+    useState, useContext, useEffect
+} from 'react';
 import { Grid, Input, Button } from '@mui/material';
 import { PictureAsPdf, Share, Delete as DeleteIcon } from '@mui/icons-material';
 import PropTypes from 'prop-types';
+import { useLocation } from 'react-router';
 import { ReactComponent as Code } from '../../resource/icons/editor-viewmode-code.svg';
 import { ReactComponent as View } from '../../resource/icons/editor-viewmode-view.svg';
 import { ReactComponent as Split } from '../../resource/icons/editor-viewmode-split.svg';
@@ -10,11 +13,16 @@ import ConfirmationModal from '../common/ConfirmationModal';
 import { NoteContext } from '../../context/NoteContext';
 import { MainContext } from '../../context/MainContext';
 import { Delete, Patch } from '../../config/config';
+import { debounceInput } from '../../utils/utils';
+
+// Has to be ouside. Otherwise it will be erased next render
+let debounceName;
 /**
  * Header of the editor containing the note menu (display switch, PDF export, delete the note etc.).
  * @returns
  */
 export default function EditorHeader({ setPreviewWidth }) {
+    const location = useLocation();
     const [showShareModal, setShowShareModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const { notes, dispatch: noteDispatch } = useContext(NoteContext);
@@ -35,15 +43,24 @@ export default function EditorHeader({ setPreviewWidth }) {
             });
         }
     };
+    useEffect(() => {
+        debounceName = debounceInput(async (value) => {
+            try {
+                const note = await Patch(`/notes/${notes.note.id}`, { title: value });
+                const oldNote = notes.note;
+                noteDispatch({ type: 'update_note', note: { ...oldNote, ...note } });
+            } catch (err) {
+                mainDispatch({
+                    type: 'dialog',
+                    dialog: { id: 'update_name_note', is_open: true }
+                });
+            }
+        });
+    }, [location.pathname]);
+
     const handleChangeTitle = async (ev) => {
         setNoteTitle(ev.target.value);
-        try {
-            const note = await Patch(`/notes/${notes.note.id}`, { title: ev.target.value });
-            const oldNote = notes.note;
-            noteDispatch({ type: 'update_note', note: { ...oldNote, ...note } });
-        } catch (err) {
-            mainDispatch({ type: 'dialog', dialog: { id: 'update_name_note', is_open: true } });
-        }
+        debounceName(ev.target.value);
     };
     useEffect(() => {
         setNoteTitle(notes.note.title);
