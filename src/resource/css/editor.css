@@ -1,10 +1,10 @@
 :root {
-    --header-height: 48px;
-    --footer-height: 48px;
+    --editor-header-height: 48px;
+    --editor-footer-height: 48px;
 }
 
 .editor-header{
-    height:var(--header-height);
+    height:var(--editor-header-height);
     display:flex;
     justify-content:space-between;
     align-items:center;
@@ -12,7 +12,7 @@
 }
 
 .editor-footer{
-    height:var(--footer-height);
+    height:var(--editor-footer-height);
     display:flex;
     justify-content:space-between;
     align-items:center;
@@ -20,7 +20,14 @@
 }
 
 .editor-content{
-    height:calc(100vh - (var(--footer-height) + var(--header-height) + 1px)); 
+    height:calc(100vh - (var(--editor-footer-height) + var(--editor-header-height) + 1px)); 
+}
+
+.editor-content .preview-pannel{
+    box-sizing: border-box;
+    width: 100%;
+    overflow-wrap: anywhere;
+    padding: 0 1rem 0 0;
 }
 
 .editor{
