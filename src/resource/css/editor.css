@@ -1,8 +1,23 @@
+:root {
+    --header-height: 48px;
+    --footer-height: 48px;
+}
+
+.editor-header{
+    height:var(--header-height);
+}
+
+.editor-footer{
+    height:var(--footer-height); 
+}
+
+.editor-content{
+    height:calc(100vh - var(--footer-height) - var(--header-height)); 
+}
+
 .editor{
-    position: absolute;
     box-sizing: border-box;
-    left:48px;
-    width:calc(100vw - 48px) !important; /* MUI Grid container provide width=100% */
+    width:calc(100vw - var(--menu-width)) !important; /* MUI Grid container provide width=100% */
     height: 100vh;
 }
 

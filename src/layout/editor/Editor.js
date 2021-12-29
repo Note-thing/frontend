@@ -28,12 +28,12 @@ export default function Editor() {
 
     return useMemo(() => (
         <Grid container className="editor" data-testid="editor-component" direction="column">
-            <Grid item sx={{ height: '48px' }}>
+            <Grid item className="editor-header">
                 <EditorHeader setPreviewWidth={handlePreviewWidth} />
             </Grid>
             {
                 body
-                && <Grid item sx={{ height: 'calc(100vh - 96px)' }}>
+                && <Grid item className="editor-content">
                     <ResizePannel
                         rightWidth={previewWidth}
                         leftPannel={
@@ -51,7 +51,7 @@ export default function Editor() {
                     />
                 </Grid>
             }
-            <Grid item sx={{ height: '48px' }}>
+            <Grid item className="editor-footer">
                 <EditorFooter />
             </Grid>
         </Grid>), [previewWidth, handlePreviewWidth, bindNoteTextArea]);

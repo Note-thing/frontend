@@ -7,7 +7,6 @@ import { NoteContext } from '../../context/NoteContext';
 import User from './User';
 import MainMenuItem from './MainMenuItem';
 import FolderCreationMainMenuItem from './FolderCreation/FolderCreationMainMenuItem';
-import '../../resource/css/main-menu.css';
 
 /**
  * Main menu of the application (left panel with directories, notes, search and access
