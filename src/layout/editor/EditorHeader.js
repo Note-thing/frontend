@@ -56,7 +56,7 @@ export default function EditorHeader({ setPreviewWidth }) {
                 });
             }
         });
-    }, [location.pathname]);
+    }, [location.pathname, notes.note.id, notes.directory.id]);
 
     const handleChangeTitle = async (ev) => {
         setNoteTitle(ev.target.value);
