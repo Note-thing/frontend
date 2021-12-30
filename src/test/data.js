@@ -1,6 +1,14 @@
 const DEFAULT_MOCK_DATA = {
-    directory: {},
-    note: {},
+    directory: {
+        id: '61ddfgg488babbf',
+        title: 'PDG',
+        notes: [
+            { id: 'dfg456fgh456', title: 'Note-thing', tags: ['Web', 'design'] },
+            { id: 'fghfgh345nb', title: 'Ruby on Rails', tags: ['Model', 'Controller'] },
+            { id: 'etz4256dsfh', title: 'CI/CD', tags: ['Jest.js', 'Unit test'] }
+        ]
+    },
+    note: { id: 'dfg456fgh456', title: 'Note-thing', tags: ['Web', 'design'] },
     directories: [
         {
             id: '619f6488babbf',

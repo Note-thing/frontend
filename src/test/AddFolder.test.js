@@ -24,9 +24,6 @@ beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
-const open = jest.fn();
-Object.defineProperty(window, 'options', { offset: 210 });
-
 // Mock useParams used in SharedNoteComponent
 jest.mock('react-router-dom', () => ({
     useParams: () => ({ uuid: '123' }),
@@ -38,9 +35,7 @@ const dispatch = jest.fn();
 
 it('Folder Creation - The modal show on click', async () => {
     server.use(
-        rest.post('http://localhost:3001/api/v1/folders', (req, res, ctx) =>
-            res(ctx.json({ test: 'test' }))
-        )
+        rest.post('http://localhost:3001/api/v1/folders', (req, res, ctx) => res(ctx.json({ test: 'test' })))
     );
 
     render(
@@ -70,9 +65,7 @@ it('Folder Creation - The modal show on click', async () => {
 
 it('Folder Creation - The modal show on click and dispear on creation', async () => {
     server.use(
-        rest.post('http://localhost:3001/api/v1/folders', (req, res, ctx) =>
-            res(ctx.json({ test: 'test' }))
-        )
+        rest.post('http://localhost:3001/api/v1/folders', (req, res, ctx) => res(ctx.json({ test: 'test' })))
     );
     render(
         <MainContext.Provider
@@ -142,9 +135,7 @@ it('Folder Creation - Empty name', async () => {
 });
 it('Folder Creation -  Too big name (>50chars)', async () => {
     server.use(
-        rest.post('http://localhost:3001/api/v1/folders', (req, res, ctx) =>
-            res(ctx.json({ test: 'test' }))
-        )
+        rest.post('http://localhost:3001/api/v1/folders', (req, res, ctx) => res(ctx.json({ test: 'test' })))
     );
     render(
         <MainContext.Provider

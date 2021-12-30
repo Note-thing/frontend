@@ -9,12 +9,15 @@ import CustomModal from './Modal';
  * onAccept: cb called when "supprimer" button is cliked
  * @returns
  */
-export default function ConfirmationModal({ open, onClose, onConfirm }) {
+export default function ConfirmationModal({
+    open, onClose, onConfirm, testid
+}) {
     return (
         <CustomModal
             title="Etes vous sûr de vouloir supprimer ?"
             open={open}
             onClose={() => onClose(false)}
+            testid={testid}
         >
             <Grid container>
                 <Grid item>
@@ -32,6 +35,7 @@ export default function ConfirmationModal({ open, onClose, onConfirm }) {
                                 color="error"
                                 onClick={() => onConfirm()}
                                 startIcon={<DeleteIcon />}
+                                data-testid="confirmation-modal-confirm-btn"
                             >
                                 Supprimer
                             </Button>

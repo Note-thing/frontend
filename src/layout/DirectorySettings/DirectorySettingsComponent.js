@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Grid, TextField, Button } from '@mui/material';
+import { Grid, TextField, Button, Alert } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import { NoteContext } from '../../context/NoteContext';
 import { Delete, Patch } from '../../config/config';
@@ -13,6 +13,7 @@ export default function DirectorySettingsComponent() {
     const { notes, dispatch: dispatchNote } = useContext(NoteContext);
     const { dispatch: dispatchMain } = useContext(MainContext);
     const [name, setName] = useState('');
+    const [error, setError] = useState('');
     const [isUpdatingName, setIsUpdatingName] = useState(false);
     const [isDeletingFolder, setIsDeletingFolder] = useState(false);
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
@@ -33,6 +34,15 @@ export default function DirectorySettingsComponent() {
      * Called when the "mettre à jour" button is clicked
      */
     const handleSaveName = async () => {
+        setError('');
+        if (name === '') {
+            setError('Le nom ne peut pas être vide');
+            return;
+        }
+        if (name.length > 50) {
+            setError('Le nom ne peut pas être plus grand que 50 caractères');
+            return;
+        }
         setIsUpdatingName(true);
         try {
             const folder = await Patch(`/folders/${notes.directory.id}`, {
@@ -43,6 +53,7 @@ export default function DirectorySettingsComponent() {
         } catch (err) {
             dispatchMain({ type: 'dialog', dialog: { id: 'cannotEditFolder', is_open: true } });
         }
+
         setIsUpdatingName(false);
     };
 
@@ -53,18 +64,19 @@ export default function DirectorySettingsComponent() {
         setIsDeletingFolder(true);
         try {
             await Delete(`/folders/${notes.directory.id}`);
+
             dispatchNote({ type: 'update_directory', directory: notes.directory });
             history.push('/');
         } catch (err) {
             dispatchMain({ type: 'dialog', dialog: { id: 'cannotDeleteFolder', is_open: true } });
         }
-
         setIsDeletingFolder(false);
     };
 
     return (
         <Grid container direction="column" ml={10} mr={5} mt={5}>
             <ConfirmationModal
+                testid="folder-setting-confirmation-modal"
                 open={showConfirmationModal}
                 onClose={setShowConfirmationModal}
                 onConfirm={() => {
@@ -79,6 +91,11 @@ export default function DirectorySettingsComponent() {
                         <h3>Changement du nom</h3>
                     </Grid>
                     <Grid item>
+                        {error && (
+                            <Grid item md={12} sx={{ color: 'red' }}>
+                                <Alert severity="error">{error}</Alert>
+                            </Grid>
+                        )}
                         <TextField
                             sx={{ width: '100%' }}
                             id="outlined-basic"
@@ -86,6 +103,7 @@ export default function DirectorySettingsComponent() {
                             variant="outlined"
                             value={name}
                             onChange={handleNameChange}
+                            data-testid="folder-setting-title-input"
                         />
                     </Grid>
                     <Grid item>
@@ -94,6 +112,7 @@ export default function DirectorySettingsComponent() {
                             color="success"
                             variant="outlined"
                             onClick={handleSaveName}
+                            data-testid="folder-setting-name-saveBtn"
                         >
                             Mettre à jour le nom
                         </Button>
@@ -113,6 +132,7 @@ export default function DirectorySettingsComponent() {
                             variant="outlined"
                             color="error"
                             onClick={() => setShowConfirmationModal(true)}
+                            data-testid="folder-setting-delete-btn"
                         >
                             Supprimer le dossier
                         </Button>
