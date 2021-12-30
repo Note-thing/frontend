@@ -80,7 +80,7 @@ export default function EditorHeader({ setPreviewWidth }) {
     };
     useEffect(() => {
         setNoteTitle(notes.note.title);
-    }, [notes.note.id]);
+    }, [notes.note.title]);
     return (
         <Grid className="editor-header">
             <ShareNoteModal open={showShareModal} setOpen={setShowShareModal} />
