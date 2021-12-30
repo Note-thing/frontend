@@ -1,5 +1,7 @@
 import React, { useState, useContext } from 'react';
-import { TextField, Button, Alert, Grid } from '@mui/material';
+import {
+    TextField, Button, Alert, Grid
+} from '@mui/material';
 import CustomModal from '../../common/Modal';
 import { Post } from '../../../config/config';
 import HttpError from '../../../errors/HttpError';
@@ -24,31 +26,38 @@ export default function FolderCreationModal({ showModal, onClose }) {
      * @returns
      */
     const handleFolderCreationFolder = async () => {
+        setError('');
+
         if (newFolderName === '') {
             setError('Ne peut pas être vide');
             return;
         }
         if (newFolderName.length > 50) {
-            setError('Ne doit pas dépasser 50 caractère');
+            setError('Ne doit pas dépasser 50 caractères');
             return;
         }
-
         try {
             const response = await Post('/folders', { title: newFolderName });
-            dispatch({
+            const test = dispatch({
                 type: 'update_directory',
                 directory: response
             });
+            console.error('testetest', test);
             onClose(false);
         } catch (err) {
-            // TODO should probably use 
+            // TODO should probably use
             if (err instanceof HttpError) {
                 setError(err.getMessage());
             }
         }
     };
     return (
-        <CustomModal title="Nouveau dossier" open={showModal} onClose={onClose}>
+        <CustomModal
+            title="Nouveau dossier"
+            open={showModal}
+            onClose={onClose}
+            testid="folder-creation-modal"
+        >
             <Grid container spacing={2}>
                 <Grid item md={12} justifyContent="center">
                     {error !== '' && <Alert severity="error">{error}</Alert>}
@@ -61,6 +70,7 @@ export default function FolderCreationModal({ showModal, onClose }) {
                         placeholder="Entrez le nom du dossier"
                         value={newFolderName}
                         onChange={handleNewFolderNameChange}
+                        data-testid="folder-creation-input"
                     />
                 </Grid>
                 <Grid item md={12}>
@@ -68,6 +78,7 @@ export default function FolderCreationModal({ showModal, onClose }) {
                         variant="outlined"
                         sx={{ width: '100%' }}
                         onClick={handleFolderCreationFolder}
+                        data-testid="folder-creation-button"
                     >
                         Créer
                     </Button>

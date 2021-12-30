@@ -9,11 +9,12 @@ import { NoteContext } from '../../../context/NoteContext';
 
 /**
  * Modal for creating a new note
- * @param {Object} props : showModal if the modal should be displayed, onClose fn to close the
+ * @param {Object} props : open boolean used if the modal should be displayed,
+ *  onClose fn to close the
  * modal
  * @returns
  */
-export default function NoteCreationModal({ showModal, onClose }) {
+export default function NoteCreationModal({ open, onClose }) {
     const [newNoteName, setNewNoteName] = useState('');
     const [error, setError] = useState('');
     const {
@@ -36,26 +37,35 @@ export default function NoteCreationModal({ showModal, onClose }) {
             return;
         }
         if (newNoteName.length > 50) {
-            setError('Ne doit pas dépasser 50 caractère');
+            setError('Ne doit pas dépasser 50 caractères');
             return;
         }
 
         try {
-            const response = await Post('/notes', { title: newNoteName, body: '', folder_id: directoryid });
+            const response = await Post('/notes', {
+                title: newNoteName,
+                body: '',
+                folder_id: directoryid
+            });
             dispatch({
                 type: 'update_note',
                 note: response
             });
             onClose(false);
         } catch (err) {
-            // TODO should probably use
+            // TODO should probably use Stefan dialog dispatch
             if (err instanceof HttpError) {
                 setError(err.getMessage());
             }
         }
     };
     return (
-        <CustomModal title="Nouvelle note" open={showModal} onClose={onClose}>
+        <CustomModal
+            title="Nouvelle note"
+            open={open}
+            onClose={onClose}
+            testid="note-creation-modal"
+        >
             <Grid container spacing={2}>
                 <Grid item md={12} justifyContent="center">
                     {error !== '' && <Alert severity="error">{error}</Alert>}
@@ -68,6 +78,7 @@ export default function NoteCreationModal({ showModal, onClose }) {
                         placeholder="Entrez le nom de la note"
                         value={newNoteName}
                         onChange={handleNewNoteNameChange}
+                        data-testid="note-creation-input"
                     />
                 </Grid>
                 <Grid item md={12}>
@@ -75,6 +86,7 @@ export default function NoteCreationModal({ showModal, onClose }) {
                         variant="outlined"
                         sx={{ width: '100%' }}
                         onClick={handleCreationNote}
+                        data-testid="note-creation-button"
                     >
                         Créer
                     </Button>

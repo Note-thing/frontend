@@ -22,17 +22,22 @@ const style = {
  *                       children: body of the modal
  */
 export default function CustomModal({
-    open, onClose, title, children
+    open, onClose, title, children, testid
 }) {
     return (
-        <Modal sx={{ minWidth: '700px' }} open={open} onClose={() => onClose(false)}>
+        <Modal
+            sx={{ minWidth: '700px' }}
+            open={open}
+            onClose={() => onClose(false)}
+            data-testid={testid}
+        >
             <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
                     {title}
                 </Typography>
-                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                    {children}
-                </Typography>
+
+                {children}
+
             </Box>
         </Modal>
     );

@@ -14,7 +14,7 @@ export default function FolderCreationMainMenuItem() {
                 onClick={() => setShowModal(true)}
                 button
                 secondaryAction={<CreateNewFolderIcon />}
-                data-testid="MainMenu-directoryItem"
+                data-testid="MainMenu-add-folder-btn"
             >
                 <ListItemText primary="Nouveau dossier" secondary="Créer un nouveau dossier" />
             </ListItem>
