@@ -8,10 +8,18 @@ export const NoteContext = createContext();
 
 const getActiveFromURL = (directories) => {
     const [, , directoryId, , noteId] = window.location.pathname.split('/');
-    const directory = directories.find((d) => d.id === parseInt(directoryId, 10));
+    let directory;
+    let note;
+    if (directoryId) {
+        directory = directories.find((d) => d.id === parseInt(directoryId, 10));
+    }
+    if (directory && noteId) {
+        note = directory.notes.find((d) => d.id === parseInt(noteId, 10));
+    }
+
     return {
         directory,
-        noteId
+        note
     };
 };
 
@@ -22,15 +30,6 @@ const reducer = (state, action) => {
                 directory: {},
                 note: {},
                 directories: action.directories
-            };
-        case 'change_note_and_directory':
-            return {
-                ...state,
-                directory: {
-                    ...state.directory,
-                    ...action.directory
-                },
-                note: { ...action.note }
             };
         case 'change_directory':
             return {
@@ -129,13 +128,19 @@ export const NoteProvider = ({ user, children, mainDispatch }) => {
                 });
             }
 
-            if (active.noteId) {
+            if (active.note) {
                 (async () => {
                     try {
-                        const data = await Get(`/notes/${active.noteId}`);
+                        const data = await Get(`/notes/${active.note.id}`);
                         dispatch({
                             type: 'change_note',
-                            note: data
+                            note: {
+                                ...active.note,
+                                body: data.body,
+                                title: data.title,
+                                updated_at: data.updated_at,
+                                folder_id: data.folder_id
+                            }
                         });
                     } catch (err) {
                         mainDispatch({

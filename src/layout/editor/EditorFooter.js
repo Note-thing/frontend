@@ -16,7 +16,7 @@ export default function EditorFooter() {
                 <Chip
                     key={tag.id}
                     className="tag-chip"
-                    label={tag}
+                    label={tag.title}
                     onDelete={() => true /** TODO implémenter logique */}
                 />
             ))}
