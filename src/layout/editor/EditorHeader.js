@@ -1,5 +1,5 @@
 import React, {
-    useState, useContext, useEffect
+    useState, useContext, useEffect, useCallback
 } from 'react';
 import { Grid, Input, Button } from '@mui/material';
 import { PictureAsPdf, Share, Delete as DeleteIcon } from '@mui/icons-material';
@@ -43,6 +43,8 @@ export default function EditorHeader({ setPreviewWidth }) {
             });
         }
     };
+
+    /*
     useEffect(() => {
         debounceName = debounceInput(async (value) => {
             try {
@@ -58,9 +60,23 @@ export default function EditorHeader({ setPreviewWidth }) {
         });
     }, [location.pathname, notes.note.id, notes.directory.id]);
 
+*/
+    const debounceTitle = useCallback(debounceInput(async (value) => {
+        try {
+            const note = await Patch(`/notes/${notes.note.id}`, { title: value });
+            const oldNote = notes.note;
+            noteDispatch({ type: 'update_note', note: { ...oldNote, ...note } });
+        } catch (err) {
+            mainDispatch({
+                type: 'dialog',
+                dialog: { id: 'update_name_note', is_open: true }
+            });
+        }
+    }), [notes, noteDispatch, mainDispatch, debounceInput]);
+
     const handleChangeTitle = async (ev) => {
         setNoteTitle(ev.target.value);
-        debounceName(ev.target.value);
+        debounceTitle(ev.target.value);
     };
     useEffect(() => {
         setNoteTitle(notes.note.title);
