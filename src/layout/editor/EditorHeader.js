@@ -15,14 +15,11 @@ import { MainContext } from '../../context/MainContext';
 import { Delete, Patch } from '../../config/config';
 import { debounceInput } from '../../utils/utils';
 
-// Has to be ouside. Otherwise it will be erased next render
-let debounceName;
 /**
  * Header of the editor containing the note menu (display switch, PDF export, delete the note etc.).
  * @returns
  */
 export default function EditorHeader({ setPreviewWidth }) {
-    const location = useLocation();
     const [showShareModal, setShowShareModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const { notes, dispatch: noteDispatch } = useContext(NoteContext);
@@ -31,7 +28,7 @@ export default function EditorHeader({ setPreviewWidth }) {
     const handleViewModeClick = (width) => setPreviewWidth(width);
     const handleNoteSuppression = async () => {
         try {
-            await Delete(`/notes/${1}`, {});
+            await Delete(`/notes/${notes.note.id}`, {});
             const { directory } = notes;
             directory.notes = directory.notes.filter((note) => note.id !== notes.note.id);
             noteDispatch({ type: 'update_directory', directory });
@@ -43,24 +40,6 @@ export default function EditorHeader({ setPreviewWidth }) {
             });
         }
     };
-
-    /*
-    useEffect(() => {
-        debounceName = debounceInput(async (value) => {
-            try {
-                const note = await Patch(`/notes/${notes.note.id}`, { title: value });
-                const oldNote = notes.note;
-                noteDispatch({ type: 'update_note', note: { ...oldNote, ...note } });
-            } catch (err) {
-                mainDispatch({
-                    type: 'dialog',
-                    dialog: { id: 'update_name_note', is_open: true }
-                });
-            }
-        });
-    }, [location.pathname, notes.note.id, notes.directory.id]);
-
-*/
     const debounceTitle = useCallback(debounceInput(async (value) => {
         try {
             const note = await Patch(`/notes/${notes.note.id}`, { title: value });
@@ -90,6 +69,7 @@ export default function EditorHeader({ setPreviewWidth }) {
                 onConfirm={() => {
                     handleNoteSuppression();
                 }}
+                testid="confirmation-modal"
             />
             <Grid display="flex" justifyContent="space-around">
                 <Button size="small" onClick={() => handleViewModeClick(0)}>
@@ -129,12 +109,9 @@ export default function EditorHeader({ setPreviewWidth }) {
                     className="menu-icon-item"
                     sx={{ cursor: 'pointer' }}
                     onClick={() => setShowDeleteModal(true)}
+                    data-testid="editor-header-delete-btn"
                 />
             </Grid>
         </Grid>
     );
 }
-
-EditorHeader.propTypes = {
-    setPreviewWidth: PropTypes.func.isRequired
-};
