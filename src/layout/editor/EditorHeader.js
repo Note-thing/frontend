@@ -29,7 +29,7 @@ export default function EditorHeader({ setPreviewWidth }) {
     const { dispatch: mainDispatch } = useContext(MainContext);
     const [noteTitle, setNoteTitle] = useState('');
     const handleViewModeClick = (width) => setPreviewWidth(width);
-    const handleNoteSuppression = async () => {
+    const handleNoteSuppression = useCallback(async () => {
         try {
             await Delete(`/notes/${1}`, {});
             const { directory } = notes;
@@ -42,7 +42,7 @@ export default function EditorHeader({ setPreviewWidth }) {
                 dialog: { id: 'Impossible de supprimer la note note', is_open: true }
             });
         }
-    };
+    }, [notes, noteDispatch, mainDispatch]);
 
     /*
     useEffect(() => {

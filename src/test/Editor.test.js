@@ -2,7 +2,9 @@ import React from 'react';
 import {
     render, cleanup, act, fireEvent
 } from '@testing-library/react';
-import { NoteProvider } from '../context/NoteContext';
+import { MainContext } from '../context/MainContext';
+import { NoteContext } from '../context/NoteContext';
+import MOCK_DATA from './data';
 import Editor from '../layout/editor/Editor';
 
 jest.mock('react-router-dom', () => ({
@@ -12,29 +14,27 @@ jest.mock('react-router-dom', () => ({
     })
 }));
 
+const notes = MOCK_DATA;
+const dispatch = jest.fn();
+
 const editor = () => render(
-    <NoteProvider initialState={{
-        note: {
-            id: 'dfgh3245sdfg',
-            title: 'CSS',
-            tags: ['Web', 'design'],
-            content: '# Getting Started with Create React App'
-        },
-        directories: [{
-            id: '619f6488babbf',
-            name: 'TWEB',
-            notes: [
-                {
-                    id: 'dfgh3245sdfg',
-                    title: 'CSS',
-                    tags: ['Web', 'design'],
-                    content: '# Getting Started with Create React App'
-                }]
-        }]
-    }}
+    <MainContext.Provider
+        value={{
+            main: {
+                user: {
+                    firstname: 'Stefan',
+                    lastname: 'Teofanovic',
+                    email: 'st@novic.ch',
+                    isAuthenticated: true
+                }
+            },
+            dialog: null
+        }}
     >
-        <Editor />
-    </NoteProvider>
+        <NoteContext.Provider value={{ notes, dispatch }}>
+            <Editor />
+        </NoteContext.Provider>
+    </MainContext.Provider>
 );
 
 let container;
@@ -56,6 +56,7 @@ describe('Editor Component', () => {
     });
     it('Editor Component | All Editor layout components present', () => {
         // testing layout
+        console.log(container.getElementsByClassName('editor'));
         expect(container.getElementsByClassName('editor').length).toBe(1);
         expect(container.getElementsByClassName('resize-pannel-container').length).toBe(1);
         expect(container.getElementsByClassName('editor-textarea').length).toBe(1);

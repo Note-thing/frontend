@@ -31,6 +31,7 @@ export default function Editor() {
     const [previewWidth, setPreviewWidth] = useState(50);
     const runEditor = (area) => new TextareaMarkdown(area);
    
+    /*
     useEffect(() => {
         debounceTitle = debounceInput(async () => {
             try {
@@ -49,6 +50,7 @@ export default function Editor() {
             }
         });
     }, []);
+    */
 
     useEffect(() => {
         if (body) {

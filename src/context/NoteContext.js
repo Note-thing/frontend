@@ -89,7 +89,7 @@ const reducer = (state, action) => {
     }
 };
 
-export const NoteProvider = ({ user, children, mainDispatch }) => {
+export const NoteProvider = ({ children, mainDispatch }) => {
     const location = useLocation();
     const [notes, dispatch] = useReducer(reducer, {
         directories: [],

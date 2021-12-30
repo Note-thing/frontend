@@ -29,25 +29,25 @@ const SignIn = () => {
         e.preventDefault();
         let token = null;
         try {
-            token = await Post(CONFIG.signin_url, { "email": email, "password": password });
+            token = await Post(CONFIG.signin_url, { email, password });
         } catch (error) {
-            //TODO: gestion erreur, à voir comment faire
-            console.log("error", error)
+            // TODO: gestion erreur, à voir comment faire
+            console.log('error', error);
             dispatch({
                 type: 'dialog',
-                dialog: {id: 'login_failed', is_open: true}
-            })
+                dialog: { id: 'login_failed', is_open: true }
+            });
         }
 
-        console.log("token = ", token);
-        if(token != null){
+        console.log('token = ', token);
+        if (token != null) {
             const tempUser = {
-                email: email,
+                email,
                 isAuthenticated: true
             };
 
             localStorage.setItem('User', JSON.stringify({ ...main.user, ...tempUser }));
-            localStorage.setItem('Token', token);
+            localStorage.setItem('Token', token.token);
 
             dispatch({
                 type: 'dialog',

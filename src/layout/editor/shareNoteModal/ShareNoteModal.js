@@ -27,25 +27,26 @@ export default function ShareNoteModal({ open, setOpen }) {
     const { dispatch } = useContext(MainContext);
     const { notes } = useContext(NoteContext);
     useEffect(() => {
-        const fetchSharedNotes = async () => {
-            try {
-                setIsFetching(true);
-                const sharedNotes = await Get(`/notes/${notes.note.id}/shared_notes`);
-                setSharedNotesList(sharedNotes);
-                setIsFetching(false);
-            } catch (err) {
-                setIsFetching(false);
-                // TODO Afficher un toast ou quelque chose
+        (async () => {
+            if (notes.note.id) {
+                try {
+                    setIsFetching(true);
+                    const sharedNotes = await Get(`/notes/${notes.note.id}/shared_notes`);
+                    setSharedNotesList(sharedNotes);
+                    setIsFetching(false);
+                } catch (err) {
+                    setIsFetching(false);
+                    // TODO Afficher un toast ou quelque chose
+                }
             }
-        };
-        fetchSharedNotes();
+        })();
     }, [notes.note.id]);
     const displaySpinner = () => (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <CircularProgress />
         </Box>
     );
-    const generateLink = (sharedNote) => `${CONFIG.shared_note_url}${sharedNote.uuid}`;
+    const generateLink = (sharedNote) => `${CONFIG.shared_note_url}/${sharedNote.uuid}`;
 
     const copyLinkClickHandler = (sharedNote) => {
         if (isCopied) {

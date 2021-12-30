@@ -5,7 +5,6 @@ import EditorComponent from './editor/Editor';
 import { NoteProvider } from '../context/NoteContext';
 import SharedNoteComponent from './sharedNote/SharedNoteComponent';
 import DirectorySettingsComponent from './DirectorySettings/DirectorySettingsComponent';
-import { MainContext } from '../context/MainContext';
 import '../resource/css/main.css';
 
 /**
@@ -14,9 +13,8 @@ import '../resource/css/main.css';
  * @returns
  */
 export default function AppLayout() {
-    const { main, dispatch } = useContext(MainContext);
     return (
-        <NoteProvider user={main.user} mainDispatch={dispatch}>
+        <NoteProvider>
             <MainMenu />
             <section className="main">
                 <Switch>
