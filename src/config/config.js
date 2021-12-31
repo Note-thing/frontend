@@ -72,8 +72,10 @@ export const Get = async (endpoint, data) => {
         throwHttpError(error, 'Erreur http');
     });
     controlTokenAfterResponse(response);
+
     handleError(response);
-    return response.json();
+    const json = await response.json();
+    return json;
 };
 
 export const Post = (endpoint, data) => requestWithBody('POST', endpoint, data);

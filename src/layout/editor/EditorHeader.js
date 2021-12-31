@@ -4,7 +4,6 @@ import React, {
 import { Grid, Input, Button } from '@mui/material';
 import { PictureAsPdf, Share, Delete as DeleteIcon } from '@mui/icons-material';
 import PropTypes from 'prop-types';
-import { useLocation } from 'react-router';
 import { ReactComponent as Code } from '../../resource/icons/editor-viewmode-code.svg';
 import { ReactComponent as View } from '../../resource/icons/editor-viewmode-view.svg';
 import { ReactComponent as Split } from '../../resource/icons/editor-viewmode-split.svg';
@@ -22,7 +21,6 @@ let debounceName;
  * @returns
  */
 export default function EditorHeader({ setPreviewWidth }) {
-    const location = useLocation();
     const [showShareModal, setShowShareModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const { notes, dispatch: noteDispatch } = useContext(NoteContext);
@@ -103,13 +101,13 @@ export default function EditorHeader({ setPreviewWidth }) {
                 </Button>
             </Grid>
 
-            <Input
+            {noteTitle && <Input
                 className="noBorderInput"
                 sx={{ width: '10rem', fontSize: '1.2rem' }}
                 value={noteTitle}
                 onChange={handleChangeTitle}
                 placeholder="Titre de la note"
-            />
+            />}
 
             <Grid display="flex" justifyContent="space-around" width="10%">
                 <Share

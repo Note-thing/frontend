@@ -1,40 +1,81 @@
+import fetch, { enableFetchMocks, disableFetchMocks } from 'jest-fetch-mock';
 import React from 'react';
 import {
-    render, cleanup, act, fireEvent
+    render, cleanup, act, fireEvent, waitFor
 } from '@testing-library/react';
-import { MainContext } from '../context/MainContext';
-import { NoteContext } from '../context/NoteContext';
-import MOCK_DATA from './data';
+import { MainProvider } from '../context/MainContext';
+import { NoteProvider } from '../context/NoteContext';
 import Editor from '../layout/editor/Editor';
+
+enableFetchMocks();
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useLocation: () => ({
-        pathname: 'http://localhost/directory/1/note/1'
+        pathname: 'localhost:3000/directory/1/note/5'
     })
 }));
 
-const notes = MOCK_DATA;
-const dispatch = jest.fn();
+Object.defineProperty(window, 'location', {
+    value: {
+        pathname: 'localhost:3000/directory/1/note/5'
+    }
+});
+
+const mockLocalStorage = (function () {
+    let store = {
+        User: '{"email":"note-thing@pm.me","isAuthenticated":true}',
+        Token: 'éo234h5élk34hn5ékh35é23h5li23h45liu32h5i3h5ii2l34h5hl2i45'
+    };
+    return {
+        getItem(key) {
+            return store[key];
+        },
+        setItem(key, value) {
+            store[key] = value.toString();
+        },
+        clear() {
+            store = {};
+        }
+    };
+}());
+
+const structure = [{
+    id: 1,
+    title: 'occipital',
+    created_at: '2021-12-28T15:15:19.000Z',
+    updated_at: '2021-12-28T15:15:19.000Z',
+    user_id: 1,
+    notes: [{
+        id: 5,
+        title: 'secondhand4545',
+        body: '# Getting Started with Create React App',
+        created_at: '2021-12-28T15:15:20.000Z',
+        updated_at: '2021-12-30T20:35:02.000Z',
+        folder_id: 1,
+        tags: []
+    }
+    ]
+}];
+
+const note = {
+    id: 5,
+    title: 'secondhand4545',
+    body: '# Getting Started with Create React App',
+    created_at: '2021-12-28T15:15:20.000Z',
+    updated_at: '2021-12-30T20:35:02.000Z',
+    folder_id: 1,
+    tags: []
+};
+
+Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
 
 const editor = () => render(
-    <MainContext.Provider
-        value={{
-            main: {
-                user: {
-                    firstname: 'Stefan',
-                    lastname: 'Teofanovic',
-                    email: 'st@novic.ch',
-                    isAuthenticated: true
-                }
-            },
-            dialog: null
-        }}
-    >
-        <NoteContext.Provider value={{ notes, dispatch }}>
+    <MainProvider>
+        <NoteProvider>
             <Editor />
-        </NoteContext.Provider>
-    </MainContext.Provider>
+        </NoteProvider>
+    </MainProvider>
 );
 
 let container;
@@ -42,26 +83,36 @@ let textarea;
 let preview;
 
 describe('Editor Component', () => {
-    beforeAll(() => {
+    beforeEach(() => {
+        fetch.resetMocks();
+    });
+    it('Editor Component | All Editor layout components present', async () => {
+        // testing layout
+        fetch.mockResponses(
+            [
+                JSON.stringify(structure),
+                { status: 200 }
+            ], [
+                JSON.stringify(note),
+                { status: 200 }
+            ], [
+                JSON.stringify([]),
+                { status: 200 }
+            ]
+        );
         const edit = editor();
+        await waitFor(() => expect(fetch).toHaveBeenCalledTimes(3));
         container = edit.container;
         // testing layout
         const [textareaElement] = container.getElementsByClassName('editor-textarea');
         const [previewElement] = container.getElementsByClassName('preview-pannel');
         textarea = textareaElement;
         preview = previewElement;
+        expect(container).toBeInTheDocument();
+        expect(textarea).toBeInTheDocument();
+        expect(preview).toBeInTheDocument();
     });
-    afterAll(() => {
-        cleanup();
-    });
-    it('Editor Component | All Editor layout components present', () => {
-        // testing layout
-        console.log(container.getElementsByClassName('editor'));
-        expect(container.getElementsByClassName('editor').length).toBe(1);
-        expect(container.getElementsByClassName('resize-pannel-container').length).toBe(1);
-        expect(container.getElementsByClassName('editor-textarea').length).toBe(1);
-        expect(container.getElementsByClassName('preview-pannel').length).toBe(1);
-    });
+    
     it('Editor Component | Note content loaded in textarea', () => {
         expect(textarea.value).toBe('# Getting Started with Create React App');
     });
@@ -132,7 +183,7 @@ I think I'll use it to format all of my documents from now on.`;
         expect(preview.innerHTML.trim()).toBe(`<p>I really like using Markdown.</p>
 <p>I think I'll use it to format all of my documents from now on.</p>`);
         act(() => {
-            textarea.value = `This is the first line.  
+            textarea.value = `This is the first line.
 And this is the second line.`;
             fireEvent.keyUp(textarea, { key: 'Enter', code: 'Enter', charCode: 13 });
         });

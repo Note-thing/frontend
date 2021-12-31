@@ -2,7 +2,6 @@ import React, {
     useContext, useEffect, useState, useMemo, useCallback
 } from 'react';
 import { Grid } from '@mui/material';
-import { useLocation } from 'react-router';
 import TextareaMarkdown from 'textarea-markdown';
 import ResizePannel from './ResizePannel';
 import EditorFooter from './EditorFooter';
@@ -18,7 +17,6 @@ import '../../resource/css/editor.css';
 let debounceTitle;
 
 export default function Editor() {
-    const location = useLocation();
     const { dispatch: mainDispatch } = useContext(MainContext);
     const {
         notes: {
@@ -30,8 +28,6 @@ export default function Editor() {
     const { value: noteTitle, bind: bindNoteTitle } = useInput(title);
     const [previewWidth, setPreviewWidth] = useState(50);
     const runEditor = (area) => new TextareaMarkdown(area);
-   
-    /*
     useEffect(() => {
         debounceTitle = debounceInput(async () => {
             try {
@@ -50,7 +46,6 @@ export default function Editor() {
             }
         });
     }, []);
-    */
 
     useEffect(() => {
         if (body) {
@@ -74,7 +69,6 @@ export default function Editor() {
         <Grid container className="editor" data-testid="editor-component" direction="column">
             <EditorHeader
                 setPreviewWidth={handlePreviewWidth}
-                bindNoteTitle={bindNoteTitle}
             />
             {
                 body
