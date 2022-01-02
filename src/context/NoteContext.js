@@ -69,7 +69,7 @@ const reducer = (state, action) => {
                 ...state,
                 // Update the open note.
                 note: action.note.id === state.note.id ? action.note : state.note,
-                directories: [...state.directories.filter((d) => d.id !== dir.id), dir]
+                directories: [dir, ...state.directories.filter((d) => d.id !== dir.id)]
             };
         }
         case 'delete_note': {
