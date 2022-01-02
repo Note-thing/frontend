@@ -50,16 +50,7 @@ Object.defineProperty(window, 'localStorage', {
     }())
 });
 
-const app = () => render(
-    <MainProvider>
-        <NoteProvider>
-            <MainMenu />
-        </NoteProvider>
-    </MainProvider>
-);
-let menuItems;
-let listItem;
-let notesLists;
+const menu = new Map();
 
 describe('Main Menu Component', () => {
     beforeAll(async () => {
@@ -70,26 +61,48 @@ describe('Main Menu Component', () => {
                 { status: 200 }
             ]
         );
-        app();
+        const { getByTestId, getAllByRole } = render(
+            <MainProvider>
+                <NoteProvider>
+                    <MainMenu />
+                </NoteProvider>
+            </MainProvider>
+        );
         await waitFor(() => expect(fetch).toHaveBeenCalledTimes(1));
-        menuItems = screen.queryAllByTestId('MainMenu-directoryItem');
-        notesLists = screen.queryAllByTestId('MainMenu-notesList');
+
+        // eslint-disable-next-line no-restricted-syntax
+        for (const item of DEFAULT_MOCK_DATA.directories) {
+            menu.set(item.id, {
+                directory: getByTestId('MainMenu-directoryItem'.concat(item.id)),
+                notes: getByTestId('MainMenu-notesList'.concat(item.id))
+            });
+        }
         // testing layout
     });
-    afterAll(() => {
-        cleanup();
-        fetch.resetMocks();
-    });
     it('Main menu item should display the directory and its notes', () => {
-        expect(menuItems[0].querySelector('span').textContent).toBe(DEFAULT_MOCK_DATA.directory.title);
-        expect(menuItems[0].querySelector('p').textContent).toBe(
+        expect(menu.get(1).directory.querySelector('span').textContent).toBe(DEFAULT_MOCK_DATA.directory.title);
+        expect(menu.get(1).directory.querySelector('p').textContent).toBe(
             DEFAULT_MOCK_DATA.directory.notes
                 .map((note) => note.title)
                 .join(' - ')
                 .concat('...')
         );
-        expect(menuItems[0].querySelector('p').textContent).toBe(
+        expect(menu.get(1).directory.querySelector('p').textContent).toBe(
             DEFAULT_MOCK_DATA.directory.notes
+                .map((note) => note.title)
+                .join(' - ')
+                .concat('...')
+        );
+
+        expect(menu.get(2).directory.querySelector('span').textContent).toBe(DEFAULT_MOCK_DATA.directories[1].title);
+        expect(menu.get(2).directory.querySelector('p').textContent).toBe(
+            DEFAULT_MOCK_DATA.directories[1].notes
+                .map((note) => note.title)
+                .join(' - ')
+                .concat('...')
+        );
+        expect(menu.get(2).directory.querySelector('p').textContent).toBe(
+            DEFAULT_MOCK_DATA.directories[1].notes
                 .map((note) => note.title)
                 .join(' - ')
                 .concat('...')
@@ -98,13 +111,16 @@ describe('Main Menu Component', () => {
 
     it('MainMenuItem should display (opacity = 1, height : auto) notes on click', async () => {
         // Check the notes list isn't visible
-        expect(window.getComputedStyle(notesLists[0]).opacity).toBe('1');
-        expect(window.getComputedStyle(notesLists[1]).opacity).toBe('0');
+        expect(window.getComputedStyle(menu.get(1).notes).opacity).toBe('1');
+        expect(window.getComputedStyle(menu.get(2).notes).opacity).toBe('0');
+        screen.debug(menu.get(2).directory, 300000);
         act(() => {
-            fireEvent.click(menuItems[0]);
+            // Object.assign(window.location, { host: 'localhost:3000', pathname: '/directory/2' });
+            fireEvent.click(menu.get(2).directory, {});
+            // menu.get(2).directory.click();
         });
         await stateChangeWait();
-        await waitFor(expect(window.getComputedStyle(notesLists[0]).opacity).toBe('0'));
+        await waitFor(expect(window.getComputedStyle(menu.get(1).notes).opacity).toBe('0'));
 
         // TODO : Stéfan: répare le test ou fais en un autre ou ...
         // Ne fonctionnera pas ... la logique d'affichage ayant changé (A voir avec Stéfan)
