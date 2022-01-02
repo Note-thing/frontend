@@ -28,7 +28,7 @@ export default function MainMenu() {
                     direction="column"
                     justifyContent="space-between"
                 >
-                    <Grid sx={{ height: '85%' }}>
+                    <Grid className="main-menu-scrollable">
                         <List>
                             { directories?.map((dir) => (
                                 <MainMenuItem

@@ -20,6 +20,16 @@
     transition:width 200ms ease-in-out;
 }
 
+.main-menu-container .main-menu-scrollable{
+    height: 85%;
+    overflow:auto;
+    scrollbar-width: none;
+}
+
+.main-menu-container .main-menu-scrollable::-webkit-scrollbar{
+    display: none;
+}
+
 .main-menu-container::before{
     content:' ';
     display: block;

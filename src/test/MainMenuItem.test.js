@@ -10,8 +10,6 @@ import { NoteProvider } from '../context/NoteContext';
 import MainMenu from '../layout/MainMenu/MainMenu';
 import DEFAULT_MOCK_DATA from './data';
 
-const stateChangeWait = () => new Promise((r) => setTimeout(r, 1000));
-
 enableFetchMocks();
 
 jest.mock('react-router-dom', () => ({
@@ -114,13 +112,9 @@ describe('Main Menu Component', () => {
         expect(window.getComputedStyle(menu.get(1).notes).opacity).toBe('1');
         expect(window.getComputedStyle(menu.get(2).notes).opacity).toBe('0');
         screen.debug(menu.get(2).directory, 300000);
-        act(() => {
-            // Object.assign(window.location, { host: 'localhost:3000', pathname: '/directory/2' });
-            fireEvent.click(menu.get(2).directory, {});
-            // menu.get(2).directory.click();
-        });
-        await stateChangeWait();
-        await waitFor(expect(window.getComputedStyle(menu.get(1).notes).opacity).toBe('0'));
+        fireEvent.click(menu.get(2).directory);
+        // await stateChangeWait();
+        await waitFor(() => expect(window.getComputedStyle(menu.get(1).notes).opacity).toBe('0'));
 
         // TODO : Stéfan: répare le test ou fais en un autre ou ...
         // Ne fonctionnera pas ... la logique d'affichage ayant changé (A voir avec Stéfan)
