@@ -1,4 +1,4 @@
-import fetch, { enableFetchMocks, disableFetchMocks } from 'jest-fetch-mock';
+import fetch, { enableFetchMocks } from 'jest-fetch-mock';
 import React from 'react';
 import {
     render, cleanup, act, fireEvent, waitFor
@@ -6,6 +6,7 @@ import {
 import { MainProvider } from '../context/MainContext';
 import { NoteProvider } from '../context/NoteContext';
 import Editor from '../layout/editor/Editor';
+import DEFAULT_MOCK_DATA from './data';
 
 enableFetchMocks();
 
@@ -22,53 +23,25 @@ Object.defineProperty(window, 'location', {
     }
 });
 
-const mockLocalStorage = (function () {
-    let store = {
-        User: '{"email":"note-thing@pm.me","isAuthenticated":true}',
-        Token: 'éo234h5élk34hn5ékh35é23h5li23h45liu32h5i3h5ii2l34h5hl2i45'
-    };
-    return {
-        getItem(key) {
-            return store[key];
-        },
-        setItem(key, value) {
-            store[key] = value.toString();
-        },
-        clear() {
-            store = {};
-        }
-    };
-}());
-
-const structure = [{
-    id: 1,
-    title: 'occipital',
-    created_at: '2021-12-28T15:15:19.000Z',
-    updated_at: '2021-12-28T15:15:19.000Z',
-    user_id: 1,
-    notes: [{
-        id: 5,
-        title: 'secondhand4545',
-        body: '# Getting Started with Create React App',
-        created_at: '2021-12-28T15:15:20.000Z',
-        updated_at: '2021-12-30T20:35:02.000Z',
-        folder_id: 1,
-        tags: []
-    }
-    ]
-}];
-
-const note = {
-    id: 5,
-    title: 'secondhand4545',
-    body: '# Getting Started with Create React App',
-    created_at: '2021-12-28T15:15:20.000Z',
-    updated_at: '2021-12-30T20:35:02.000Z',
-    folder_id: 1,
-    tags: []
-};
-
-Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
+Object.defineProperty(window, 'localStorage', {
+    value: (function () {
+        let store = {
+            User: '{"email":"note-thing@pm.me","isAuthenticated":true}',
+            Token: 'éo234h5élk34hn5ékh35é23h5li23h45liu32h5i3h5ii2l34h5hl2i45'
+        };
+        return {
+            getItem(key) {
+                return store[key];
+            },
+            setItem(key, value) {
+                store[key] = value.toString();
+            },
+            clear() {
+                store = {};
+            }
+        };
+    }())
+});
 
 const editor = () => render(
     <MainProvider>
@@ -83,17 +56,14 @@ let textarea;
 let preview;
 
 describe('Editor Component', () => {
-    beforeEach(() => {
-        fetch.resetMocks();
-    });
-    it('Editor Component | All Editor layout components present', async () => {
+    beforeAll(async () => {
         // testing layout
         fetch.mockResponses(
             [
-                JSON.stringify(structure),
+                JSON.stringify(DEFAULT_MOCK_DATA.directories),
                 { status: 200 }
             ], [
-                JSON.stringify(note),
+                JSON.stringify(DEFAULT_MOCK_DATA.note),
                 { status: 200 }
             ], [
                 JSON.stringify([]),
@@ -108,11 +78,19 @@ describe('Editor Component', () => {
         const [previewElement] = container.getElementsByClassName('preview-pannel');
         textarea = textareaElement;
         preview = previewElement;
+    });
+    afterAll(() => {
+        cleanup();
+    });
+    beforeEach(() => {
+        fetch.resetMocks();
+    });
+    it('Editor Component | All Editor layout components present', () => {
         expect(container).toBeInTheDocument();
         expect(textarea).toBeInTheDocument();
         expect(preview).toBeInTheDocument();
     });
-    
+
     it('Editor Component | Note content loaded in textarea', () => {
         expect(textarea.value).toBe('# Getting Started with Create React App');
     });

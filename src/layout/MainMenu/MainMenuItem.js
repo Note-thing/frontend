@@ -31,6 +31,7 @@ export default function MainMenuItem({ directory, show }) {
      */
     const handleDirectoryClick = useCallback(
         (id) => {
+            console.log('handleDirectoryClick', id);
             const destDirectory = notes.directories.find((dir) => dir.id === id);
             dispatch({
                 type: 'change_directory',
