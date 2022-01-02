@@ -6,7 +6,7 @@ import {
 } from '@testing-library/react';
 
 import { MainProvider } from '../context/MainContext';
-import { NoteProvider } from '../context/NoteContext';
+import { NoteContext } from '../context/NoteContext';
 import MainMenu from '../layout/MainMenu/MainMenu';
 import DEFAULT_MOCK_DATA from './data';
 
@@ -61,12 +61,16 @@ describe('Main Menu Component', () => {
         );
         const { getByTestId, getAllByRole } = render(
             <MainProvider>
-                <NoteProvider>
+                <NoteContext.Provider
+                    value={{
+                        notes: { ...DEFAULT_MOCK_DATA }
+                    }}
+                >
                     <MainMenu />
-                </NoteProvider>
+                </NoteContext.Provider>
             </MainProvider>
         );
-        await waitFor(() => expect(fetch).toHaveBeenCalledTimes(1));
+        //await waitFor(() => expect(fetch).toHaveBeenCalledTimes(1));
 
         // eslint-disable-next-line no-restricted-syntax
         for (const item of DEFAULT_MOCK_DATA.directories) {
@@ -109,12 +113,14 @@ describe('Main Menu Component', () => {
 
     it('MainMenuItem should display (opacity = 1, height : auto) notes on click', async () => {
         // Check the notes list isn't visible
-        expect(window.getComputedStyle(menu.get(1).notes).opacity).toBe('1');
-        expect(window.getComputedStyle(menu.get(2).notes).opacity).toBe('0');
+        expect(getComputedStyle(menu.get(1).notes).opacity).toBe('1');
+        expect(getComputedStyle(menu.get(2).notes).opacity).toBe('0');
+        act(() => {
+            fireEvent.click(menu.get(2).directory);
+        });
         screen.debug(menu.get(2).directory, 300000);
-        fireEvent.click(menu.get(2).directory);
         // await stateChangeWait();
-        await waitFor(() => expect(window.getComputedStyle(menu.get(1).notes).opacity).toBe('0'));
+        await waitFor(() => expect(getComputedStyle(menu.get(1).notes).opacity).toBe('0'));
 
         // TODO : Stéfan: répare le test ou fais en un autre ou ...
         // Ne fonctionnera pas ... la logique d'affichage ayant changé (A voir avec Stéfan)
