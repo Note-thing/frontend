@@ -4,7 +4,6 @@ import React, {
 import { Grid, Input, Button } from '@mui/material';
 import { PictureAsPdf, Share, Delete as DeleteIcon } from '@mui/icons-material';
 import PropTypes from 'prop-types';
-import { useLocation } from 'react-router';
 import { ReactComponent as Code } from '../../resource/icons/editor-viewmode-code.svg';
 import { ReactComponent as View } from '../../resource/icons/editor-viewmode-view.svg';
 import { ReactComponent as Split } from '../../resource/icons/editor-viewmode-split.svg';
@@ -26,7 +25,7 @@ export default function EditorHeader({ setPreviewWidth }) {
     const { dispatch: mainDispatch } = useContext(MainContext);
     const [noteTitle, setNoteTitle] = useState('');
     const handleViewModeClick = (width) => setPreviewWidth(width);
-    const handleNoteSuppression = async () => {
+    const handleNoteSuppression = useCallback(async () => {
         try {
             await Delete(`/notes/${notes.note.id}`, {});
             const { directory } = notes;
@@ -39,7 +38,25 @@ export default function EditorHeader({ setPreviewWidth }) {
                 dialog: { id: 'Impossible de supprimer la note note', is_open: true }
             });
         }
-    };
+    }, [notes, noteDispatch, mainDispatch]);
+
+    /*
+    useEffect(() => {
+        debounceName = debounceInput(async (value) => {
+            try {
+                const note = await Patch(`/notes/${notes.note.id}`, { title: value });
+                const oldNote = notes.note;
+                noteDispatch({ type: 'update_note', note: { ...oldNote, ...note } });
+            } catch (err) {
+                mainDispatch({
+                    type: 'dialog',
+                    dialog: { id: 'update_name_note', is_open: true }
+                });
+            }
+        });
+    }, [location.pathname, notes.note.id, notes.directory.id]);
+
+*/
     const debounceTitle = useCallback(debounceInput(async (value) => {
         try {
             const note = await Patch(`/notes/${notes.note.id}`, { title: value });
@@ -83,13 +100,13 @@ export default function EditorHeader({ setPreviewWidth }) {
                 </Button>
             </Grid>
 
-            <Input
+            {noteTitle && <Input
                 className="noBorderInput"
                 sx={{ width: '10rem', fontSize: '1.2rem' }}
                 value={noteTitle}
                 onChange={handleChangeTitle}
                 placeholder="Titre de la note"
-            />
+            />}
 
             <Grid display="flex" justifyContent="space-around" width="10%">
                 <Share

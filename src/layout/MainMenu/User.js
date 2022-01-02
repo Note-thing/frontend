@@ -20,6 +20,7 @@ const User = () => {
     const userLogout = async () => {
         // await Post('/logout');
         localStorage.removeItem('User');
+        localStorage.removeItem('Token');
         dispatch({
             type: 'dialog',
             dialog: { id: 'logout', is_open: true }

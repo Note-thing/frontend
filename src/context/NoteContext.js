@@ -1,7 +1,8 @@
 import React, {
-    useEffect, createContext, useReducer, useMemo, useCallback
+    useEffect, createContext, useReducer, useMemo, useContext
 } from 'react';
 import { useLocation } from 'react-router-dom';
+import { MainContext } from './MainContext';
 import { Get } from '../config/config';
 
 export const NoteContext = createContext();
@@ -16,7 +17,6 @@ const getActiveFromURL = (directories) => {
     if (directory && noteId) {
         note = directory.notes.find((d) => d.id === parseInt(noteId, 10));
     }
-
     return {
         directory,
         note
@@ -89,8 +89,9 @@ const reducer = (state, action) => {
     }
 };
 
-export const NoteProvider = ({ user, children, mainDispatch }) => {
+export const NoteProvider = ({ children }) => {
     const location = useLocation();
+    const { dispatch: mainDispatch } = useContext(MainContext);
     const [notes, dispatch] = useReducer(reducer, {
         directories: [],
         directory: {},
@@ -127,7 +128,6 @@ export const NoteProvider = ({ user, children, mainDispatch }) => {
                     directory: active.directory
                 });
             }
-
             if (active.note) {
                 (async () => {
                     try {
