@@ -120,6 +120,18 @@ const Dialog = () => {
                     </Alert>
                 </Snackbar>
             )}
+            {dialog && dialog.id === 'update_body_note' && (
+                <Snackbar
+                    anchorOrigin={position}
+                    open={dialog.is_open}
+                    onClose={() => handleClose({ is_open: false })}
+                    autoHideDuration={6000}
+                >
+                    <Alert variant="filled" severity="error">
+                        Impossible de modifier le body de la note
+                    </Alert>
+                </Snackbar>
+            )}
         </section>
     );
 };

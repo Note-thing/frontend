@@ -28,24 +28,17 @@ export default function Editor() {
     const { value: noteTitle, bind: bindNoteTitle } = useInput(title);
     const [previewWidth, setPreviewWidth] = useState(50);
     const runEditor = (area) => new TextareaMarkdown(area);
-    useEffect(() => {
-        debounceTitle = debounceInput(async () => {
-            try {
-                // const note = await Patch(`/notes/${id}`, { title: noteTitle });
-                noteDispatch({
-                    type: 'change_note',
-                    note: {
-                        title: noteTitle
-                    }
-                });
-            } catch (err) {
-                mainDispatch({
-                    type: 'dialog',
-                    dialog: { id: 'update_name_note', is_open: true }
-                });
-            }
-        });
-    }, []);
+    
+    const debounceBody = useCallback(debounceInput(async (value) => {
+        try {
+            await Patch(`/notes/${id}`, { body: value });
+        } catch (err) {
+            mainDispatch({
+                type: 'dialog',
+                dialog: { id: 'update_body_note', is_open: true }
+            });
+        }
+    }), [id, mainDispatch, debounceInput]);
 
     useEffect(() => {
         if (body) {
@@ -55,15 +48,14 @@ export default function Editor() {
         }
     }, [body]);
 
-    useEffect(() => {
-        if (noteTitle !== title) {
-            debounceTitle(noteTitle);
-        }
-    }, [noteTitle]);
-
     const handlePreviewWidth = useCallback((width) => {
         setPreviewWidth(width);
     }, [setPreviewWidth]);
+
+    const handleChangeBody = async (ev) => {
+        bindNoteBody.onChange(ev);
+        debounceBody(ev.target.value);
+    };
 
     return useMemo(() => (
         <Grid container className="editor" data-testid="editor-component" direction="column">
@@ -81,7 +73,7 @@ export default function Editor() {
                                 id="editor"
                                 data-preview="#preview"
                                 value={bindNoteBody.value}
-                                onChange={bindNoteBody.onChange}
+                                onChange={handleChangeBody}
                             />
                         }
                         rightPannel={
