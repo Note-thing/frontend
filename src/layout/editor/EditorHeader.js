@@ -40,23 +40,6 @@ export default function EditorHeader({ setPreviewWidth }) {
         }
     }, [notes, noteDispatch, mainDispatch]);
 
-    /*
-    useEffect(() => {
-        debounceName = debounceInput(async (value) => {
-            try {
-                const note = await Patch(`/notes/${notes.note.id}`, { title: value });
-                const oldNote = notes.note;
-                noteDispatch({ type: 'update_note', note: { ...oldNote, ...note } });
-            } catch (err) {
-                mainDispatch({
-                    type: 'dialog',
-                    dialog: { id: 'update_name_note', is_open: true }
-                });
-            }
-        });
-    }, [location.pathname, notes.note.id, notes.directory.id]);
-
-*/
     const debounceTitle = useCallback(debounceInput(async (value) => {
         try {
             const note = await Patch(`/notes/${notes.note.id}`, { title: value });

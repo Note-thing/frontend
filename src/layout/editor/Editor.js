@@ -13,32 +13,17 @@ import { debounceInput } from '../../utils/utils';
 import { Patch } from '../../config/config';
 import '../../resource/css/editor.css';
 
-// Has to be ouside. Otherwise it will be erased next render
-let debounceTitle;
-
 export default function Editor() {
     const { dispatch: mainDispatch } = useContext(MainContext);
     const {
         notes: {
-            note: { id, body, title }
-        },
-        dispatch: noteDispatch
+            note: { id, body }
+        }
     } = useContext(NoteContext);
-    const { value: noteBody, bind: bindNoteBody } = useInput(body);
-    const { value: noteTitle, bind: bindNoteTitle } = useInput(title);
+    const { bind: bindNoteBody } = useInput(body);
+
     const [previewWidth, setPreviewWidth] = useState(50);
     const runEditor = (area) => new TextareaMarkdown(area);
-    
-    const debounceBody = useCallback(debounceInput(async (value) => {
-        try {
-            await Patch(`/notes/${id}`, { body: value });
-        } catch (err) {
-            mainDispatch({
-                type: 'dialog',
-                dialog: { id: 'update_body_note', is_open: true }
-            });
-        }
-    }), [id, mainDispatch, debounceInput]);
 
     useEffect(() => {
         if (body) {
@@ -56,6 +41,17 @@ export default function Editor() {
         bindNoteBody.onChange(ev);
         debounceBody(ev.target.value);
     };
+
+    const debounceBody = useCallback(debounceInput(async (value) => {
+        try {
+            await Patch(`/notes/${id}`, { body: value });
+        } catch (err) {
+            mainDispatch({
+                type: 'dialog',
+                dialog: { id: 'update_body_note', is_open: true }
+            });
+        }
+    }), [id, mainDispatch, debounceInput]);
 
     return useMemo(() => (
         <Grid container className="editor" data-testid="editor-component" direction="column">
@@ -85,5 +81,5 @@ export default function Editor() {
             <Grid item className="editor-footer">
                 <EditorFooter />
             </Grid>
-        </Grid>), [previewWidth, handlePreviewWidth, title, bindNoteTitle, bindNoteBody]);
+        </Grid>), [previewWidth, bindNoteBody, handlePreviewWidth, handleChangeBody]);
 }
