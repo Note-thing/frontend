@@ -127,6 +127,7 @@ describe('Main Menu Component', () => {
         // await waitFor(expect(window.getComputedStyle(notesList).opacity).toBe('0'));
         // // Check the notes list IS visible
 
+
     // mockDirectory.notes.forEach((note, noteIdx) => {
     //     const noteItem = rootContainer.querySelector(
     //         `[data-testid=MainMenu-notesList-item-${noteIdx}]`

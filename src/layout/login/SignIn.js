@@ -73,7 +73,7 @@ const SignIn = () => {
                     variant="h5"
                     align="center"
                 >
-                    <LoginIcon align="center" />
+                    <LoginIcon />
                     Connection
                 </Typography>
 
