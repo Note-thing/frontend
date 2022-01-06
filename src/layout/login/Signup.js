@@ -200,7 +200,7 @@ const Signup = () => {
                         size="large"
                         onClick={buttonSignUp}
                     >
-                        S\'inscrire
+                        S'inscrire
                     </Button>
                     <Grid container>
                         <Grid item xs>
