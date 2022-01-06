@@ -55,7 +55,6 @@ const ChangePassword = () => {
                 }
             });
         } catch (error) {
-            console.log('error', error.getMessage());
             dispatch({
                 type: 'dialog',
                 dialog: {
