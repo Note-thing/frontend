@@ -9,6 +9,6 @@ export default class HttpError extends Error {
     }
 
     getMessage() {
-        return this.message;
+        return JSON.parse(JSON.parse(this.message).message);
     }
 }

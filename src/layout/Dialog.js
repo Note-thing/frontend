@@ -59,6 +59,20 @@ const Dialog = () => {
                     </Alert>
                 </Snackbar>
             )}
+            {dialog && dialog.id === 'signup_failed' && (
+                <Snackbar
+                    anchorOrigin={position}
+                    open={dialog.is_open}
+                    onClose={() => handleClose({ is_open: false })}
+                    autoHideDuration={6000}
+                >
+                    <Alert variant="filled" severity="error">
+                        Signup failed.
+                        <br />
+                        { dialog.info }
+                    </Alert>
+                </Snackbar>
+            )}
             {dialog && dialog.id === 'copySharedNoteSucceed' && (
                 <Snackbar
                     anchorOrigin={position}

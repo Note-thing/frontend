@@ -42,8 +42,12 @@ const requestWithBody = async (method, endpoint, data) => {
             token: localStorage.getItem('Token')
         }),
         body: JSON.stringify(data)
-    }).catch((error) => {
-        throwHttpError(error, 'Erreur http');
+    }).then(async (res) => {
+        if (!res.ok) {
+            const text = await res.text();
+            throwHttpError(res.status, text);
+        }
+        return res.json();
     });
     controlTokenAfterResponse(response);
     handleError(response);
