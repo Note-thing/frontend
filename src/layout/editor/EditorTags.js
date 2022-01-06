@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Grid, Chip } from '@mui/material';
-import { Get, Delete } from '../../config/config';
+import { Delete } from '../../config/config';
+import { NoteContext } from '../../context/NoteContext';
 
 /**
  * Editor Tags. Show all current tags for the selected note
  * @returns
  */
-export default function EditorTags({ tagsList, setTags }) {
+export default function EditorTags() {
+    const { notes: { note }, dispatch } = useContext(NoteContext);
     return (
-        tagsList.map((tag) => (
+        note.tags ? note.tags.map((tag) => (
             <Grid item>
                 <Chip
                     key={tag.id}
@@ -16,11 +18,15 @@ export default function EditorTags({ tagsList, setTags }) {
                     label={tag.title}
                     color="secondary"
                     onDelete={() => {
-                        setTags(tagsList.filter((t) => t.id !== tag.id));
+                        note.tags = note.tags.filter((t) => t.id !== tag.id);
+                        dispatch({
+                            type: 'update_note',
+                            note: note
+                        });
                         Delete(`/tags/${tag.id}`);
                     }}
                 />
             </Grid>
-        ))
+        )) : <Grid item />
     );
 }

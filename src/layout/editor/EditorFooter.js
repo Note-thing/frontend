@@ -1,19 +1,18 @@
 //<<<<<<< HEAD
-import React, { useContext, useMemo } from 'react';
+/*import React, { useContext, useMemo } from 'react';
 import {
     Grid, Chip, TextField, Button
 } from '@mui/material';
-import { NoteContext } from '../../context/NoteContext';
+*/
 /*=======
-<<<<<<< HEAD
-import React, { useEffect, useState } from 'react';
+<<<<<<< HEAD*/
+import React, { useContext, useState } from 'react';
 import { Grid } from '@mui/material';
 import { LocalOffer } from '@mui/icons-material';
 import IconButton from '@mui/material/IconButton';
-import { Get } from '../../config/config';
 import EditorTags from './EditorTags';
 import EditorDialogAddTags from './EditorDialogAddTags';
->>>>>>> action-tags-note*/
+//>>>>>>> action-tags-note*/
 
 /**
  * Editor Footer. Allows the user to add label to his note
@@ -21,15 +20,14 @@ import EditorDialogAddTags from './EditorDialogAddTags';
  */
 export default function EditorFooter() {
 //<<<<<<< HEAD
-    const { notes: { note: { tags } } } = useContext(NoteContext);
-    return useMemo(() => (
+    /*return useMemo(() => (
         <Grid className="editor-footer">
             {tags && tags.map((tag) => (
                 <Chip
                     key={tag.id}
                     className="tag-chip"
                     label={tag.title}
-                    onDelete={() => true /** TODO implémenter logique */}
+                    onDelete={() => true }
                 />
             ))}
             <TextField
@@ -40,20 +38,14 @@ export default function EditorFooter() {
             />
             <Button variant="text" size="small">Add</Button>
         </Grid>),
-    [tags]);
+    [tags]);*/
 /*=======
-    const [tagsList, setTags] = useState([]);
+    const [tagsList, setTags] = useState([]);*/
     const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);
     };
-
-    useEffect(() => {
-        Get('/structure/1').then((notes) => {
-            setTags(notes[0].notes[0].tags.map((tag) => ({ title: tag.title, id: tag.id })));
-        });
-    }, []);
   
     return (
         <Grid
@@ -76,17 +68,11 @@ export default function EditorFooter() {
                 </IconButton>
             </Grid>
             <EditorDialogAddTags
-                noteId={1}
-                tagsList={tagsList}
-                setTags={setTags}
                 open={open}
                 setOpen={setOpen}
             />
-            <EditorTags
-                tagsList={tagsList}
-                setTags={setTags}
-            />
+            <EditorTags />
         </Grid>
     );
->>>>>>> action-tags-note*/
+//>>>>>>> action-tags-note*/
 }

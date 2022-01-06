@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Grid } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
@@ -9,14 +9,16 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import EditorTags from './EditorTags';
 import { Post } from '../../config/config';
+import { NoteContext } from '../../context/NoteContext';
 
 /**
  * Editor Dialog Add Tags. Show a dialog to the user to add more tags to his note
  * @returns
  */
 export default function EditorDialogAddTags({
-    noteId, tagsList, setTags, open, setOpen
+    open, setOpen
 }) {
+    const { notes: { note }, dispatch } = useContext(NoteContext);
     const handleClose = () => {
         setOpen(false);
     };
@@ -24,9 +26,13 @@ export default function EditorDialogAddTags({
     const handleAddTag = (tag) => {
         if (tag !== undefined
             && tag.length > 0
-            && !tagsList.map((t) => t.title).includes(tag)) {
-            Post('/tags', { title: tag, note_id: noteId }).then((t) => {
-                setTags([...tagsList, { title: t.title, id: t.id }]);
+            && !note.tags.map((t) => t.title).includes(tag)) {
+            Post('/tags', { title: tag, note_id: note.id }).then((t) => {
+                note.tags = [...note.tags, { title: t.title, id: t.id }];
+                dispatch({
+                    type: 'update_note',
+                    note: note
+                });
             });
         }
     };
@@ -69,10 +75,7 @@ export default function EditorDialogAddTags({
                     <DialogContentText>
                         Tags actuelles:
                     </DialogContentText>
-                    <EditorTags
-                        tagsList={tagsList}
-                        setTags={setTags}
-                    />
+                    <EditorTags />
                 </Grid>
             </DialogContent>
             <DialogActions>
