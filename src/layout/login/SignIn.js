@@ -37,7 +37,7 @@ const SignIn = () => {
                 dialog: { id: 'login_failed', is_open: true }
             });
         }
-
+        
         if (token != null) {
             const tempUser = {
                 email,

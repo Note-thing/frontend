@@ -80,14 +80,20 @@ const Signup = () => {
         if (inputError) {
             return;
         }
-        let response;
         try {
-            response = await Post('/signup', {
+            await Post('/signup', {
                 email,
                 firstname,
                 lastname,
                 password,
                 password_confirmation: passwordRepeat
+            });
+            dispatch({
+                type: 'dialog',
+                dialog: {
+                    id: 'signup_success',
+                    is_open: true
+                }
             });
         } catch (error) {
             // TODO: gestion erreur, à voir comment faire
@@ -187,7 +193,7 @@ const Signup = () => {
                         fullWidth
                         name="passwordRepeat"
                         label="Répéter le mot de passe"
-                        type="passwordRepeat"
+                        type="password"
                         id="passwordRepeat"
                         autoComplete="new-password"
                         {...bindPasswordRepeat}
