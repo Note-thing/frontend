@@ -6,7 +6,7 @@ import NoteCreationModal from './NoteCreationModal';
 /**
  * This component is a item in the menu which show the modal for the creation of note
  */
-export default function NoteCreationMainMenuItem() {
+export default function NoteCreation() {
     const [showModal, setShowModal] = useState(false);
     return (
         <>

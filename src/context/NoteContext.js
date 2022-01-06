@@ -155,8 +155,7 @@ export const NoteProvider = ({ children }) => {
 
     return useMemo(
         () => notes
-            && notes.directories
-            && notes.directories.length > 0 && (
+            && notes.directories && (
             <NoteContext.Provider value={{ notes, dispatch }}>{children}</NoteContext.Provider>
         ),
         [notes, dispatch]

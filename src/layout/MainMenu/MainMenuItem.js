@@ -4,15 +4,12 @@ import {
     List,
     ListItem,
     ListItemButton,
-    ListItemText,
-    ListItemIcon,
-    IconButton
+    ListItemText
 } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import { KeyboardArrowRight } from '@mui/icons-material';
-import SettingsIcon from '@mui/icons-material/Settings';
 import { NoteContext } from '../../context/NoteContext';
-import NoteCreationMainMenuItem from './noteCreation/NoteCreationMainMenuItem';
+import NoteCreation from '../note/NoteCreation';
 
 /**
  *
@@ -31,7 +28,6 @@ export default function MainMenuItem({ directory, show }) {
      */
     const handleDirectoryClick = useCallback(
         (id) => {
-            console.log('handleDirectoryClick', id);
             const destDirectory = notes.directories.find((dir) => dir.id === id);
             dispatch({
                 type: 'change_directory',
@@ -81,13 +77,6 @@ export default function MainMenuItem({ directory, show }) {
                         .slice(0, 35)
                         .concat('...')}
                 />
-                {show && (
-                    <ListItemIcon onClick={(e) => handleSettingBtnClicked(e, directory.id)}>
-                        <IconButton>
-                            <SettingsIcon sx={{ cursor: 'pointer' }} mr={50} />
-                        </IconButton>
-                    </ListItemIcon>
-                )}
             </ListItem>
             <List
                 sx={{
@@ -120,7 +109,7 @@ export default function MainMenuItem({ directory, show }) {
                             />
                                 </ListItemButton>
                     ))}
-                <NoteCreationMainMenuItem />
+                <NoteCreation />
             </List>
             {show && <hr size={1} color="#e9f0f0" />}
         </>),

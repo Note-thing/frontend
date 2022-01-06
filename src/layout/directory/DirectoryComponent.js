@@ -5,11 +5,12 @@ import { NoteContext } from '../../context/NoteContext';
 import { Delete, Patch } from '../../config/config';
 import { MainContext } from '../../context/MainContext';
 import ConfirmationModal from '../common/ConfirmationModal';
+import NoteCreation from '../note/NoteCreation';
 /**
  * "Page" containing the directory settings: (Change directory name, delete directory)
  * @returns
  */
-export default function DirectorySettingsComponent() {
+export default function DirectoryComponent() {
     const { notes, dispatch: dispatchNote } = useContext(NoteContext);
     const { dispatch: dispatchMain } = useContext(MainContext);
     const [name, setName] = useState('');
@@ -74,7 +75,7 @@ export default function DirectorySettingsComponent() {
     };
 
     return (
-        <Grid container direction="column" ml={10} mr={5} mt={5}>
+        <Grid container direction="column" pl={2} pr={2}>
             <ConfirmationModal
                 testid="folder-setting-confirmation-modal"
                 open={showConfirmationModal}
@@ -84,9 +85,12 @@ export default function DirectorySettingsComponent() {
                     handleDeleteDirectory();
                 }}
             />
-            <h1>{notes.directory.name}</h1>
+            <h1>{notes.directory.title}</h1>
             <Grid item>
                 <Grid container direction="column" spacing={2}>
+                    <Grid item>
+                        <NoteCreation />
+                    </Grid>
                     <Grid item>
                         <h3>Changement du nom</h3>
                     </Grid>
