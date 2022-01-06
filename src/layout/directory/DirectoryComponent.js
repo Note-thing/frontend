@@ -1,5 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Grid, TextField, Button, Alert } from '@mui/material';
+import {
+    Grid, TextField, Button, Alert, List
+} from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import { NoteContext } from '../../context/NoteContext';
 import { Delete, Patch } from '../../config/config';
@@ -89,7 +91,9 @@ export default function DirectoryComponent() {
             <Grid item>
                 <Grid container direction="column" spacing={2}>
                     <Grid item>
-                        <NoteCreation />
+                        <List>
+                            <NoteCreation />
+                        </List>
                     </Grid>
                     <Grid item>
                         <h3>Changement du nom</h3>
