@@ -92,6 +92,7 @@ const ChangePassword = () => {
                         id="password"
                         label="Nouveau mot de passe"
                         name="password"
+                        type="password"
                         autoComplete="password"
                         autoFocus
                         {...bindPassword}
@@ -105,6 +106,7 @@ const ChangePassword = () => {
                         id="passwordRepeat"
                         label="Répéter"
                         name="passwordRepeat"
+                        type="password"
                         autoComplete="passwordRepeat"
                         {...bindPasswordRepeat}
                     />
