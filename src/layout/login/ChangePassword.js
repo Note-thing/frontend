@@ -4,24 +4,69 @@ import LockIcon from '@mui/icons-material/Lock';
 import {
     Typography, Box, Grid, TextField, Button, Link
 } from '@mui/material';
-import { CONFIG } from '../../config/config';
+import PasswordStrengthBar from 'react-password-strength-bar';
+import { CONFIG, Post } from '../../config/config';
 import { MainContext } from '../../context/MainContext';
 import useInput from '../../hooks/useInput';
+import { validatePassword } from './inputValidation';
 
 const ChangePassword = () => {
     const history = useHistory();
 
     const { dispatch } = useContext(MainContext);
-
     // keep track of the input states
     // each keystroke (onChange event listener) is saved within the state
-    const { value: password, bind: bindPassword } = useInput('');
-    const { value: passwordRepeat, bind: bindPasswordRepeat } = useInput('');
+    const { value: password, bind: bindPassword, setError: setPasswordError } = useInput('');
+    const { value: passwordRepeat, bind: bindPasswordRepeat, setError: setPasswordRepeatError } = useInput('');
 
-    const buttonChangePassword = (e) => {
+    const buttonChangePassword = async (e) => {
         e.preventDefault();
+        let valid = true;
+        if (!validatePassword(password)) {
+            setPasswordError({
+                error: true,
+                helperText: 'Password is invalid'
+            });
+            valid = false;
+        }
+        if (password !== passwordRepeat) {
+            setPasswordRepeatError({
+                error: true,
+                helperText: 'Repeat password missmatch'
+            });
+            valid = false;
+        }
+        if (!valid) {
+            return;
+        }
 
-        history.push('/');
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        const { token } = Object.fromEntries(urlSearchParams.entries());
+        try {
+            await Post('/password/reset', {
+                password,
+                password_token: token
+            });
+            dispatch({
+                type: 'dialog',
+                dialog: {
+                    id: 'signup_success',
+                    is_open: true
+                }
+            });
+        } catch (error) {
+            console.log('error', error.getMessage());
+            dispatch({
+                type: 'dialog',
+                dialog: {
+                    id: 'forgot_reset_failed',
+                    is_open: true,
+                    info: error.getMessage().join('.\n')
+                }
+            });
+            return;
+        }
+        setTimeout(() => history.push('/'), 2000);
     };
 
     const redirectPage = (link) => history.push(link);
@@ -52,7 +97,7 @@ const ChangePassword = () => {
                         autoFocus
                         {...bindPassword}
                     />
-
+                    <PasswordStrengthBar password={password} />
                     <TextField
                         variant="outlined"
                         margin="normal"
