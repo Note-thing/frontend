@@ -85,7 +85,7 @@ export default function DirectoryComponent() {
                     handleDeleteDirectory();
                 }}
             />
-            <h1>{notes.directory.title}</h1>
+            <h3>{notes.directory.title}</h3>
             <Grid item>
                 <Grid container direction="column" spacing={2}>
                     <Grid item>
