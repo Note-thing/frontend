@@ -99,9 +99,9 @@ const Signup = () => {
                     info: error.getMessage().join('.\n')
                 }
             });
+            return;
         }
-        console.log('signup response', response);
-        // history.push('/');
+        setTimeout(() => history.push('/'), 2000);
     };
 
     const redirectPage = (link) => history.push(link);
