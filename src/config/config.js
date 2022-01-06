@@ -2,18 +2,12 @@ import throwHttpError from '../errors/HttpErrorUtils';
 
 export const CONFIG = {
     api_url: 'http://localhost:3001/api/v1',
-    no_token_api_endpoints: ['/signin'],
+    no_token_api_endpoints: ['/signin', '/signup'],
     signin_url: '/signin',
     lost_password_url: '/lost_password',
     signup_url: '/signup',
     frontend_url: 'http://localhost:3000/',
     shared_note_url: 'http://localhost:3000/shared_notes/'
-};
-
-const handleError = (response) => {
-    if (!(response.status >= 200 && response.status < 400)) {
-        throwHttpError(response.status, 'Erreur http');
-    }
 };
 
 const controlTokenBeforeRequest = (endpoint) => {
@@ -42,13 +36,15 @@ const requestWithBody = async (method, endpoint, data) => {
             token: localStorage.getItem('Token')
         }),
         body: JSON.stringify(data)
-    }).catch((error) => {
-        throwHttpError(error, 'Erreur http');
+    }).then(async (res) => {
+        if (!res.ok) {
+            const text = await res.text();
+            throwHttpError(res.status, text);
+        }
+        return res.json();
     });
     controlTokenAfterResponse(response);
-    handleError(response);
-
-    return response.json();
+    return response;
 };
 
 export const Get = async (endpoint, data) => {
@@ -68,14 +64,15 @@ export const Get = async (endpoint, data) => {
                 token: localStorage.getItem('Token')
             })
         }
-    ).catch((error) => {
-        throwHttpError(error, 'Erreur http');
+    ).then(async (res) => {
+        if (!res.ok) {
+            const text = await res.text();
+            throwHttpError(res.status, text);
+        }
+        return res.json();
     });
     controlTokenAfterResponse(response);
-
-    handleError(response);
-    const json = await response.json();
-    return json;
+    return response;
 };
 
 export const Post = (endpoint, data) => requestWithBody('POST', endpoint, data);

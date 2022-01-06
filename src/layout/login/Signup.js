@@ -2,11 +2,16 @@ import React, { useContext } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
 import {
-    Typography, Box, Grid, TextField, Button
+    Typography, Box, Grid, TextField, Button, FormControl
 } from '@mui/material';
-import { CONFIG } from '../../config/config';
+import PasswordStrengthBar from 'react-password-strength-bar';
+import { CONFIG, Post } from '../../config/config';
 import { MainContext } from '../../context/MainContext';
 import useInput from '../../hooks/useInput';
+
+const validateLength = (val) => val.length > 3;
+const validateName = (val) => validateLength(val) && /[^0-9`!@#%&*+_=]+/.test(String(val).toLowerCase());
+const validateEmail = (email) => validateLength(email) && /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(String(email).toLowerCase());
 
 const Signup = () => {
     const history = useHistory();
@@ -15,24 +20,94 @@ const Signup = () => {
 
     // keep track of the input states
     // each keystroke (onChange event listener) is saved within the state
-    const { value: firstname, bind: bindFirstname } = useInput('');
-    const { value: lastname, bind: bindLastname } = useInput('');
-    const { value: email, bind: bindEmail } = useInput('');
-    const { value: password, bind: bindPassword } = useInput('');
-    const { value: passwordRepeat, bind: bindPasswordRepeat } = useInput('');
+    const { value: firstname, bind: bindFirstname, setError: setFirstNameError } = useInput('');
+    const { value: lastname, bind: bindLastname, setError: setLastNameError } = useInput('');
+    const { value: email, bind: bindEmail, setError: setEmailError } = useInput('');
+    const { value: password, bind: bindPassword, setError: setPasswordError } = useInput('');
+    const { value: passwordRepeat, bind: bindPasswordRepeat, setError: setPasswordRepeatError } = useInput('');
 
-    const buttonSignUp = (e) => {
+    const buttonSignUp = async (e) => {
         e.preventDefault();
-        dispatch({
-            type: 'signup',
-            user: {
+        console.log('buttonSignUp', {
+            firstname: validateLength(firstname),
+            email,
+            lastname,
+            password
+        });
+        let inputError = false;
+        if (!validateName(firstname)) {
+            setFirstNameError({
+                error: true,
+                helperText: 'First name is mandatory'
+            });
+            inputError = true;
+        }
+        if (!validateName(lastname)) {
+            setLastNameError({
+                error: true,
+                helperText: 'Last name is mandatory'
+            });
+            inputError = true;
+        }
+        if (!validateLength(email) || !validateEmail(email)) {
+            setEmailError({
+                error: true,
+                helperText: 'Valid email adresse must be provided'
+            });
+            inputError = true;
+        }
+        if (!validateLength(password)) {
+            setPasswordError({
+                error: true,
+                helperText: 'Password is mandatory'
+            });
+            inputError = true;
+        }
+        if (!validateLength(passwordRepeat)) {
+            setLastNameError({
+                error: true,
+                helperText: 'Password repeat is mandatory'
+            });
+            inputError = true;
+        }
+        /* if (password !== passwordRepeat) {
+            setPasswordRepeatError({
+                error: true,
+                helperText: 'Password repeat miss match'
+            });
+            inputError = true;
+        } */
+        if (inputError) {
+            return;
+        }
+        try {
+            await Post('/signup', {
+                email,
                 firstname,
                 lastname,
-                email,
-                isAuthenticated: false
-            }
-        });
-        history.push('/');
+                password,
+                password_confirmation: passwordRepeat
+            });
+            dispatch({
+                type: 'dialog',
+                dialog: {
+                    id: 'signup_success',
+                    is_open: true
+                }
+            });
+        } catch (error) {
+            // TODO: gestion erreur, à voir comment faire
+            dispatch({
+                type: 'dialog',
+                dialog: {
+                    id: 'signup_failed',
+                    is_open: true,
+                    info: error.getMessage().join('.\n')
+                }
+            });
+            return;
+        }
+        setTimeout(() => history.push('/'), 2000);
     };
 
     const redirectPage = (link) => history.push(link);
@@ -50,7 +125,7 @@ const Signup = () => {
                     Nouveau compte
                 </Typography>
 
-                <form noValidate>
+                <FormControl>
                     <Grid
                         container
                         columnSpacing={2}
@@ -104,9 +179,13 @@ const Signup = () => {
                         label="Mot de passe"
                         type="password"
                         id="password"
-                        autoComplete="current-password"
+                        autoComplete="new-password"
+                        inputProps={{
+                            autoComplete: 'new-password'
+                        }}
                         {...bindPassword}
                     />
+                    <PasswordStrengthBar password={password} />
                     <TextField
                         variant="outlined"
                         margin="normal"
@@ -114,9 +193,9 @@ const Signup = () => {
                         fullWidth
                         name="passwordRepeat"
                         label="Répéter le mot de passe"
-                        type="passwordRepeat"
+                        type="password"
                         id="passwordRepeat"
-                        autoComplete="repeated-password"
+                        autoComplete="new-password"
                         {...bindPasswordRepeat}
                     />
                     <Button
@@ -127,7 +206,7 @@ const Signup = () => {
                         size="large"
                         onClick={buttonSignUp}
                     >
-                        S\'inscrire
+                        S'inscrire
                     </Button>
                     <Grid container>
                         <Grid item xs>
@@ -152,7 +231,7 @@ const Signup = () => {
                     <Box mt={5}>
                         <Copyright />
                     </Box>
-                </form>
+                </FormControl>
             </Grid>
         </Grid>
     );

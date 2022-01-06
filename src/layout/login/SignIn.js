@@ -32,14 +32,12 @@ const SignIn = () => {
             token = await Post(CONFIG.signin_url, { email, password });
         } catch (error) {
             // TODO: gestion erreur, à voir comment faire
-            console.log('error', error);
             dispatch({
                 type: 'dialog',
                 dialog: { id: 'login_failed', is_open: true }
             });
         }
-
-        console.log('token = ', token);
+        
         if (token != null) {
             const tempUser = {
                 email,
