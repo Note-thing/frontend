@@ -1,9 +1,7 @@
 import fetch, { enableFetchMocks } from 'jest-fetch-mock';
-import React,{useStat} from 'react';
+import React from 'react';
 import { act } from 'react-dom/test-utils';
-import {
-    fireEvent, render, screen, waitFor, cleanup
-} from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 
 import { MainProvider } from '../context/MainContext';
 import { NoteProvider } from '../context/NoteContext';
@@ -50,7 +48,7 @@ describe('Main Menu Component', () => {
                 </NoteProvider>
             </MainProvider>
         );
-        // await waitFor(() => expect(fetch).toHaveBeenCalledTimes(1));
+        await waitFor(() => expect(fetch).toHaveBeenCalledTimes(1));
 
         // eslint-disable-next-line no-restricted-syntax
         for (const item of DEFAULT_MOCK_DATA.directories) {
@@ -62,36 +60,6 @@ describe('Main Menu Component', () => {
         }
         // testing layout
     });
-    // it('Main menu item should display the directory and its notes', () => {
-    //     expect(menu.get(1).directory.querySelector('span').textContent).toBe(DEFAULT_MOCK_DATA.directory.title);
-    //     expect(menu.get(1).directory.querySelector('p').textContent).toBe(
-    //         DEFAULT_MOCK_DATA.directory.notes
-    //             .map((note) => note.title)
-    //             .join(' - ')
-    //             .concat('...')
-    //     );
-    //     expect(menu.get(1).directory.querySelector('p').textContent).toBe(
-    //         DEFAULT_MOCK_DATA.directory.notes
-    //             .map((note) => note.title)
-    //             .join(' - ')
-    //             .concat('...')
-    //     );
-
-    //     expect(menu.get(2).directory.querySelector('span').textContent).toBe(DEFAULT_MOCK_DATA.directories[1].title);
-    //     expect(menu.get(2).directory.querySelector('p').textContent).toBe(
-    //         DEFAULT_MOCK_DATA.directories[1].notes
-    //             .map((note) => note.title)
-    //             .join(' - ')
-    //             .concat('...')
-    //     );
-    //     expect(menu.get(2).directory.querySelector('p').textContent).toBe(
-    //         DEFAULT_MOCK_DATA.directories[1].notes
-    //             .map((note) => note.title)
-    //             .join(' - ')
-    //             .concat('...')
-    //     );
-    // });
-
     it('MainMenuItem should display (opacity = 1, height : auto) notes on click', async () => {
         // Check the notes list isn't visible
         expect(getComputedStyle(menu.get(1).notes).opacity).toBe('1');
@@ -101,7 +69,7 @@ describe('Main Menu Component', () => {
 
         // await stateChangeWait();
         await waitFor(() => expect(getComputedStyle(menu.get(1).notes).opacity).toBe('0'));
-
+        expect(getComputedStyle(menu.get(2).notes).opacity).toBe('1');
         // TODO : Stéfan: répare le test ou fais en un autre ou ...
         // Ne fonctionnera pas ... la logique d'affichage ayant changé (A voir avec Stéfan)
         // await waitFor(expect(window.getComputedStyle(notesList).opacity).toBe('0'));
@@ -119,5 +87,34 @@ describe('Main Menu Component', () => {
     //         ).toBe(tag);
     //     });
     // });
+    });
+    it('Main menu item should display the directory and its notes', () => {
+        expect(menu.get(1).directory.querySelector('span').textContent).toBe(DEFAULT_MOCK_DATA.directory.title);
+        expect(menu.get(1).directory.querySelector('p').textContent).toBe(
+            DEFAULT_MOCK_DATA.directory.notes
+                .map((note) => note.title)
+                .join(' - ')
+                .concat('...')
+        );
+        expect(menu.get(1).directory.querySelector('p').textContent).toBe(
+            DEFAULT_MOCK_DATA.directory.notes
+                .map((note) => note.title)
+                .join(' - ')
+                .concat('...')
+        );
+
+        expect(menu.get(2).directory.querySelector('span').textContent).toBe(DEFAULT_MOCK_DATA.directories[1].title);
+        expect(menu.get(2).directory.querySelector('p').textContent).toBe(
+            DEFAULT_MOCK_DATA.directories[1].notes
+                .map((note) => note.title)
+                .join(' - ')
+                .concat('...')
+        );
+        expect(menu.get(2).directory.querySelector('p').textContent).toBe(
+            DEFAULT_MOCK_DATA.directories[1].notes
+                .map((note) => note.title)
+                .join(' - ')
+                .concat('...')
+        );
     });
 });

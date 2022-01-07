@@ -6,7 +6,7 @@ import {
     ListItemButton,
     ListItemText
 } from '@mui/material';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { KeyboardArrowRight } from '@mui/icons-material';
 import { NoteContext } from '../../context/NoteContext';
 import NoteCreation from '../note/NoteCreation';
@@ -17,6 +17,7 @@ import NoteCreation from '../note/NoteCreation';
  * or note
  */
 export default function MainMenuItem({ directory, show }) {
+    const location = useLocation();
     const history = useHistory();
     const {
         notes,
