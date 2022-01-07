@@ -26,7 +26,7 @@ export default function Editor() {
     const runEditor = (area) => new TextareaMarkdown(area);
 
     useEffect(() => {
-        if (body) {
+        if (typeof body !== 'undefined') {
             const textarea = document.querySelector('textarea#editor');
             textarea.value = body;
             runEditor(textarea);
@@ -58,26 +58,24 @@ export default function Editor() {
             <EditorHeader
                 setPreviewWidth={handlePreviewWidth}
             />
-            {
-                body
-                && <Grid item className="editor-content">
-                    <ResizePannel
-                        rightWidth={previewWidth}
-                        leftPannel={
-                            <textarea
-                                className="editor-textarea"
-                                id="editor"
-                                data-preview="#preview"
-                                value={bindNoteBody.value}
-                                onChange={handleChangeBody}
-                            />
-                        }
-                        rightPannel={
-                            <div className="preview-pannel" id="preview" />
-                        }
-                    />
-                   </Grid>
-            }
+            <Grid item className="editor-content">
+                <ResizePannel
+                    rightWidth={previewWidth}
+                    leftPannel={
+                        <textarea
+                            className="editor-textarea"
+                            id="editor"
+                            data-preview="#preview"
+                            value={bindNoteBody.value}
+                            onChange={handleChangeBody}
+                        />
+                    }
+                    rightPannel={
+                        <div className="preview-pannel" id="preview" />
+                    }
+                />
+            </Grid>
+
             <Grid item className="editor-footer">
                 <EditorFooter />
             </Grid>
