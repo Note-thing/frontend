@@ -19,10 +19,12 @@ const server = setupServer(
 );
 let dispatch;
 let dispatchMain;
+
 beforeEach(() => {
     dispatch = jest.fn();
     dispatchMain = jest.fn();
 });
+
 beforeAll(() => {
     server.listen();
     dispatch = jest.fn();
@@ -64,7 +66,7 @@ it('Editor header - delete note', async () => {
             }}
         >
             <NoteContext.Provider value={{ notes, dispatch }}>
-                <EditorHeader  />
+                <EditorHeader />
             </NoteContext.Provider>
         </MainContext.Provider>
     );

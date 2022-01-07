@@ -28,7 +28,7 @@ const requestWithBody = async (method, endpoint, data) => {
     if (!controlTokenBeforeRequest(endpoint)) {
         return;
     }
-    const response = await fetch(CONFIG.api_url + endpoint, {
+    const res = await fetch(CONFIG.api_url + endpoint, {
         method,
         credentials: 'include',
         headers: new Headers({
@@ -36,13 +36,13 @@ const requestWithBody = async (method, endpoint, data) => {
             token: localStorage.getItem('Token')
         }),
         body: JSON.stringify(data)
-    }).then(async (res) => {
-        if (!res.ok) {
-            const text = await res.text();
-            throwHttpError(res.status, text);
-        }
-        return res.json();
     });
+    if (!res.ok) {
+        const text = await res.text();
+        throwHttpError(res.status, text);
+    }
+    const response = await res.json();
+
     controlTokenAfterResponse(response);
     return response;
 };
@@ -51,7 +51,7 @@ export const Get = async (endpoint, data) => {
     if (!controlTokenBeforeRequest(endpoint)) {
         return;
     }
-    const response = await fetch(
+    const res = await fetch(
         CONFIG.api_url
                 + endpoint
                 + (typeof data !== 'undefined'
@@ -64,13 +64,13 @@ export const Get = async (endpoint, data) => {
                 token: localStorage.getItem('Token')
             })
         }
-    ).then(async (res) => {
-        if (!res.ok) {
-            const text = await res.text();
-            throwHttpError(res.status, text);
-        }
-        return res.json();
-    });
+    );
+    if (!res.ok) {
+        const text = await res.text();
+        throwHttpError(res.status, text);
+    }
+    const response = await res.json();
+
     controlTokenAfterResponse(response);
     return response;
 };
