@@ -85,6 +85,56 @@ const Dialog = () => {
                     </Alert>
                 </Snackbar>
             )}
+            {dialog && dialog.id === 'forgot_email_sent' && (
+                <Snackbar
+                    anchorOrigin={position}
+                    open={dialog.is_open}
+                    onClose={() => handleClose({ is_open: false })}
+                    autoHideDuration={6000}
+                >
+                    <Alert variant="filled" severity="info">
+                        A link to reset your password has been sent.
+                    </Alert>
+                </Snackbar>
+            )}
+            {dialog && dialog.id === 'forgot_email_failed' && (
+                <Snackbar
+                    anchorOrigin={position}
+                    open={dialog.is_open}
+                    onClose={() => handleClose({ is_open: false })}
+                    autoHideDuration={6000}
+                >
+                    <Alert variant="filled" severity="error">
+                        Email to reset your password could not be sent.
+                    </Alert>
+                </Snackbar>
+            )}
+            {dialog && dialog.id === 'forgot_reset_success' && (
+                <Snackbar
+                    anchorOrigin={position}
+                    open={dialog.is_open}
+                    onClose={() => handleClose({ is_open: false })}
+                    autoHideDuration={6000}
+                >
+                    <Alert variant="filled" severity="info">
+                        Your password has been reset successfully.
+                    </Alert>
+                </Snackbar>
+            )}
+            {dialog && dialog.id === 'forgot_reset_failed' && (
+                <Snackbar
+                    anchorOrigin={position}
+                    open={dialog.is_open}
+                    onClose={() => handleClose({ is_open: false })}
+                    autoHideDuration={6000}
+                >
+                    <Alert variant="filled" severity="error">
+                        Your password could not be reset.
+                        <br />
+                        { dialog.info }
+                    </Alert>
+                </Snackbar>
+            )}
             {dialog && dialog.id === 'copySharedNoteSucceed' && (
                 <Snackbar
                     anchorOrigin={position}

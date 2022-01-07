@@ -2,7 +2,7 @@ import throwHttpError from '../errors/HttpErrorUtils';
 
 export const CONFIG = {
     api_url: 'http://localhost:3001/api/v1',
-    no_token_api_endpoints: ['/signin', '/signup'],
+    no_token_api_endpoints: ['/signin', '/signup', '/password/forgot', '/password/reset'],
     signin_url: '/signin',
     lost_password_url: '/lost_password',
     signup_url: '/signup',

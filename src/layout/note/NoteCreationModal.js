@@ -2,10 +2,10 @@ import React, { useState, useContext } from 'react';
 import {
     TextField, Button, Alert, Grid
 } from '@mui/material';
-import CustomModal from '../../common/Modal';
-import { Post } from '../../../config/config';
-import HttpError from '../../../errors/HttpError';
-import { NoteContext } from '../../../context/NoteContext';
+import CustomModal from '../common/Modal';
+import { Post } from '../../config/config';
+import HttpError from '../../errors/HttpError';
+import { NoteContext } from '../../context/NoteContext';
 
 /**
  * Modal for creating a new note

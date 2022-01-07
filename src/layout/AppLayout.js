@@ -4,7 +4,7 @@ import MainMenu from './MainMenu/MainMenu';
 import EditorComponent from './editor/Editor';
 import { NoteProvider } from '../context/NoteContext';
 import SharedNoteComponent from './sharedNote/SharedNoteComponent';
-import DirectorySettingsComponent from './DirectorySettings/DirectorySettingsComponent';
+import DirectoryComponent from './directory/DirectoryComponent';
 import '../resource/css/main.css';
 
 /**
@@ -18,7 +18,7 @@ export default function AppLayout() {
             <MainMenu />
             <section className="main">
                 <Switch>
-                    <Route path="/directory/:directoryId/settings" component={DirectorySettingsComponent} />
+                    <Route exact path="/directory/:directoryId" component={DirectoryComponent} />
                     <Route path="/directory/**/note/**" component={EditorComponent} />
                     <Route path="/shared_notes/:uuid" component={SharedNoteComponent} />
                 </Switch>

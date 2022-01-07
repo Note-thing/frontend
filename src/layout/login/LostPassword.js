@@ -6,14 +6,13 @@ import {
     Box,
     Grid,
     TextField,
-    FormControlLabel,
-    Checkbox,
     Button,
     Link
 } from '@mui/material';
-import { CONFIG } from '../../config/config';
+import { CONFIG, Post } from '../../config/config';
 import { MainContext } from '../../context/MainContext';
 import useInput from '../../hooks/useInput';
+import { validateEmail } from './inputValidation';
 
 const LostPassword = () => {
     const history = useHistory();
@@ -22,15 +21,38 @@ const LostPassword = () => {
 
     // keep track of the input states
     // each keystroke (onChange event listener) is saved within the state
-    const { value: email, bind: bindEmail } = useInput('');
+    const { value: email, bind: bindEmail, setError: setEmailError } = useInput('');
 
-    const buttonLostPassword = (e) => {
+    const buttonLostPassword = async (e) => {
         e.preventDefault();
-        dispatch({
-            type: 'login',
-            user: { email, isAuthenticated: true }
-        });
-        history.push('/');
+        if (!validateEmail(email)) {
+            setEmailError({
+                error: true,
+                helperText: 'Valid email adresse must be provided'
+            });
+            return;
+        }
+        try {
+            await Post('/password/forgot', {
+                email
+            });
+            dispatch({
+                type: 'dialog',
+                dialog: {
+                    id: 'forgot_email_sent',
+                    is_open: true
+                }
+            });
+        } catch (error) {
+            dispatch({
+                type: 'dialog',
+                dialog: {
+                    id: 'forgot_email_failed',
+                    is_open: true,
+                    info: error.getMessage().join('.\n')
+                }
+            });
+        }
     };
 
     const redirectPage = (link) => history.push(link);

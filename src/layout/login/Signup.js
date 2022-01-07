@@ -8,10 +8,7 @@ import PasswordStrengthBar from 'react-password-strength-bar';
 import { CONFIG, Post } from '../../config/config';
 import { MainContext } from '../../context/MainContext';
 import useInput from '../../hooks/useInput';
-
-const validateLength = (val) => val.length > 3;
-const validateName = (val) => validateLength(val) && /[^0-9`!@#%&*+_=]+/.test(String(val).toLowerCase());
-const validateEmail = (email) => validateLength(email) && /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(String(email).toLowerCase());
+import { validateName, validateEmail, validatePassword } from './inputValidation';
 
 const Signup = () => {
     const history = useHistory();
@@ -28,12 +25,6 @@ const Signup = () => {
 
     const buttonSignUp = async (e) => {
         e.preventDefault();
-        console.log('buttonSignUp', {
-            firstname: validateLength(firstname),
-            email,
-            lastname,
-            password
-        });
         let inputError = false;
         if (!validateName(firstname)) {
             setFirstNameError({
@@ -49,34 +40,34 @@ const Signup = () => {
             });
             inputError = true;
         }
-        if (!validateLength(email) || !validateEmail(email)) {
+        if (!validateEmail(email)) {
             setEmailError({
                 error: true,
                 helperText: 'Valid email adresse must be provided'
             });
             inputError = true;
         }
-        if (!validateLength(password)) {
+        if (!validatePassword(password)) {
             setPasswordError({
                 error: true,
                 helperText: 'Password is mandatory'
             });
             inputError = true;
         }
-        if (!validateLength(passwordRepeat)) {
+        if (!validatePassword(passwordRepeat)) {
             setLastNameError({
                 error: true,
                 helperText: 'Password repeat is mandatory'
             });
             inputError = true;
         }
-        /* if (password !== passwordRepeat) {
+        if (password !== passwordRepeat) {
             setPasswordRepeatError({
                 error: true,
                 helperText: 'Password repeat miss match'
             });
             inputError = true;
-        } */
+        }
         if (inputError) {
             return;
         }
