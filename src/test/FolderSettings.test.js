@@ -10,13 +10,13 @@ import {
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { NoteContext } from '../context/NoteContext';
-import FolderSettingsComponent from '../layout/DirectorySettings/DirectorySettingsComponent';
+import FolderSettingsComponent from '../layout/directory/DirectoryComponent';
 import MOCK_DATA from './data';
 import { MainContext } from '../context/MainContext';
+import { mockStorage } from './Mock';
 
-const server = setupServer(
-    rest.patch('http://localhost:3001/api/v1/folders/61ddfgg488babbf', (req, res, ctx) => res(ctx.json({ test: 'test' })))
-);
+const notes = MOCK_DATA;
+const server = setupServer();
 let dispatch;
 let dispatchMain;
 beforeEach(() => {
@@ -32,6 +32,7 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 Object.defineProperty(window, 'options', { offset: 210 });
+Object.defineProperty(window, 'localStorage', mockStorage);
 
 // Mock useParams used in SharedNoteComponent
 jest.mock('react-router-dom', () => ({
@@ -39,11 +40,9 @@ jest.mock('react-router-dom', () => ({
     useHistory: () => {}
 }));
 
-const notes = MOCK_DATA;
-
 it('Folder settings - change name', async () => {
     server.use(
-        rest.patch('http://localhost:3001/api/v1/folders/61ddfgg488babbf', (req, res, ctx) => res(ctx.json({ test: '2' })))
+        rest.patch(`http://localhost:3001/api/v1/folders/${notes.directory.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
     );
 
     render(
@@ -77,7 +76,7 @@ it('Folder settings - change name', async () => {
 
 it('Folder settings - empty name', async () => {
     server.use(
-        rest.patch('http://localhost:3001/api/v1/folders/61ddfgg488babbf', (req, res, ctx) => res(ctx.json({ test: '2' })))
+        rest.patch(`http://localhost:3001/api/v1/folders/${notes.directory.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
     );
 
     render(
@@ -109,7 +108,7 @@ it('Folder settings - empty name', async () => {
 });
 it('Folder settings - too long name', async () => {
     server.use(
-        rest.patch('http://localhost:3001/api/v1/folders/61ddfgg488babbf', (req, res, ctx) => res(ctx.json({ test: '2' })))
+        rest.patch(`http://localhost:3001/api/v1/folders/${notes.directory.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
     );
 
     render(
@@ -144,7 +143,7 @@ it('Folder settings - too long name', async () => {
 
 it('Folder settings - delete', async () => {
     server.use(
-        rest.delete('http://localhost:3001/api/v1/folders/61ddfgg488babbf', (req, res, ctx) => res(ctx.json({ test: '2' })))
+        rest.delete(`http://localhost:3001/api/v1/folders/${notes.directory.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
     );
 
     render(
