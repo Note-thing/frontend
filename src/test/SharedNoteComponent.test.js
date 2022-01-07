@@ -15,7 +15,7 @@ const server = setupServer(
     rest.post('http://localhost:3001/api/v1/shared_notes/123/copy', (req, res, ctx) => res(ctx.json({ greeting: 'hello there' })))
 );
 Object.defineProperty(window, 'options', { offset: 210 });
-Object.defineProperty(window, 'localStorage', mockStorage);
+Object.defineProperty(window, 'localStorage', mockStorage());
 
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());

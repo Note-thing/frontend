@@ -32,7 +32,7 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 Object.defineProperty(window, 'options', { offset: 210 });
-Object.defineProperty(window, 'localStorage', mockStorage);
+Object.defineProperty(window, 'localStorage', mockStorage());
 
 // Mock useParams used in SharedNoteComponent
 jest.mock('react-router-dom', () => ({

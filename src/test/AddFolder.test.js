@@ -18,8 +18,7 @@ const server = setupServer(
     rest.post('http://localhost:3001/api/v1/folders', (req, res, ctx) => res(ctx.json({ test: 'test' })))
 );
 
-
-Object.defineProperty(window, 'localStorage', mockStorage);
+Object.defineProperty(window, 'localStorage', mockStorage());
 
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
