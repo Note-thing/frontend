@@ -14,7 +14,6 @@ import {
 import { useParams } from 'react-router-dom';
 import { Post } from '../../config/config';
 import { NoteContext } from '../../context/NoteContext';
-import NotFoundError from '../../errors/NotFoundError';
 
 /**
  * Ce composant est affiché dans la partie central de l'application. Elle permet de pouvoir
@@ -88,7 +87,6 @@ export default function SharedNoteComponent() {
                 </Grid>
             )}
             <Grid item md={12}>
-                <input data-testid="tamere" value="rien" />
                 <p>Veuillez choisir un dossier dans lequel copier votre note</p>
                 <FormControl fullWidth>
                     <InputLabel id="select-label">Dossier destination</InputLabel>
