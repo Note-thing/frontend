@@ -1,12 +1,13 @@
 import React, { useContext } from 'react';
 import {
-    List, Grid, Input
+    List, Grid
 } from '@mui/material';
 import { MainContext } from '../../context/MainContext';
 import { NoteContext } from '../../context/NoteContext';
 import User from './User';
 import MainMenuItem from './MainMenuItem';
 import FolderCreation from '../directory/FolderCreation/FolderCreation';
+import SearchComponent from '../search/SearchComponent';
 
 /**
  * Main menu of the application (left panel with directories, notes, search and access
@@ -47,10 +48,8 @@ export default function MainMenu() {
                         alignSelf: 'flex-end'
                     }}
                 >
-                    <Input
-                        sx={{ width: '100%', marginBottom: '1rem' }}
-                        placeholder="Rechercher dans les notes"
-                    />
+
+                    <SearchComponent />
                     <User user={user} />
                 </Grid>
             </Grid>

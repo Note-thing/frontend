@@ -11,7 +11,7 @@ export default function EditorTags() {
     const { notes: { note }, dispatch } = useContext(NoteContext);
     return (
         note.tags ? note.tags.map((tag) => (
-            <Grid item>
+            <Grid item key={tag.id}>
                 <Chip
                     key={tag.id}
                     className="tag-chip"
@@ -21,7 +21,7 @@ export default function EditorTags() {
                         note.tags = note.tags.filter((t) => t.id !== tag.id);
                         dispatch({
                             type: 'update_note',
-                            note: note
+                            note
                         });
                         Delete(`/tags/${tag.id}`);
                     }}

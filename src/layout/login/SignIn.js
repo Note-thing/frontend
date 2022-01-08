@@ -18,7 +18,7 @@ import useInput from '../../hooks/useInput';
 const SignIn = () => {
     const history = useHistory();
 
-    const { main, dispatch } = useContext(MainContext);
+    const { dispatch } = useContext(MainContext);
 
     // keep track of the input states
     // each keystroke (onChange event listener) is saved within the state
@@ -59,12 +59,7 @@ const SignIn = () => {
     return (
         <Grid container direction="column" alignItems="center" spacing={4}>
             <Grid item square>
-                <Typography
-                    sx={{ mt: 6, mb: 8 }}
-                    component="h1"
-                    variant="h5"
-                    align="center"
-                >
+                <Typography sx={{ mt: 6, mb: 8 }} component="h1" variant="h5" align="center">
                     <LoginIcon />
                     Connection
                 </Typography>
@@ -95,13 +90,7 @@ const SignIn = () => {
                         {...bindPassword}
                     />
                     <FormControlLabel
-                        control={
-                            <Checkbox
-                                value="remember"
-                                color="primary"
-                                defaultChecked
-                            />
-                        }
+                        control={<Checkbox value="remember" color="primary" defaultChecked />}
                         label="Se souvenir de moi"
                     />
                     <Button
