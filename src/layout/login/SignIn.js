@@ -27,9 +27,9 @@ const SignIn = () => {
 
     const buttonSignIn = async (e) => {
         e.preventDefault();
-        let token = null;
+        let response = null;
         try {
-            token = await Post(CONFIG.signin_url, { email, password });
+            response = await Post('/signin', { email, password });
         } catch (error) {
             // TODO: gestion erreur, à voir comment faire
             dispatch({
@@ -37,15 +37,9 @@ const SignIn = () => {
                 dialog: { id: 'login_failed', is_open: true }
             });
         }
-
-        if (token != null) {
-            const tempUser = {
-                email,
-                isAuthenticated: true
-            };
-
-            localStorage.setItem('User', JSON.stringify({ ...main.user, ...tempUser }));
-            localStorage.setItem('Token', token.token);
+        if (response != null) {
+            localStorage.setItem('User', JSON.stringify(response.user));
+            localStorage.setItem('Token', response.token);
 
             dispatch({
                 type: 'dialog',
@@ -54,7 +48,7 @@ const SignIn = () => {
 
             dispatch({
                 type: 'login',
-                user: tempUser
+                user: response.user
             });
 
             setTimeout(() => history.push('/'), 2000);
