@@ -1,5 +1,4 @@
-// I'm here to avoid eslint to piss us off :D ...
-// TODO remove me if i'm still here at the end of the project
+// TODO remove me if i'm still here at the end of the project (here to avoid eslint warning)
 export const teapot = () => {};
 
 /**
