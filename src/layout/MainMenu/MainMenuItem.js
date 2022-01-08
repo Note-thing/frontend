@@ -34,7 +34,17 @@ export default function MainMenuItem({ directory, show }) {
      * Handle note click
      */
     const handleNoteClick = useCallback(
-        (note) => history.push(`/directory/${notes.directory.id}/note/${note.id}`),
+        (note) => {
+            /*
+              clear the currently displayed note,
+              URL change will trigger note context api call to get latest note data
+            */
+            dispatch({
+                type: 'change_note',
+                note: { }
+            });
+            history.push(`/directory/${notes.directory.id}/note/${note.id}`);
+        },
         [dispatch, notes?.directory?.id]
     );
     const handleSettingBtnClicked = (e, directoryId) => {
