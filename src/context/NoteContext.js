@@ -101,7 +101,7 @@ export const NoteProvider = ({ children }) => {
      * Get folders / notes to display in the main menu
      */
     useEffect(() => {
-        // initial run -> fetch folder structure
+        // initial run -> api call to get folder structure
         (async () => {
             try {
                 const folders = await Get('/structure');
@@ -119,7 +119,10 @@ export const NoteProvider = ({ children }) => {
      * Update the state (current opened folder and/or  current opened note) when the location change
      */
     useEffect(() => {
-        // url change or page refresh -> restore context based on current url
+        /*
+            url change, page refresh or directories loaded ->
+            restore context state based on current url
+        */
         if (notes.directories && notes.directories.length > 0) {
             const active = getActiveFromURL(notes.directories);
             if (active.directory) {
@@ -129,13 +132,13 @@ export const NoteProvider = ({ children }) => {
                 });
             }
             if (active.note) {
-                dispatch({
-                    type: 'change_note',
-                    note: { }
-                });
                 (async () => {
                     try {
                         const data = await Get(`/notes/${active.note.id}`);
+                        /*
+                            Reuse unchangable note data already exsiting in the note context
+                            Refresh with changeable data from api response
+                        */
                         dispatch({
                             type: 'change_note',
                             note: {
