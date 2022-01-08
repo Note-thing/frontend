@@ -1,3 +1,4 @@
+import ForbiddenError from '../errors/ForbiddenError';
 import throwHttpError from '../errors/HttpErrorUtils';
 
 export const CONFIG = {
@@ -10,6 +11,11 @@ export const CONFIG = {
     shared_note_url: 'http://localhost:3000/shared_notes'
 };
 
+/**
+ * Check if the user has the right to do an action otherwise redirect him
+ * @param {String} endpoint endpoint the user is trying to reach
+ * @returns True if ok, false otherwise
+ */
 const controlTokenBeforeRequest = (endpoint) => {
     if (!CONFIG.no_token_api_endpoints.includes(endpoint) && !localStorage.getItem('Token')) {
         window.location.replace(CONFIG.frontend_url + CONFIG.signin_url);
@@ -18,63 +24,101 @@ const controlTokenBeforeRequest = (endpoint) => {
     return true;
 };
 
-const controlTokenAfterResponse = (response) => {
-    if (response.status === 403) {
+/**
+ * Check if the user is allowed to question a endpoint when an error occurs. In other words,
+ * it checks if the user has received a 403 if it's the case redirect the user to the signin page
+ * @param {Error} err
+ * @returns true if ok, false otherwise
+ */
+const controlTokenAfterResponse = (err) => {
+    if (err instanceof ForbiddenError) {
         window.location.replace(CONFIG.frontend_url + CONFIG.signin_url);
+        return false;
     }
+    return true;
 };
 
-const requestWithBody = async (method, endpoint, data) => {
-    if (!controlTokenBeforeRequest(endpoint)) {
-        return;
-    }
-    const res = await fetch(CONFIG.api_url + endpoint, {
+/**
+ * Construct the url with the given url, endpoint and the query params
+ * @param {String} apiUrl the URL to send the request
+ * @param {String} endpoint the endpoint
+ * @param {Object} queryParams the query params (optional)
+ * @returns {String} the buit query
+ */
+const buildUrl = (endpoint, queryParams) => endpoint
+    + (typeof data !== 'undefined' ? '?'.concat(new URLSearchParams(queryParams)).toString() : '');
+
+/**
+ * Construct the info for the fetch, it will add the body(data) if exists
+ * @param {String} method verb
+ * @param {Object} data The body of the request which will be JSON.stringfy
+ */
+const getRequestInfoWithHeaders = (method, data) => {
+    const info = {
         method,
         credentials: 'include',
         headers: new Headers({
             'Content-Type': 'application/json',
             token: localStorage.getItem('Token')
-        }),
-        body: JSON.stringify(data)
-    });
-    if (!res.ok) {
-        const text = await res.text();
-        throwHttpError(res.status, text);
+        })
+    };
+    if (data !== null) {
+        info.body = JSON.stringify(data);
     }
-    const response = await res.json();
-
-    controlTokenAfterResponse(response);
-    return response;
+    return info;
 };
 
-export const Get = async (endpoint, data) => {
+/**
+ * Fetch the data. It can throw Http exceptions or redirect if the
+ * @param {String} method
+ * @param {String} endpoint
+ * @param {Object} data
+ * @returns
+ */
+const requestWithBody = async (method, endpoint, data = null) => {
     if (!controlTokenBeforeRequest(endpoint)) {
-        return;
+        return undefined;
     }
-    const res = await fetch(
-        CONFIG.api_url
-                + endpoint
-                + (typeof data !== 'undefined'
-                    ? '?'.concat(new URLSearchParams(data)).toString()
-                    : ''),
-        {
-            method: 'GET',
-            headers: new Headers({
-                'Content-Type': 'application/json',
-                token: localStorage.getItem('Token')
-            })
+    try {
+        const res = await fetch(CONFIG.api_url + endpoint, getRequestInfoWithHeaders(method, data));
+        if (!res.ok) {
+            const text = await res.text();
+            throwHttpError(res.status, text);
         }
-    );
-    if (!res.ok) {
-        const text = await res.text();
-        throwHttpError(res.status, text);
+        const response = await res.json();
+        return response;
+    } catch (err) {
+        // ControlTokenAfterResponse will redirect if 403. It will return true otherwise
+        // if it returns true throw the error again
+        if (controlTokenAfterResponse(err)) {
+            throw err;
+        }
     }
-    const response = await res.json();
-
-    controlTokenAfterResponse(response);
-    return response;
+    return undefined;
 };
 
+export const Get = async (endpoint, data) => requestWithBody('GET', buildUrl(endpoint, data));
+
+/**
+ * Post request.
+ * @param {String} endpoint the endpoint to reach
+ * @param {Object} data the body data
+ * @returns Response
+ */
 export const Post = (endpoint, data) => requestWithBody('POST', endpoint, data);
+
+/**
+ * Patch request.
+ * @param {String} endpoint the endpoint to reach
+ * @param {Object} data the body data
+ * @returns Response
+ */
 export const Patch = (endpoint, data) => requestWithBody('PATCH', endpoint, data);
+
+/**
+ * Delete request.
+ * @param {String} endpoint the endpoint to reach
+ * @param {Object} data the body data
+ * @returns Response
+ */
 export const Delete = (endpoint, data) => requestWithBody('DELETE', endpoint, data);
