@@ -1,32 +1,46 @@
-import React, { useContext, useMemo } from 'react';
-import {
-    Grid, Chip, TextField, Button
-} from '@mui/material';
-import { NoteContext } from '../../context/NoteContext';
+import React, { useState } from 'react';
+import { Grid } from '@mui/material';
+import { LocalOffer } from '@mui/icons-material';
+import IconButton from '@mui/material/IconButton';
+import EditorTags from './EditorTags';
+import EditorDialogAddTags from './EditorDialogAddTags';
 
 /**
  * Editor Footer. Allows the user to add label to his note
  * @returns
  */
 export default function EditorFooter() {
-    const { notes: { note: { tags } } } = useContext(NoteContext);
-    return useMemo(() => (
-        <Grid className="editor-footer">
-            {tags && tags.map((tag) => (
-                <Chip
-                    key={tag.id}
-                    className="tag-chip"
-                    label={tag.title}
-                    onDelete={() => true /** TODO implémenter logique */}
-                />
-            ))}
-            <TextField
-                sx={{ mb: '20px', ml: '24px' }}
-                label="New tag"
-                variant="standard"
-                size="small"
+    const [open, setOpen] = useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    return (
+        <Grid
+            spacing={0.5}
+            container
+            display="flex"
+            alignItems="center"
+            height="100%"
+            padding="0 1rem 0 1rem"
+            borderTop="0.1rem solid #e9F0F0"
+            className="editor-tag-footer"
+        >
+            <Grid item>
+                <IconButton
+                    color="primary"
+                    label="Ajouter des tags"
+                    onClick={handleClickOpen}
+                >
+                    <LocalOffer />
+                </IconButton>
+            </Grid>
+            <EditorDialogAddTags
+                open={open}
+                setOpen={setOpen}
             />
-            <Button variant="text" size="small">Add</Button>
-        </Grid>),
-    [tags]);
+            <EditorTags />
+        </Grid>
+    );
 }
