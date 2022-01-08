@@ -41,10 +41,12 @@
     background-image: url(../../resource/icons/main-menu.svg);
 }
 
-.main-menu-container:hover{
+.main-menu-container:hover,
+.main-menu-container.open{
     width:24rem;
 }
-.main-menu-container:hover::before{
+.main-menu-container:hover::before,
+.main-menu-container.open::before{
     display: none;
 }
 
@@ -54,7 +56,8 @@
     opacity:0;
 }
 
-.main-menu-container:hover .main-menu{
+.main-menu-container:hover .main-menu,
+.main-menu-container.open .main-menu{
     visibility:visible;
     opacity:1;
 }
