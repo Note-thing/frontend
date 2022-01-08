@@ -129,6 +129,10 @@ export const NoteProvider = ({ children }) => {
                 });
             }
             if (active.note) {
+                dispatch({
+                    type: 'change_note',
+                    note: { }
+                });
                 (async () => {
                     try {
                         const data = await Get(`/notes/${active.note.id}`);

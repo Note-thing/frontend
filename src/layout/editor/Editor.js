@@ -26,11 +26,9 @@ export default function Editor() {
     const runEditor = (area) => new TextareaMarkdown(area);
 
     useEffect(() => {
-        if (typeof body !== 'undefined') {
-            const textarea = document.querySelector('textarea#editor');
-            textarea.value = body;
-            runEditor(textarea);
-        }
+        const textarea = document.querySelector('textarea#editor');
+        textarea.value = body || '';
+        runEditor(textarea);
     }, [body]);
 
     const handlePreviewWidth = useCallback((width) => {
