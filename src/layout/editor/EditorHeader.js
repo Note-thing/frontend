@@ -3,7 +3,6 @@ import React, {
 } from 'react';
 import { Grid, Input, Button } from '@mui/material';
 import { PictureAsPdf, Share, Delete as DeleteIcon } from '@mui/icons-material';
-import PropTypes from 'prop-types';
 import { ReactComponent as Code } from '../../resource/icons/editor-viewmode-code.svg';
 import { ReactComponent as View } from '../../resource/icons/editor-viewmode-view.svg';
 import { ReactComponent as Split } from '../../resource/icons/editor-viewmode-split.svg';

@@ -11,7 +11,7 @@ import {
     Button,
     Link
 } from '@mui/material';
-import { CONFIG, Get, Post } from '../../config/config';
+import { CONFIG, Post } from '../../config/config';
 import { MainContext } from '../../context/MainContext';
 import useInput from '../../hooks/useInput';
 
@@ -37,7 +37,7 @@ const SignIn = () => {
                 dialog: { id: 'login_failed', is_open: true }
             });
         }
-        
+
         if (token != null) {
             const tempUser = {
                 email,

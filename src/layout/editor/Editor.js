@@ -37,11 +37,6 @@ export default function Editor() {
         setPreviewWidth(width);
     }, [setPreviewWidth]);
 
-    const handleChangeBody = async (ev) => {
-        bindNoteBody.onChange(ev);
-        debounceBody(ev.target.value);
-    };
-
     const debounceBody = useCallback(debounceInput(async (value) => {
         try {
             await Patch(`/notes/${id}`, { body: value });
@@ -53,6 +48,10 @@ export default function Editor() {
         }
     }), [id, mainDispatch, debounceInput]);
 
+    const handleChangeBody = async (ev) => {
+        bindNoteBody.onChange(ev);
+        debounceBody(ev.target.value);
+    };
     return useMemo(() => (
         <Grid container className="editor" data-testid="editor-component" direction="column">
             <EditorHeader
