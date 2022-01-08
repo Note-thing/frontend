@@ -100,8 +100,8 @@ const Signup = () => {
         }
         setTimeout(() => history.push('/'), 2000);
     };
-
-    const redirectPage = (link) => history.push(link);
+    // TODO: remove ??
+    // const redirectPage = (link) => history.push(link);
     return (
         <Grid container spacing={4} direction="column" alignItems="center">
             <Grid item square>

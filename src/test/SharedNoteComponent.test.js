@@ -9,12 +9,13 @@ import { act } from 'react-dom/test-utils';
 import { NoteContext } from '../context/NoteContext';
 import SharedNoteComponent from '../layout/sharedNote/SharedNoteComponent';
 import MOCK_DATA from './data';
+import { mockStorage } from './Mock';
 
 const server = setupServer(
     rest.post('http://localhost:3001/api/v1/shared_notes/123/copy', (req, res, ctx) => res(ctx.json({ greeting: 'hello there' })))
 );
-const open = jest.fn();
 Object.defineProperty(window, 'options', { offset: 210 });
+Object.defineProperty(window, 'localStorage', mockStorage());
 
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());

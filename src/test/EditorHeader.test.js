@@ -2,27 +2,25 @@ import React from 'react';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import {
-    render,
-    screen,
-    fireEvent,
-    waitFor
-
+    render, screen, fireEvent, waitFor
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { NoteContext } from '../context/NoteContext';
 import EditorHeader from '../layout/editor/EditorHeader';
 import MOCK_DATA from './data';
 import { MainContext } from '../context/MainContext';
+import { mockStorage } from './Mock';
 
-const server = setupServer(
-    rest.delete('http://localhost:3001/api/v1/folders/61ddfgg488babbf', (req, res, ctx) => res(ctx.json({ test: 'test' })))
-);
+const server = setupServer();
+
 let dispatch;
 let dispatchMain;
+
 beforeEach(() => {
     dispatch = jest.fn();
     dispatchMain = jest.fn();
 });
+
 beforeAll(() => {
     server.listen();
     dispatch = jest.fn();
@@ -32,6 +30,7 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 Object.defineProperty(window, 'options', { offset: 210 });
+Object.defineProperty(window, 'localStorage', mockStorage());
 
 // Mock useParams used in SharedNoteComponent
 jest.mock('react-router-dom', () => ({
@@ -40,13 +39,33 @@ jest.mock('react-router-dom', () => ({
 }));
 
 const notes = MOCK_DATA;
+const sharedNote = [
+    {
+        id: 5,
+        title: 'Nouvelle note',
+        body: 'Je suis une nouvelle note',
+        created_at: '2022-01-07T14:48:01.000Z',
+        updated_at: '2022-01-07T14:48:01.000Z',
+        note_id: notes.note.id,
+        uuid: 'ff1efcf3-12a6-4c9b-9ce4-c6b1ccd2bd91'
+    },
+    {
+        id: 6,
+        title: 'Nouvelle note',
+        body: 'Je suis une nouvelle note',
+        created_at: '2022-01-07T14:48:36.000Z',
+        updated_at: '2022-01-07T14:48:36.000Z',
+        note_id: notes.note.id,
+        uuid: 'b4279dda-8352-4d4c-bd68-0b89e7644893'
+    }
+];
 
 it('Editor header - delete note', async () => {
     server.use(
-        rest.delete('http://localhost:3001/api/v1/notes/dfg456fgh456', (req, res, ctx) => res(ctx.json({ test: '2' })))
+        rest.delete(`http://localhost:3001/api/v1/notes/${notes.note.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
     );
     server.use(
-        rest.get('http://localhost:3001/api/v1/notes/dfg456fgh456/shared_notes', (req, res, ctx) => res(ctx.json({ test: '2' })))
+        rest.get(`http://localhost:3001/api/v1/notes/${notes.note.id}/shared_notes`, (req, res, ctx) => res(ctx.json(sharedNote)))
     );
     render(
         <MainContext.Provider
@@ -64,7 +83,7 @@ it('Editor header - delete note', async () => {
             }}
         >
             <NoteContext.Provider value={{ notes, dispatch }}>
-                <EditorHeader  />
+                <EditorHeader />
             </NoteContext.Provider>
         </MainContext.Provider>
     );

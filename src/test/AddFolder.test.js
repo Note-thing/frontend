@@ -9,16 +9,16 @@ import {
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { NoteContext } from '../context/NoteContext';
-import FolderCreationMainMenuItem from '../layout/MainMenu/FolderCreation/FolderCreationMainMenuItem';
+import FolderCreationMainMenuItem from '../layout/directory/FolderCreation/FolderCreation';
 import MOCK_DATA from './data';
 import { MainContext } from '../context/MainContext';
+import { mockStorage } from './Mock';
 
 const server = setupServer(
-    rest.post('http://localhost:3001/api/v1/folders', (req, res, ctx) => {
-        console.error('WTF');
-        return res(ctx.json({ test: 'test' }));
-    })
+    rest.post('http://localhost:3001/api/v1/folders', (req, res, ctx) => res(ctx.json({ test: 'test' })))
 );
+
+Object.defineProperty(window, 'localStorage', mockStorage());
 
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());

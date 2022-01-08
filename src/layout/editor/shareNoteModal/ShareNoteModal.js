@@ -36,7 +36,6 @@ export default function ShareNoteModal({ open, setOpen }) {
                     setIsFetching(false);
                 } catch (err) {
                     setIsFetching(false);
-                    // TODO Afficher un toast ou quelque chose
                 }
             }
         })();
@@ -74,6 +73,7 @@ export default function ShareNoteModal({ open, setOpen }) {
                         .sort((a, b) => a.created_at < b.created_at)
                         .map((sharedNote) => (
                             <ListItem
+                                key={`sharednote-${sharedNote.id}`}
                                 secondaryAction={
                                     <IconButton
                                         edge="end"

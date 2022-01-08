@@ -38,11 +38,10 @@ export default function FolderCreationModal({ showModal, onClose }) {
         }
         try {
             const response = await Post('/folders', { title: newFolderName });
-            const test = dispatch({
+            dispatch({
                 type: 'update_directory',
                 directory: response
             });
-            console.error('testetest', test);
             onClose(false);
         } catch (err) {
             // TODO should probably use

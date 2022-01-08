@@ -2,36 +2,25 @@ import React from 'react';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import {
-    render,
-    waitFor,
-    screen,
-    fireEvent,
-    waitForElementToBeRemoved
+    render, screen, fireEvent, waitForElementToBeRemoved
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import userEvent from '@testing-library/user-event';
-import { act } from 'react-dom/test-utils';
-import { exact } from 'prop-types';
 import { NoteContext } from '../context/NoteContext';
-import NoteCreationMainMenuItem from '../layout/MainMenu/noteCreation/NoteCreationMainMenuItem';
+import NoteCreationMainMenuItem from '../layout/note/NoteCreation';
 import MOCK_DATA from './data';
 import { MainContext } from '../context/MainContext';
-import { Post } from '../config/config';
+import { mockStorage } from './Mock';
 
 const server = setupServer(
-    rest.post('http://localhost:3001/api/v1/folders', (req, res, ctx) => {
-        console.error('WTF');
-        return res(ctx.json({ test: 'test' }));
-    })
+    rest.post('http://localhost:3001/api/v1/folders', (req, res, ctx) => res(ctx.json({ test: 'test' })))
 );
 
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
-const open = jest.fn();
 Object.defineProperty(window, 'options', { offset: 210 });
-
+Object.defineProperty(window, 'localStorage', mockStorage());
 // Mock useParams used in SharedNoteComponent
 jest.mock('react-router-dom', () => ({
     useParams: () => ({ uuid: '123' }),

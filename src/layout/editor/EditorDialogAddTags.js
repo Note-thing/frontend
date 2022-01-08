@@ -31,7 +31,7 @@ export default function EditorDialogAddTags({
                 note.tags = [...note.tags, { title: t.title, id: t.id }];
                 dispatch({
                     type: 'update_note',
-                    note: note
+                    note
                 });
             });
         }
