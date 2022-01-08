@@ -4,6 +4,7 @@ import throwHttpError from '../errors/HttpErrorUtils';
 export const CONFIG = {
     api_url: 'http://localhost:3001/api/v1',
     no_token_api_endpoints: ['/signin', '/signup', '/password/forgot', '/password/reset'],
+    no_redirection_endpoints: ['/signin'],
     signin_url: '/signin',
     lost_password_url: '/lost_password',
     signup_url: '/signup',
@@ -30,8 +31,8 @@ const controlTokenBeforeRequest = (endpoint) => {
  * @param {Error} err
  * @returns true if ok, false otherwise
  */
-const controlTokenAfterResponse = (err) => {
-    if (err instanceof ForbiddenError) {
+const controlTokenAfterResponse = (endpoint, err) => {
+    if (!CONFIG.no_redirection_endpoints.includes(endpoint) && err instanceof ForbiddenError) {
         window.location.replace(CONFIG.frontend_url + CONFIG.signin_url);
         return false;
     }
