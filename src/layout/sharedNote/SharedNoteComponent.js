@@ -14,7 +14,6 @@ import {
 import { useParams } from 'react-router-dom';
 import { Post } from '../../config/config';
 import { NoteContext } from '../../context/NoteContext';
-import NotFoundError from '../../errors/NotFoundError';
 
 /**
  * Ce composant est affiché dans la partie central de l'application. Elle permet de pouvoir
@@ -40,43 +39,37 @@ export default function SharedNoteComponent() {
      * jour avant le clique de notre bouton.
      * A noter que nous le mettons dans un tableau pour pouvoir utiliser la méthode find
      * inexistante sur le html collection
+     * The purpose of the function is to get the value of the select (html element) via its ref.
      * @returns id du
      */
     const getSelectValue = () => [...selectInput.current.children].find((e) => e.localName === 'input').value;
     const copyHandler = async () => {
         // Cannot use state since we have no garanty the state is updated.
-        const folderId = getSelectValue();
+        const selectedFolderId = getSelectValue();
+        if (selectedFolderId === '') {
+            setHasError(true);
+            return;
+        }
+        const folderId = directoriesList[selectedFolderId].id;
         setIsCopying(true);
         setHasError(false);
         try {
             const note = await Post(`/shared_notes/${uuid}/copy`, { folderId });
-            const contextDirectory = directoriesList.find((dir) => dir.uniqid === folderId);
+            const contextDirectory = directoriesList.find((dir) => dir.id === folderId);
             if (contextDirectory !== undefined) {
                 contextDirectory.notes.push(note);
                 dispatch('update_directory', contextDirectory);
             }
-
-            // // TODO : Stéfan, peux-tu réparer ça ?
-            // dispatch({
-            //     type: 'dialog',
-            //     dialog: { id: 'copySharedNoteSucceed', is_open: true }
-            // });
             setHasBeenCopied(true);
         } catch (err) {
             setHasError(true);
-            if (err instanceof NotFoundError) {
-                // dispatch({
-                //     type: 'dialog',
-                //     dialog: { id: 'cannotCopySharedNote', is_open: true }
-                // });
-            }
         }
 
         // TODO call context note pour ajouter la note
         setIsCopying(false);
     };
     const directoryChangedHandler = async (directoryId) => {
-        const dir = directoriesList.find((d) => d.uniqid === directoryId);
+        const dir = directoriesList.find((d) => d.id === directoryId);
         if (dir !== undefined) {
             setDirectory(dir);
         }
@@ -87,7 +80,6 @@ export default function SharedNoteComponent() {
         </Grid>
     );
     const displayForm = () => (
-
         <>
             {hasError && (
                 <Grid item md={12} sx={{ color: 'red' }}>
@@ -100,17 +92,20 @@ export default function SharedNoteComponent() {
                     <InputLabel id="select-label">Dossier destination</InputLabel>
                     <Select
                         labelId="select-label"
+                        SelectDisplayProps={{ 'data-testid': 'select-dest-folder' }}
                         ref={selectInput}
-                        value={directory.uniqid}
+                        value={directory.id}
                         label="Dossier de destination"
                         defaultValue=""
                         onChange={(ev) => directoryChangedHandler(ev.target.value)}
-                        SelectDisplayProps={{ 'data-testid': 'folder-dropdown' }}
-
                     >
                         {directoriesList.map((dir, idx) => (
-                            <MenuItem key={dir.uniqid} value={idx} data-testid={`folder-item-${dir.uniqid}`}>
-                                {dir.name}
+                            <MenuItem
+                                key={dir.id}
+                                value={idx}
+                                data-testid={`folder-item-${dir.id}`}
+                            >
+                                {dir.title}
                             </MenuItem>
                         ))}
                     </Select>

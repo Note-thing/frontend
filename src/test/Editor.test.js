@@ -1,33 +1,54 @@
+import fetch, { enableFetchMocks } from 'jest-fetch-mock';
 import React from 'react';
 import {
-    render, cleanup, act, fireEvent
+    render, cleanup, act, fireEvent, waitFor
 } from '@testing-library/react';
+import { MainProvider } from '../context/MainContext';
 import { NoteProvider } from '../context/NoteContext';
 import Editor from '../layout/editor/Editor';
+import DEFAULT_MOCK_DATA from './data';
+
+enableFetchMocks();
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useLocation: () => ({
+        pathname: 'localhost:3000/directory/1/note/5'
+    })
+}));
+
+Object.defineProperty(window, 'location', {
+    value: {
+        pathname: 'localhost:3000/directory/1/note/5'
+    }
+});
+
+Object.defineProperty(window, 'localStorage', {
+    value: (function () {
+        let store = {
+            User: '{"email":"note-thing@pm.me","isAuthenticated":true}',
+            Token: 'éo234h5élk34hn5ékh35é23h5li23h45liu32h5i3h5ii2l34h5hl2i45'
+        };
+        return {
+            getItem(key) {
+                return store[key];
+            },
+            setItem(key, value) {
+                store[key] = value.toString();
+            },
+            clear() {
+                store = {};
+            }
+        };
+    }())
+});
 
 const editor = () => render(
-    <NoteProvider initialState={{
-        note: {
-            uniqid: 'dfgh3245sdfg',
-            title: 'CSS',
-            tags: ['Web', 'design'],
-            content: '# Getting Started with Create React App'
-        },
-        directories: [{
-            uniqid: '619f6488babbf',
-            name: 'TWEB',
-            notes: [
-                {
-                    uniqid: 'dfgh3245sdfg',
-                    title: 'CSS',
-                    tags: ['Web', 'design'],
-                    content: '# Getting Started with Create React App'
-                }]
-        }]
-    }}
-    >
-        <Editor />
-    </NoteProvider>
+    <MainProvider>
+        <NoteProvider>
+            <Editor />
+        </NoteProvider>
+    </MainProvider>
 );
 
 let container;
@@ -35,8 +56,22 @@ let textarea;
 let preview;
 
 describe('Editor Component', () => {
-    beforeAll(() => {
+    beforeAll(async () => {
+        // testing layout
+        fetch.mockResponses(
+            [
+                JSON.stringify(DEFAULT_MOCK_DATA.directories),
+                { status: 200 }
+            ], [
+                JSON.stringify(DEFAULT_MOCK_DATA.note),
+                { status: 200 }
+            ], [
+                JSON.stringify([]),
+                { status: 200 }
+            ]
+        );
         const edit = editor();
+        await waitFor(() => expect(fetch).toHaveBeenCalledTimes(3));
         container = edit.container;
         // testing layout
         const [textareaElement] = container.getElementsByClassName('editor-textarea');
@@ -47,13 +82,15 @@ describe('Editor Component', () => {
     afterAll(() => {
         cleanup();
     });
-    it('Editor Component | All Editor layout components present', () => {
-        // testing layout
-        expect(container.getElementsByClassName('editor').length).toBe(1);
-        expect(container.getElementsByClassName('resize-pannel-container').length).toBe(1);
-        expect(container.getElementsByClassName('editor-textarea').length).toBe(1);
-        expect(container.getElementsByClassName('preview-pannel').length).toBe(1);
+    beforeEach(() => {
+        fetch.resetMocks();
     });
+    it('Editor Component | All Editor layout components present', () => {
+        expect(container).toBeInTheDocument();
+        expect(textarea).toBeInTheDocument();
+        expect(preview).toBeInTheDocument();
+    });
+
     it('Editor Component | Note content loaded in textarea', () => {
         expect(textarea.value).toBe('# Getting Started with Create React App');
     });
@@ -124,7 +161,7 @@ I think I'll use it to format all of my documents from now on.`;
         expect(preview.innerHTML.trim()).toBe(`<p>I really like using Markdown.</p>
 <p>I think I'll use it to format all of my documents from now on.</p>`);
         act(() => {
-            textarea.value = `This is the first line.  
+            textarea.value = `This is the first line.
 And this is the second line.`;
             fireEvent.keyUp(textarea, { key: 'Enter', code: 'Enter', charCode: 13 });
         });

@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, {
+    useState, useContext, useEffect, useCallback
+} from 'react';
 import { Grid, Input, Button } from '@mui/material';
-import {
-    PictureAsPdf,
-    Share,
-    Delete
-} from '@mui/icons-material';
-import PropTypes from 'prop-types';
+import { PictureAsPdf, Share, Delete as DeleteIcon } from '@mui/icons-material';
 import { ReactComponent as Code } from '../../resource/icons/editor-viewmode-code.svg';
 import { ReactComponent as View } from '../../resource/icons/editor-viewmode-view.svg';
 import { ReactComponent as Split } from '../../resource/icons/editor-viewmode-split.svg';
 import ShareNoteModal from './shareNoteModal/ShareNoteModal';
+import ConfirmationModal from '../common/ConfirmationModal';
+import { NoteContext } from '../../context/NoteContext';
+import { MainContext } from '../../context/MainContext';
+import { Delete, Patch } from '../../config/config';
+import { debounceInput } from '../../utils/utils';
 
 /**
  * Header of the editor containing the note menu (display switch, PDF export, delete the note etc.).
@@ -17,18 +19,57 @@ import ShareNoteModal from './shareNoteModal/ShareNoteModal';
  */
 export default function EditorHeader({ setPreviewWidth }) {
     const [showShareModal, setShowShareModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const { notes, dispatch: noteDispatch } = useContext(NoteContext);
+    const { dispatch: mainDispatch } = useContext(MainContext);
+    const [noteTitle, setNoteTitle] = useState('');
     const handleViewModeClick = (width) => setPreviewWidth(width);
-    return (
-        <Grid
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            height="100%"
-            padding="0 1rem 0 1rem"
-            borderBottom="0.1rem solid #e9f0f0"
-        >
-            <ShareNoteModal open={showShareModal} setOpen={setShowShareModal} />
+    const handleNoteSuppression = useCallback(async () => {
+        try {
+            await Delete(`/notes/${notes.note.id}`, {});
+            const { directory } = notes;
+            directory.notes = directory.notes.filter((note) => note.id !== notes.note.id);
+            noteDispatch({ type: 'update_directory', directory });
+            setShowDeleteModal(false);
+        } catch (err) {
+            mainDispatch({
+                type: 'dialog',
+                dialog: { id: 'Impossible de supprimer la note note', is_open: true }
+            });
+        }
+    }, [notes, noteDispatch, mainDispatch]);
 
+    const debounceTitle = useCallback(debounceInput(async (value) => {
+        try {
+            const note = await Patch(`/notes/${notes.note.id}`, { title: value });
+            const oldNote = notes.note;
+            noteDispatch({ type: 'update_note', note: { ...oldNote, ...note } });
+        } catch (err) {
+            mainDispatch({
+                type: 'dialog',
+                dialog: { id: 'update_name_note', is_open: true }
+            });
+        }
+    }), [notes, noteDispatch, mainDispatch, debounceInput]);
+
+    const handleChangeTitle = async (ev) => {
+        setNoteTitle(ev.target.value);
+        debounceTitle(ev.target.value);
+    };
+    useEffect(() => {
+        setNoteTitle(notes.note.title);
+    }, [notes.note.title]);
+    return (
+        <Grid className="editor-header">
+            <ShareNoteModal open={showShareModal} setOpen={setShowShareModal} />
+            <ConfirmationModal
+                open={showDeleteModal}
+                onClose={setShowDeleteModal}
+                onConfirm={() => {
+                    handleNoteSuppression();
+                }}
+                testid="confirmation-modal"
+            />
             <Grid display="flex" justifyContent="space-around">
                 <Button size="small" onClick={() => handleViewModeClick(0)}>
                     <Code />
@@ -41,12 +82,13 @@ export default function EditorHeader({ setPreviewWidth }) {
                 </Button>
             </Grid>
 
-            <Input
+            {noteTitle && <Input
                 className="noBorderInput"
                 sx={{ width: '10rem', fontSize: '1.2rem' }}
-                value="07.11.2021"
+                value={noteTitle}
+                onChange={handleChangeTitle}
                 placeholder="Titre de la note"
-            />
+            />}
 
             <Grid display="flex" justifyContent="space-around" width="10%">
                 <Share
@@ -56,13 +98,19 @@ export default function EditorHeader({ setPreviewWidth }) {
                     }}
                     sx={{ cursor: 'pointer' }}
                 />
-                <PictureAsPdf className="menu-icon-item" />
-                <Delete className="menu-icon-item" />
+
+                <PictureAsPdf
+                    className="menu-icon-item"
+                    sx={{ curosr: 'pointer' }}
+                    onClick={() => 'TODO'}
+                />
+                <DeleteIcon
+                    className="menu-icon-item"
+                    sx={{ cursor: 'pointer' }}
+                    onClick={() => setShowDeleteModal(true)}
+                    data-testid="editor-header-delete-btn"
+                />
             </Grid>
         </Grid>
     );
 }
-
-EditorHeader.propTypes = {
-    setPreviewWidth: PropTypes.func.isRequired
-};

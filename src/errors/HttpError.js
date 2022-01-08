@@ -7,4 +7,8 @@ export default class HttpError extends Error {
     getStatus() {
         return this.status;
     }
+
+    getMessage() {
+        return JSON.parse(JSON.parse(this.message).message);
+    }
 }

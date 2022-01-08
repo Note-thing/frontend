@@ -1,20 +1,21 @@
 import React from 'react';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
-import { render, fireEvent, waitFor, screen } from '@testing-library/react';
+import {
+    render, waitFor, screen, fireEvent
+} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { act } from 'react-dom/test-utils';
 import { NoteContext } from '../context/NoteContext';
 import SharedNoteComponent from '../layout/sharedNote/SharedNoteComponent';
 import MOCK_DATA from './data';
+import { mockStorage } from './Mock';
 
 const server = setupServer(
-    rest.post('http://localhost:3001/api/v1/shared_notes/123/copy', (req, res, ctx) =>
-        res(ctx.json({ greeting: 'hello there' }))
-    )
+    rest.post('http://localhost:3001/api/v1/shared_notes/123/copy', (req, res, ctx) => res(ctx.json({ greeting: 'hello there' })))
 );
-const open = jest.fn();
 Object.defineProperty(window, 'options', { offset: 210 });
+Object.defineProperty(window, 'localStorage', mockStorage());
 
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
@@ -32,7 +33,7 @@ const dispatch = jest.fn((type, data) => {
     }
 });
 
-test('Display user directory in the dropdown', async () => {
+test('Choose dropdown option, and copy valid', async () => {
     server.use(
         rest.post('http://localhost:3001/api/v1/shared_notes/123/copy', (req, res, ctx) => {
             res(ctx.status(200));
@@ -45,18 +46,17 @@ test('Display user directory in the dropdown', async () => {
                 <SharedNoteComponent />
             </NoteContext.Provider>
         );
-        fireEvent.click(screen.getByText('Copier'));
     });
-    await waitFor(() =>
-        expect(screen.getByText('La copie de la note a bien été effectuée')).toBeInTheDocument()
-    );
+    const div = screen.getByTestId('select-dest-folder');
+    fireEvent.mouseDown(div);
+    screen.getAllByRole('option')[0].click(); // firevent.click doesnt work. #fyMui
+    fireEvent.click(screen.getByTestId('shared-note-component-copy-button'));
+    await waitFor(() => expect(screen.getByText('La copie de la note a bien été effectuée')).toBeInTheDocument());
 });
 
-test('handles server error', async () => {
+test('Handles server error', async () => {
     server.use(
-        rest.post('http://localhost:3001/api/v1/shared_notes/123/copy', (req, res, ctx) =>
-            res(ctx.status(422))
-        )
+        rest.post('http://localhost:3001/api/v1/shared_notes/123/copy', (req, res, ctx) => res(ctx.status(422)))
     );
 
     act(() => {
@@ -65,9 +65,26 @@ test('handles server error', async () => {
                 <SharedNoteComponent />
             </NoteContext.Provider>
         );
-        fireEvent.click(screen.getByText('Copier'));
     });
-    await waitFor(() =>
-        expect(screen.getByText('Un problème est survenu lors de la copie')).toBeInTheDocument()
+    const div = screen.getByTestId('select-dest-folder');
+    fireEvent.mouseDown(div);
+    screen.getAllByRole('option')[0].click(); // firevent.click doesnt work. #fyMui
+    fireEvent.click(screen.getByTestId('shared-note-component-copy-button'));
+    await waitFor(() => expect(screen.getByText('Un problème est survenu lors de la copie')).toBeInTheDocument());
+});
+
+test('Handle no option choosen', async () => {
+    server.use(
+        rest.post('http://localhost:3001/api/v1/shared_notes/123/copy', (req, res, ctx) => res(ctx.status(200)))
     );
+
+    act(() => {
+        render(
+            <NoteContext.Provider value={{ notes, dispatch }}>
+                <SharedNoteComponent />
+            </NoteContext.Provider>
+        );
+    });
+    fireEvent.click(screen.getByTestId('shared-note-component-copy-button'));
+    await waitFor(() => expect(screen.getByText('Un problème est survenu lors de la copie')).toBeInTheDocument());
 });

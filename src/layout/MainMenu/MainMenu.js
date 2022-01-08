@@ -6,7 +6,7 @@ import { MainContext } from '../../context/MainContext';
 import { NoteContext } from '../../context/NoteContext';
 import User from './User';
 import MainMenuItem from './MainMenuItem';
-import '../../resource/css/main-menu.css';
+import FolderCreation from '../directory/FolderCreation/FolderCreation';
 
 /**
  * Main menu of the application (left panel with directories, notes, search and access
@@ -27,15 +27,16 @@ export default function MainMenu() {
                 direction="column"
                 justifyContent="space-between"
             >
-                <Grid sx={{ height: '85%' }}>
+                <Grid className="main-menu-scrollable">
                     <List>
-                        {directories.map((dir) => (
+                        { directories?.map((dir) => (
                             <MainMenuItem
-                                key={dir.uniqid}
-                                show={directory && dir.uniqid === directory.uniqid}
+                                key={dir.id}
+                                show={directory && dir.id === directory.id}
                                 directory={dir}
                             />
                         ))}
+                        <FolderCreation />
                     </List>
                 </Grid>
                 <Grid

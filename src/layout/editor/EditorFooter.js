@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import {
     Grid, Chip, TextField, Button
 } from '@mui/material';
@@ -10,20 +10,13 @@ import { NoteContext } from '../../context/NoteContext';
  */
 export default function EditorFooter() {
     const { notes: { note: { tags } } } = useContext(NoteContext);
-    return (
-        <Grid
-            display="flex"
-            alignItems="center"
-            height="100%"
-            padding="0 1rem 0 1rem"
-            borderTop="0.1rem solid #e9F0F0"
-            className="editor-tag-footer"
-        >
+    return useMemo(() => (
+        <Grid className="editor-footer">
             {tags && tags.map((tag) => (
                 <Chip
                     key={tag.id}
                     className="tag-chip"
-                    label={tag}
+                    label={tag.title}
                     onDelete={() => true /** TODO implémenter logique */}
                 />
             ))}
@@ -34,6 +27,6 @@ export default function EditorFooter() {
                 size="small"
             />
             <Button variant="text" size="small">Add</Button>
-        </Grid>
-    );
+        </Grid>),
+    [tags]);
 }

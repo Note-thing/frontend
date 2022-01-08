@@ -4,6 +4,13 @@ import {
 } from '@testing-library/react';
 import ResizePannel from '../layout/editor/ResizePannel';
 
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useLocation: () => ({
+        pathname: 'http://localhost/directory/1/note/1'
+    })
+}));
+
 const stateChangeWait = () => new Promise((r) => setTimeout(r, 1000));
 const pannelBounds = {
     width: 1000,
