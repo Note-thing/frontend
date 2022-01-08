@@ -5,7 +5,7 @@ const mainReducer = (state, action) => {
         case 'login':
             return { ...state, user: { ...state.user, ...action.user } };
         case 'logout':
-            return { ...state, user: { ...state.user, isAuthenticated: false } };
+            return { ...state, user: null };
         case 'dialog':
             return { ...state, dialog: { ...action.dialog } };
         default:
