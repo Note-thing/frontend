@@ -18,7 +18,7 @@ export default function MainMenu() {
     const { main: { user } } = useContext(MainContext);
     const { notes: { directories, directory } } = useContext(NoteContext);
     return (
-        <section className="main-menu-container">
+        <section className={`main-menu-container ${directory?.id ? '' : 'open'}`}>
             <Grid
                 container
                 className="main-menu"
