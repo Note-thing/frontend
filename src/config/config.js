@@ -7,8 +7,8 @@ export const CONFIG = {
     signin_url: '/signin',
     lost_password_url: '/lost_password',
     signup_url: '/signup',
-    frontend_url: 'http://localhost:3000/',
-    shared_note_url: 'http://localhost:3000/shared_notes/'
+    frontend_url: 'http://localhost:3000',
+    shared_note_url: 'http://localhost:3000/shared_notes'
 };
 
 /**
