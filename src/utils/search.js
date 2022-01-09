@@ -23,6 +23,7 @@ const addOrMergeResult = (result, note) => {
  * @returns {String} The term in lower case and without accent
  */
 const sanitze = (term) => term
+    .trim()
     .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '');
