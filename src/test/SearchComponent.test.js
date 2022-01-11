@@ -1,5 +1,7 @@
 import React from 'react';
-import { render, fireEvent, waitForElementToBeRemoved, waitFor } from '@testing-library/react';
+import {
+    render, fireEvent, waitForElementToBeRemoved, waitFor, screen
+} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { NoteContext } from '../context/NoteContext';
 import MOCK_DATA from './data';
@@ -22,9 +24,10 @@ jest.mock('react-router-dom', () => ({
 
 const notes = MOCK_DATA;
 const dispatch = jest.fn();
-let screen;
+
 beforeEach(() => {
-    screen = render(
+    document.body.innerHTML = '';
+    render(
         <MainContext.Provider
             value={{
                 main: {
@@ -49,9 +52,7 @@ it('Search component - search for two first letters of the title of a note shoul
     fireEvent.change(screen.getByTestId('search-input').querySelector('input'), {
         target: { value: 'se' }
     });
-    await waitFor(() =>
-        expect(screen.getByText(notes.directories[0].notes[0].title)).toBeInTheDocument()
-    );
+    expect(screen.getByText(notes.directories[0].notes[0].title)).toBeInTheDocument();
     expect(screen.getByText('Recherche: 1 résultat(s) trouvé(s)')).toBeInTheDocument();
 });
 
@@ -59,9 +60,7 @@ it('Search component - search for last letters of the title of a note should ret
     fireEvent.change(screen.getByTestId('search-input').querySelector('input'), {
         target: { value: 'nda' }
     });
-    await waitFor(() =>
-        expect(screen.getByText(notes.directories[1].notes[0].title)).toBeInTheDocument()
-    );
+    expect(screen.getByText(notes.directories[1].notes[0].title)).toBeInTheDocument();
     expect(screen.getByText('Recherche: 1 résultat(s) trouvé(s)')).toBeInTheDocument();
 });
 
@@ -69,66 +68,36 @@ it('Search component - search for middle letters of the title of a note should r
     fireEvent.change(screen.getByTestId('search-input').querySelector('input'), {
         target: { value: 'age' }
     });
-    await waitFor(() =>
-        expect(screen.getByText(notes.directories[1].notes[0].title)).toBeInTheDocument()
-    );
+    expect(screen.getByText(notes.directories[1].notes[0].title)).toBeInTheDocument();
     expect(screen.getByText('Recherche: 1 résultat(s) trouvé(s)')).toBeInTheDocument();
 });
 
 it('Search component - search by tags one result', async () => {
-    render(
-        <MainContext.Provider
-            value={{
-                main: {
-                    user: {
-                        firstname: 'Stefan',
-                        lastname: 'Teofanovic',
-                        email: 'st@novic.ch',
-                        isAuthenticated: true
-                    }
-                },
-                dialog: null
-            }}
-        >
-            <NoteContext.Provider value={{ notes, dispatch }}>
-                <SearchComponent />
-            </NoteContext.Provider>
-        </MainContext.Provider>
-    );
-
     fireEvent.change(screen.getByTestId('search-input').querySelector('input'), {
         target: { value: 'test1' }
     });
-    await waitFor(() =>
-        expect(screen.getByText(notes.directories[0].notes[0].title)).toBeInTheDocument()
-    );
+    expect(screen.getByText(notes.directories[0].notes[0].title)).toBeInTheDocument();
     expect(screen.getByText('Recherche: 1 résultat(s) trouvé(s)')).toBeInTheDocument();
 });
 it('Search component - Tags multiple results', async () => {
     fireEvent.change(screen.getByTestId('search-input').querySelector('input'), {
         target: { value: 'test' }
     });
-    await waitFor(() =>
-        expect(screen.getByText(notes.directories[1].notes[0].title)).toBeInTheDocument()
-    );
+    expect(screen.getByText(notes.directories[1].notes[0].title)).toBeInTheDocument();
     expect(screen.getByText('Recherche: 2 résultat(s) trouvé(s)')).toBeInTheDocument();
 });
 it('Search component - title + tag', async () => {
     fireEvent.change(screen.getByTestId('search-input').querySelector('input'), {
         target: { value: 'test secon' }
     });
-    await waitFor(() =>
-        expect(screen.getByText(notes.directories[1].notes[0].title)).toBeInTheDocument()
-    );
+    expect(screen.getByText(notes.directories[1].notes[0].title)).toBeInTheDocument();
     expect(screen.getByText('Recherche: 2 résultat(s) trouvé(s)')).toBeInTheDocument();
 });
 it('Search component - click on result should close result', async () => {
     fireEvent.change(screen.getByTestId('search-input').querySelector('input'), {
         target: { value: 'test secon' }
     });
-    await waitFor(() =>
-        expect(screen.getByText(notes.directories[1].notes[0].title)).toBeInTheDocument()
-    );
+    expect(screen.getByText(notes.directories[1].notes[0].title)).toBeInTheDocument();
     fireEvent.click(screen.getByText(notes.directories[1].notes[0].title));
     expect(screen.queryByTestId('search-result-list')).not.toBeInTheDocument();
 });
@@ -139,25 +108,6 @@ it('Search component - Search component - should show not result when...no resul
     expect(screen.getByText('Aucun résultat')).toBeInTheDocument();
 });
 it('Search component - accent should be ignored (transformed to normal letter é -> e)', async () => {
-    render(
-        <MainContext.Provider
-            value={{
-                main: {
-                    user: {
-                        firstname: 'Stefan',
-                        lastname: 'Teofanovic',
-                        email: 'st@novic.ch',
-                        isAuthenticated: true
-                    }
-                },
-                dialog: null
-            }}
-        >
-            <NoteContext.Provider value={{ notes, dispatch }}>
-                <SearchComponent />
-            </NoteContext.Provider>
-        </MainContext.Provider>
-    );
     // check accent in request
     fireEvent.change(screen.getByTestId('search-input').querySelector('input'), {
         target: { value: 'tést' }
