@@ -58,48 +58,68 @@ export default function SearchComponent() {
                 placeholder="Rechercher dans les notes"
                 value={searchInputValue}
                 onChange={handleSearchInputChange}
+                data-testid="search-input"
             />
+
             {searchMade && (
-                <List
+                <Box
+                    ml={5}
                     sx={{
                         position: 'absolute',
-                        left: '367px',
+                        left: '327px',
                         bottom: -17,
                         width: '383px',
                         maxHeight: '800px',
-                        minHeight: '100px',
+                        minHeight: '400px',
                         overflowY: 'scroll',
                         border: '1px solid #e9f0f0'
                     }}
                 >
-                    {searchResult.length === 0 && (
-                        <Box sx={{ textAlign: 'center', height: '100%', width: '100%' }}>
-                            Aucun résultat
-                        </Box>
-                    )}
-                    {searchResult.map((note, idx) => (
-                        <ListItemButton
-                            sx={{ height: '80px' }}
-                            key={'MainMenu-btn-item-'.concat(note.id)}
-                            onClick={() => handleNoteClick(note)}
-                        >
-                            <ListItemText
-                                primary={note.title}
-                                secondary={note.tags?.map((t, tagsIdx) => (
-                                    <Chip
-                                        key={note.id + note.title.concat(t.title)}
-                                        label={t.title}
-                                        sx={{ marginRight: '0.1rem' }}
-                                        size="small"
-                                        component="span" // to avoid warning because secondary is wrapped in a <p>
-                                        data-testid={'MainMenu-notesList-item-tag-'.concat(tagsIdx)}
-                                    />
-                                ))}
-                                data-testid={'MainMenu-notesList-item-'.concat(idx)}
-                            />
-                        </ListItemButton>
-                    ))}
-                </List>
+                    <h4>
+                        Recherche:
+                        {' '}
+                        {searchResult.length > 0 && `${searchResult.length} résultat(s) trouvé(s)`}
+                    </h4>
+
+                    <List
+                        sx={{
+                            width: '383px',
+                            maxHeight: '800px',
+                            overflowY: 'scroll'
+                        }}
+                        data-testid="search-result-list"
+                    >
+                        {searchResult.length === 0 && (
+                            <Box sx={{ textAlign: 'center', height: '100%', width: '100%' }}>
+                                Aucun résultat
+                            </Box>
+                        )}
+                        {searchResult.map((note, idx) => (
+                            <ListItemButton
+                                sx={{ height: '80px' }}
+                                key={'MainMenu-btn-item-'.concat(note.id)}
+                                onClick={() => handleNoteClick(note)}
+                            >
+                                <ListItemText
+                                    primary={note.title}
+                                    secondary={note.tags?.map((t, tagsIdx) => (
+                                        <Chip
+                                            key={note.id + note.title.concat(t.title)}
+                                            label={t.title}
+                                            sx={{ marginRight: '0.1rem' }}
+                                            size="small"
+                                            component="span" // to avoid warning because secondary is wrapped in a <p>
+                                            data-testid={'MainMenu-notesList-item-tag-'.concat(
+                                                tagsIdx
+                                            )}
+                                        />
+                                    ))}
+                                    data-testid={'MainMenu-notesList-item-'.concat(idx)}
+                                />
+                            </ListItemButton>
+                        ))}
+                    </List>
+                </Box>
             )}
         </Box>
     );
