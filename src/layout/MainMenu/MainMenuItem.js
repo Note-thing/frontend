@@ -63,6 +63,7 @@ export default function MainMenuItem({ directory, show }) {
                 <ListItem
                     onClick={() => handleDirectoryClick(directory.id)}
                     button
+                    sx={{ backgroundColor: show && '#b8c1c1' }}
                     secondaryAction={
                         <KeyboardArrowRight
                             sx={{
@@ -86,7 +87,7 @@ export default function MainMenuItem({ directory, show }) {
                     sx={{
                         opacity: show ? '1' : '0',
                         height: show ? 'auto' : '0 !important',
-                        padding: show ? 'auto' : '0 !important',
+                        padding: '0',
                         transition: show ? '0.2s opacity ease-out' : '0.1s  ease-out'
                     }}
                     data-testid={'MainMenu-notesList'.concat(directory.id)}
@@ -98,6 +99,7 @@ export default function MainMenuItem({ directory, show }) {
                                 <ListItemButton
                                     key={'MainMenu-btn-item-'.concat(note.id)}
                                     onClick={() => handleNoteClick(note)}
+                                    sx={{ backgroundColor: notes.note.id === note.id && '#e9f0f0', minHeight: '4rem' }}
                                 >
                                     <ListItemText
                                         primary={note.title}
