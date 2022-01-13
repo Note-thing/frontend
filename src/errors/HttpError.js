@@ -1,7 +1,8 @@
 export default class HttpError extends Error {
-    constructor(status, msg) {
+    constructor(status, msg, errorObject) {
         super(msg);
         this.status = status;
+        this.errorObject = errorObject;
     }
 
     getStatus() {
@@ -9,6 +10,10 @@ export default class HttpError extends Error {
     }
 
     getMessage() {
-        return JSON.parse(JSON.parse(this.message).message);
+        return this.message;
+    }
+
+    getErrorObject() {
+        return this.errorObject;
     }
 }
