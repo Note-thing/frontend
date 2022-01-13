@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><line fill="none" stroke="#1e2d40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="6.12" y1="6.675" x2="9.881" y2="4.325" data-cap="butt" data-color="color-2"></line>
+<line fill="none" stroke="#1e2d40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="6.12" y1="9.325" x2="9.881" y2="11.675" data-cap="butt" data-color="color-2"></line>
+<circle fill="none" stroke="#1e2d40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="12" cy="3" r="2.5" data-cap="butt"></circle>
+<circle fill="none" stroke="#1e2d40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="12" cy="13" r="2.5" data-cap="butt"></circle>
+<circle fill="none" stroke="#1e2d40" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="4" cy="8" r="2.5" data-cap="butt"></circle>
+</g></svg>

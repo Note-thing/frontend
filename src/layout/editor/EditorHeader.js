@@ -2,10 +2,14 @@ import React, {
     useState, useContext, useEffect, useCallback
 } from 'react';
 import { Grid, Input, Button } from '@mui/material';
-import { PictureAsPdf, Share, Delete as DeleteIcon } from '@mui/icons-material';
+import { PictureAsPdf } from '@mui/icons-material';
+import html2PDF from 'jspdf-html2canvas';
 import { ReactComponent as Code } from '../../resource/icons/editor-viewmode-code.svg';
 import { ReactComponent as View } from '../../resource/icons/editor-viewmode-view.svg';
 import { ReactComponent as Split } from '../../resource/icons/editor-viewmode-split.svg';
+import { ReactComponent as Share } from '../../resource/icons/editor-toolbar-share.svg';
+import { ReactComponent as DeleteIcon } from '../../resource/icons/editor-toolbar-trash.svg';
+
 import ShareNoteModal from './shareNoteModal/ShareNoteModal';
 import ConfirmationModal from '../common/ConfirmationModal';
 import { NoteContext } from '../../context/NoteContext';
@@ -52,6 +56,24 @@ export default function EditorHeader({ setPreviewWidth }) {
         }
     }), [notes, noteDispatch, mainDispatch, debounceInput]);
 
+    const handleGeneratePDF = useCallback(() => {
+        const [doc] = document.getElementsByClassName('preview-pannel');
+        // console.log('handleGeneratePDF', doc);
+        html2PDF(doc, {
+            jsPDF: {
+                format: 'a4'
+            },
+            imageType: 'image/jpeg',
+            margin: {
+                top: 20,
+                right: 20,
+                bottom: 20,
+                left: 20
+            },
+            output: `./pdf/${noteTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.pdf`
+        });
+    });
+
     const handleChangeTitle = async (ev) => {
         setNoteTitle(ev.target.value);
         debounceTitle(ev.target.value);
@@ -91,25 +113,15 @@ export default function EditorHeader({ setPreviewWidth }) {
             />}
 
             <Grid display="flex" justifyContent="space-around" width="10%">
-                <Share
-                    className="menu-icon-item"
-                    onClick={() => {
-                        setShowShareModal(!showShareModal);
-                    }}
-                    sx={{ cursor: 'pointer' }}
-                />
-
-                <PictureAsPdf
-                    className="menu-icon-item"
-                    sx={{ curosr: 'pointer' }}
-                    onClick={() => 'TODO'}
-                />
-                <DeleteIcon
-                    className="menu-icon-item"
-                    sx={{ cursor: 'pointer' }}
-                    onClick={() => setShowDeleteModal(true)}
-                    data-testid="editor-header-delete-btn"
-                />
+                <Button size="small" onClick={() => setShowShareModal(!showShareModal)}>
+                    <Share />
+                </Button>
+                <Button size="small" onClick={handleGeneratePDF}>
+                    <PictureAsPdf />
+                </Button>
+                <Button size="small" onClick={() => setShowDeleteModal(true)}>
+                    <DeleteIcon />
+                </Button>
             </Grid>
         </Grid>
     );
