@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useMemo } from 'react';
 import {
     Chip, List, ListItem, ListItemButton, ListItemText
 } from '@mui/material';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { KeyboardArrowRight } from '@mui/icons-material';
 import { NoteContext } from '../../context/NoteContext';
 import NoteCreation from '../note/NoteCreation';
@@ -14,6 +14,7 @@ import NoteCreation from '../note/NoteCreation';
  */
 export default function MainMenuItem({ directory, show }) {
     const history = useHistory();
+    const location = useLocation();
     const { notes, dispatch } = useContext(NoteContext);
 
     /**
@@ -35,17 +36,23 @@ export default function MainMenuItem({ directory, show }) {
      */
     const handleNoteClick = useCallback(
         (note) => {
+            // prevent click in case of unchanged url
+            const goTo = `/directory/${notes.directory.id}/note/${note.id}`;
+            if (goTo === location.pathname) {
+                return;
+            }
             /*
-              clear the currently displayed note,
-              URL change will trigger note context api call to get latest note data
-            */
+                clear the currently displayed note,
+                URL change will trigger note context api call to get latest note data
+                */
+            console.log('url change');
             dispatch({
                 type: 'change_note',
                 note: { }
             });
             history.push(`/directory/${notes.directory.id}/note/${note.id}`);
         },
-        [dispatch, notes?.directory?.id]
+        [dispatch, notes?.directory?.id, location.pathname]
     );
     const handleSettingBtnClicked = (e, directoryId) => {
         e.preventDefault();
