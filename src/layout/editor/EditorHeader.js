@@ -12,6 +12,7 @@ import { NoteContext } from '../../context/NoteContext';
 import { MainContext } from '../../context/MainContext';
 import { Delete, Patch } from '../../config/config';
 import { debounceInput } from '../../utils/utils';
+import EditorDownloadPDF from './EditorDownloadPDF';
 
 /**
  * Header of the editor containing the note menu (display switch, PDF export, delete the note etc.).
@@ -56,6 +57,7 @@ export default function EditorHeader({ setPreviewWidth }) {
         setNoteTitle(ev.target.value);
         debounceTitle(ev.target.value);
     };
+
     useEffect(() => {
         setNoteTitle(notes.note.title);
     }, [notes.note.title]);
@@ -99,11 +101,11 @@ export default function EditorHeader({ setPreviewWidth }) {
                     sx={{ cursor: 'pointer' }}
                 />
 
-                <PictureAsPdf
+                <EditorDownloadPDF
                     className="menu-icon-item"
-                    sx={{ curosr: 'pointer' }}
-                    onClick={() => 'TODO'}
+                    noteTitle="test"
                 />
+
                 <DeleteIcon
                     className="menu-icon-item"
                     sx={{ cursor: 'pointer' }}
