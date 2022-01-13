@@ -119,7 +119,7 @@ export default function EditorHeader({ setPreviewWidth }) {
                 <Button size="small" onClick={handleGeneratePDF}>
                     <PictureAsPdf />
                 </Button>
-                <Button size="small" onClick={() => setShowDeleteModal(true)}>
+                <Button size="small" onClick={() => setShowDeleteModal(true)} data-testid="editor-header-delete-btn">
                     <DeleteIcon />
                 </Button>
             </Grid>
