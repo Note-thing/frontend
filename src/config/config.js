@@ -83,15 +83,15 @@ const requestWithBody = async (method, endpoint, data = null) => {
     try {
         const res = await fetch(CONFIG.api_url + endpoint, getRequestInfoWithHeaders(method, data));
         if (!res.ok) {
-            const text = await res.text();
-            throwHttpError(res.status, text);
+            const errorJson = JSON.parse((await res.text()));
+            throwHttpError(res.status, errorJson.message, errorJson);
         }
         const response = await res.json();
         return response;
     } catch (err) {
         // ControlTokenAfterResponse will redirect if 403. It will return true otherwise
         // if it returns true throw the error again
-        if (controlTokenAfterResponse(err)) {
+        if (controlTokenAfterResponse(endpoint, err)) {
             throw err;
         }
     }
