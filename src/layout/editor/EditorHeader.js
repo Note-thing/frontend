@@ -112,7 +112,7 @@ export default function EditorHeader({ setPreviewWidth }) {
                 placeholder="Titre de la note"
             />}
 
-            <Grid display="flex" justifyContent="space-around" width="10%">
+            <Grid display="flex" justifyContent="space-around">
                 <Button size="small" onClick={() => setShowShareModal(!showShareModal)}>
                     <Share />
                 </Button>
