@@ -1,3 +1,7 @@
+/**
+ * Mock localstorage with fake user.
+ * @returns
+ */
 export const mockStorage = () => {
     const storeValues = new Map();
     storeValues.set('User', '{"email":"note-thing@pm.me","isAuthenticated":true}');
@@ -16,5 +20,4 @@ export const mockStorage = () => {
         }
     };
 };
-
-export const teapot = "I'm here to avoid eslint error";
+export const teapot = 'test';
