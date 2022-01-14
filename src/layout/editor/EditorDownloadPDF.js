@@ -14,9 +14,14 @@ export default function EditorDownloadPDF({ noteTitle }) {
         const margin = 5;
         const pdf = new jsPDF();
 
-        pdf.html(preview.innerHTML, {
+        const images = Array.prototype.map.call(preview.getElementsByTagName('img'), (img) => img);
+        [...images].forEach((image) => {
+            image.width = 250;
+        });
+
+        pdf.html(preview, {
             callback: (doc) => {
-                doc.save();
+                doc.save(noteTitle);
             },
             autoPaging: 'text',
             margin,
