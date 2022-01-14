@@ -1,7 +1,7 @@
 import React, {
     useState, useContext, useEffect, useCallback
 } from 'react';
-import { Grid, Input, Button } from '@mui/material';
+import { Grid, Input, Button, IconButton } from '@mui/material';
 import { PictureAsPdf, Share, Delete as DeleteIcon } from '@mui/icons-material';
 import { ReactComponent as Code } from '../../resource/icons/editor-viewmode-code.svg';
 import { ReactComponent as View } from '../../resource/icons/editor-viewmode-view.svg';
@@ -93,25 +93,29 @@ export default function EditorHeader({ setPreviewWidth }) {
             />}
 
             <Grid display="flex" justifyContent="space-around" width="10%">
-                <Share
-                    className="menu-icon-item"
+                <IconButton
+                    color="primary"
+                    label="Partager la note"
                     onClick={() => {
                         setShowShareModal(!showShareModal);
                     }}
-                    sx={{ cursor: 'pointer' }}
-                />
+                >
+                    <Share />
+                </IconButton>
 
                 <EditorDownloadPDF
                     className="menu-icon-item"
-                    noteTitle="test"
+                    noteTitle={noteTitle}
                 />
 
-                <DeleteIcon
-                    className="menu-icon-item"
-                    sx={{ cursor: 'pointer' }}
+                <IconButton
+                    color="primary"
+                    label="Supprimer la note"
                     onClick={() => setShowDeleteModal(true)}
                     data-testid="editor-header-delete-btn"
-                />
+                >
+                    <DeleteIcon />
+                </IconButton>
             </Grid>
         </Grid>
     );

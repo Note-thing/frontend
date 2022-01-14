@@ -34,7 +34,7 @@ export default function EditorDownloadPDF({ noteTitle }) {
     return (
         <IconButton
             color="primary"
-            label="Ajouter des tags"
+            label="Exporter en PDF"
             onClick={handleClick}
         >
             <PictureAsPdf />
