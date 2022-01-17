@@ -1,7 +1,7 @@
 import React, {
     useState, useContext, useEffect, useCallback
 } from 'react';
-import { Grid, Input, Button } from '@mui/material';
+import { Grid, Input, Button, IconButton } from '@mui/material';
 import { PictureAsPdf, Share, Delete as DeleteIcon } from '@mui/icons-material';
 import { ReactComponent as Code } from '../../resource/icons/editor-viewmode-code.svg';
 import { ReactComponent as View } from '../../resource/icons/editor-viewmode-view.svg';
@@ -12,6 +12,7 @@ import { NoteContext } from '../../context/NoteContext';
 import { MainContext } from '../../context/MainContext';
 import { Delete, Patch } from '../../config/config';
 import { debounceInput } from '../../utils/utils';
+import EditorDownloadPDF from './EditorDownloadPDF';
 
 /**
  * Header of the editor containing the note menu (display switch, PDF export, delete the note etc.).
@@ -56,6 +57,7 @@ export default function EditorHeader({ setPreviewWidth }) {
         setNoteTitle(ev.target.value);
         debounceTitle(ev.target.value);
     };
+
     useEffect(() => {
         setNoteTitle(notes.note.title);
     }, [notes.note.title]);
@@ -91,25 +93,29 @@ export default function EditorHeader({ setPreviewWidth }) {
             />}
 
             <Grid display="flex" justifyContent="space-around" width="10%">
-                <Share
-                    className="menu-icon-item"
+                <IconButton
+                    color="primary"
+                    label="Partager la note"
                     onClick={() => {
                         setShowShareModal(!showShareModal);
                     }}
-                    sx={{ cursor: 'pointer' }}
+                >
+                    <Share />
+                </IconButton>
+
+                <EditorDownloadPDF
+                    className="menu-icon-item"
+                    noteTitle={noteTitle}
                 />
 
-                <PictureAsPdf
-                    className="menu-icon-item"
-                    sx={{ curosr: 'pointer' }}
-                    onClick={() => 'TODO'}
-                />
-                <DeleteIcon
-                    className="menu-icon-item"
-                    sx={{ cursor: 'pointer' }}
+                <IconButton
+                    color="primary"
+                    label="Supprimer la note"
                     onClick={() => setShowDeleteModal(true)}
                     data-testid="editor-header-delete-btn"
-                />
+                >
+                    <DeleteIcon />
+                </IconButton>
             </Grid>
         </Grid>
     );
