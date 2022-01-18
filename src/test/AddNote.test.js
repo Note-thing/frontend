@@ -15,6 +15,33 @@ const server = setupServer(
     rest.post('http://localhost:3001/api/v1/folders', (req, res, ctx) => res(ctx.json({ test: 'test' })))
 );
 
+const notes = MOCK_DATA;
+const noteDispatch = jest.fn();
+const mainDispatch = jest.fn();
+
+beforeEach(() => {
+    document.body.innerHTML = '';
+    render(
+        <MainContext.Provider
+            value={{
+                main: {
+                    user: {
+                        firstname: 'Stefan',
+                        lastname: 'Teofanovic',
+                        email: 'st@novic.ch',
+                        isAuthenticated: true
+                    }
+                },
+                dialog: null,
+                dispatch: mainDispatch
+            }}
+        >
+            <NoteContext.Provider value={{ notes, dispatch: noteDispatch }}>
+                <NoteCreationMainMenuItem />
+            </NoteContext.Provider>
+        </MainContext.Provider>
+    );
+});
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
@@ -27,61 +54,17 @@ jest.mock('react-router-dom', () => ({
     useHistory: () => {}
 }));
 
-const notes = MOCK_DATA;
-const dispatch = jest.fn();
-
 it('Note Creation - The modal show on click', async () => {
     server.use(
         rest.post('http://localhost:3001/api/v1/notes', (req, res, ctx) => res(ctx.json({ test: 'test' })))
     );
-
-    render(
-        <MainContext.Provider
-            value={{
-                main: {
-                    user: {
-                        firstname: 'Stefan',
-                        lastname: 'Teofanovic',
-                        email: 'st@novic.ch',
-                        isAuthenticated: true
-                    }
-                },
-                dialog: null
-            }}
-        >
-            <NoteContext.Provider value={{ notes, dispatch }}>
-                <NoteCreationMainMenuItem />
-            </NoteContext.Provider>
-        </MainContext.Provider>
-    );
-
     fireEvent.click(screen.getByTestId('MainMenu-add-note-btn'));
-
     expect(screen.getByTestId('note-creation-modal')).toBeInTheDocument();
 });
 
 it('Note Creation - The modal show on click and dispear on creation', async () => {
     server.use(
         rest.post('http://localhost:3001/api/v1/notes', (req, res, ctx) => res(ctx.json({ test: 'test' })))
-    );
-    render(
-        <MainContext.Provider
-            value={{
-                main: {
-                    user: {
-                        firstname: 'Stefan',
-                        lastname: 'Teofanovic',
-                        email: 'st@novic.ch',
-                        isAuthenticated: true
-                    }
-                },
-                dialog: null
-            }}
-        >
-            <NoteContext.Provider value={{ notes, dispatch }}>
-                <NoteCreationMainMenuItem />
-            </NoteContext.Provider>
-        </MainContext.Provider>
     );
 
     fireEvent.click(screen.getByTestId('MainMenu-add-note-btn'));
@@ -94,64 +77,25 @@ it('Note Creation - The modal show on click and dispear on creation', async () =
 
     fireEvent.click(screen.getByTestId('note-creation-button'));
     await waitForElementToBeRemoved(() => screen.getByTestId('note-creation-modal'));
-    expect(dispatch.mock.calls.length).toBe(1);
+    expect(noteDispatch.mock.calls.length).toBe(1);
+    expect(mainDispatch.mock.calls.length).toBe(1);
 });
 
 it('Note Creation - Empty name', async () => {
-    render(
-        <MainContext.Provider
-            value={{
-                main: {
-                    user: {
-                        firstname: 'Stefan',
-                        lastname: 'Teofanovic',
-                        email: 'st@novic.ch',
-                        isAuthenticated: true
-                    }
-                },
-                dialog: null
-            }}
-        >
-            <NoteContext.Provider value={{ notes, dispatch }}>
-                <NoteCreationMainMenuItem />
-            </NoteContext.Provider>
-        </MainContext.Provider>
-    );
-
     fireEvent.click(screen.getByTestId('MainMenu-add-note-btn'));
-
     expect(screen.getByTestId('note-creation-modal')).toBeInTheDocument();
-
     fireEvent.change(screen.getByTestId('note-creation-input').querySelector('input'), {
         target: { value: '' }
     });
 
     fireEvent.click(screen.getByTestId('note-creation-button'));
-    expect(dispatch.mock.calls.length).toBe(0);
+    expect(noteDispatch.mock.calls.length).toBe(0);
+    expect(mainDispatch.mock.calls.length).toBe(0);
     expect(screen.getByText('Ne peut pas être vide')).toBeInTheDocument();
 });
 it('Note Creation - Too big name (>50chars)', async () => {
     server.use(
         rest.post('http://localhost:3001/api/v1/notes', (req, res, ctx) => res(ctx.json({ test: 'test' })))
-    );
-    render(
-        <MainContext.Provider
-            value={{
-                main: {
-                    user: {
-                        firstname: 'Stefan',
-                        lastname: 'Teofanovic',
-                        email: 'st@novic.ch',
-                        isAuthenticated: true
-                    }
-                },
-                dialog: null
-            }}
-        >
-            <NoteContext.Provider value={{ notes, dispatch }}>
-                <NoteCreationMainMenuItem />
-            </NoteContext.Provider>
-        </MainContext.Provider>
     );
 
     fireEvent.click(screen.getByTestId('MainMenu-add-note-btn'));
@@ -163,6 +107,8 @@ it('Note Creation - Too big name (>50chars)', async () => {
     });
 
     fireEvent.click(screen.getByTestId('note-creation-button'));
-    expect(dispatch.mock.calls.length).toBe(0);
+    expect(noteDispatch.mock.calls.length).toBe(0);
+    expect(mainDispatch.mock.calls.length).toBe(0);
+
     expect(screen.getByText('Ne doit pas dépasser 50 caractères')).toBeInTheDocument();
 });
