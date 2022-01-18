@@ -29,6 +29,7 @@ export default function EditorFooter() {
         >
             <Grid item>
                 <IconButton
+                    data-testid="editor-footer-add-tags-btn"
                     color="primary"
                     label="Ajouter des tags"
                     onClick={handleClickOpen}

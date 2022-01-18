@@ -45,7 +45,11 @@ export default function EditorDialogAddTags({
     };
 
     return (
-        <Dialog open={open} onClose={handleClose}>
+        <Dialog
+            open={open}
+            onClose={handleClose}
+            data-testid="editor-dialog-add-tags"
+        >
             <DialogTitle>Nouveaux tags</DialogTitle>
             <DialogContent>
                 <DialogContentText>
