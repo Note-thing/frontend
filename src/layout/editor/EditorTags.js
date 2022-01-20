@@ -16,7 +16,7 @@ export default function EditorTags() {
                     key={tag.id}
                     className="tag-chip"
                     label={tag.title}
-                    data-testid={`editor-dialog-add-tags-tag-${tag.title}`}
+                    data-testid={`editor-tags-tag-${tag.title}`}
                     color="secondary"
                     onDelete={() => {
                         note.tags = note.tags.filter((t) => t.id !== tag.id);

@@ -24,10 +24,14 @@ export default function EditorDialogAddTags({
     };
 
     const handleAddTag = (tag) => {
+        console.log('before if');
         if (tag !== undefined
             && tag.length > 0
             && !note.tags.map((t) => t.title).includes(tag)) {
+            console.log('before post');
+            console.log(tag, note.id);
             Post('/tags', { title: tag, note_id: note.id }).then((t) => {
+                console.log('in post, ', t.title, t.id);
                 note.tags = [...note.tags, { title: t.title, id: t.id }];
                 dispatch({
                     type: 'update_note',

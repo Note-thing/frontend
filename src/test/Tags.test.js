@@ -5,171 +5,94 @@ import {
     render,
     screen,
     fireEvent,
-    waitForElementToBeRemoved
+    waitFor
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { NoteContext } from '../context/NoteContext';
+import fetch, { enableFetchMocks } from 'jest-fetch-mock';
+import { MemoryRouter } from 'react-router';
+import { NoteProvider } from '../context/NoteContext';
 import EditorFooter from '../layout/editor/EditorFooter';
 import MOCK_DATA from './data';
-import { MainContext } from '../context/MainContext';
+import { MainProvider } from '../context/MainContext';
 import { mockStorage } from './Mock';
 
 const server = setupServer(
     rest.post('http://localhost:3001/api/v1/tags', (req, res, ctx) => res(ctx.json({ test: 'test' })))
 );
 
-Object.defineProperty(window, 'localStorage', mockStorage());
-
-beforeAll(() => server.listen());
-afterEach(() => server.resetHandlers());
-afterAll(() => server.close());
+enableFetchMocks();
 
 // Mock useParams used in SharedNoteComponent
 jest.mock('react-router-dom', () => ({
-    useParams: () => ({ uuid: '123' }),
-    useHistory: () => {}
+    ...jest.requireActual('react-router-dom'),
+    useLocation: () => ({
+        pathname: 'localhost:3000/directory/1/note/5'
+    }),
+    useHistory: () => ({
+        push: (where) => `localhost:3000${where}`
+    })
 }));
 
-const notes = MOCK_DATA;
-const dispatch = jest.fn();
-
-it('Tags Creation - The modal show on click', async () => {
-    server.use(
-        rest.post('http://localhost:3001/api/v1/tags', (req, res, ctx) => res(ctx.json({ test: 'test' })))
-    );
-
-    render(
-        <MainContext.Provider
-            value={{
-                main: {
-                    user: {
-                        firstname: 'Stefan',
-                        lastname: 'Teofanovic',
-                        email: 'st@novic.ch',
-                        isAuthenticated: true
-                    }
-                },
-                dialog: null
-            }}
-        >
-            <NoteContext.Provider value={{ notes, dispatch }}>
-                <EditorFooter />
-            </NoteContext.Provider>
-        </MainContext.Provider>
-    );
-
-    fireEvent.click(screen.getByTestId('editor-footer-add-tags-btn'));
-
-    expect(screen.getByTestId('editor-dialog-add-tags')).toBeInTheDocument();
+Object.defineProperty(window, 'location', {
+    value: {
+        pathname: 'localhost:3000/directory/1/note/5'
+    }
 });
 
-it('Tags Creation - The modal show on click and we can add a tag that is displayed', async () => {
-    server.use(
-        rest.post('http://localhost:3001/api/v1/tags', (req, res, ctx) => res(ctx.json({ title: 'MonNouveauTag', id: 88 })))
-    );
-    render(
-        <MainContext.Provider
-            value={{
-                main: {
-                    user: {
-                        firstname: 'Stefan',
-                        lastname: 'Teofanovic',
-                        email: 'st@novic.ch',
-                        isAuthenticated: true
-                    }
-                },
-                dialog: null
-            }}
-        >
-            <NoteContext.Provider value={{ notes, dispatch }}>
-                <EditorFooter />
-            </NoteContext.Provider>
-        </MainContext.Provider>
-    );
+Object.defineProperty(window, 'localStorage', mockStorage());
 
-    fireEvent.click(screen.getByTestId('editor-footer-add-tags-btn'));
+/* beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close()); */
 
-    expect(screen.getByTestId('editor-dialog-add-tags')).toBeInTheDocument();
+// const notes = MOCK_DATA;
+// const dispatch = jest.fn();
+describe('Footer Component', () => {
+    beforeEach(async () => {
+        fetch.mockResponses(
+            [
+                JSON.stringify(MOCK_DATA.directories),
+                { status: 200 }
+            ]
+        );
+        render(
+            <MemoryRouter initialEntries={['/directory/1/note/5']}>
+                <MainProvider>
+                    <NoteProvider>
+                        <EditorFooter />
+                    </NoteProvider>
+                </MainProvider>
+            </MemoryRouter>
+        );
+        await waitFor(() => expect(fetch).toHaveBeenCalledTimes(1));
+    });
+    it('Tags Creation - The modal show on click', async () => {
+        fireEvent.click(screen.getByTestId('editor-footer-add-tags-btn'));
 
-    fireEvent.change(screen.getByTestId('editor-dialog-add-tags').querySelector('input'), {
-        target: { value: 'MonNouveauTag{enter}' }
+        expect(screen.getByTestId('editor-dialog-add-tags')).toBeInTheDocument();
     });
 
-    await setTimeout(() => {}, 2000);
+    it('Tags Creation - From the opened modal, we can add a tag that is displayed', async () => {
+        server.use(
+            rest.post('http://localhost:3001/api/v1/tags', (req, res, ctx) => res(ctx.json({ title: 'MonNouveauTag', id: 88 })))
+        );
 
-    expect(screen.getByTestId('editor-dialog-add-tags-tag-MonNouveauTag')).toBeInTheDocument();
+        fireEvent.click(screen.getByTestId('editor-footer-add-tags-btn'));
 
-    /*fireEvent.click(screen.getByTestId('folder-creation-button'));
-    await waitForElementToBeRemoved(() => screen.getByTestId('folder-creation-modal'));
-    expect(dispatch.mock.calls.length).toBe(1);*/
+        expect(screen.getByTestId('editor-dialog-add-tags')).toBeInTheDocument();
+
+        fireEvent.change(screen.getByTestId('editor-dialog-add-tags').querySelector('input'), {
+            target: { value: 'MonNouveauTag' }
+        });
+
+        fireEvent.keyPress(screen.getByTestId('editor-dialog-add-tags').querySelector('input'), {
+            key: 'Enter', code: 13, charCode: 13
+        });
+
+        await waitFor(() => expect(screen.getByTestId('editor-tags-tag-MonNouveauTag')).toBeInTheDocument(), { timeout: 5000 });
+
+        /*fireEvent.click(screen.getByTestId('folder-creation-button'));
+        await waitForElementToBeRemoved(() => screen.getByTestId('folder-creation-modal'));
+        expect(dispatch.mock.calls.length).toBe(1); */
+    });
 });
-
-/*it('Folder Creation - Empty name', async () => {
-    render(
-        <MainContext.Provider
-            value={{
-                main: {
-                    user: {
-                        firstname: 'Stefan',
-                        lastname: 'Teofanovic',
-                        email: 'st@novic.ch',
-                        isAuthenticated: true
-                    }
-                },
-                dialog: null
-            }}
-        >
-            <NoteContext.Provider value={{ notes, dispatch }}>
-                <FolderCreationMainMenuItem />
-            </NoteContext.Provider>
-        </MainContext.Provider>
-    );
-
-    fireEvent.click(screen.getByTestId('MainMenu-add-folder-btn'));
-
-    expect(screen.getByTestId('folder-creation-modal')).toBeInTheDocument();
-
-    fireEvent.change(screen.getByTestId('folder-creation-input').querySelector('input'), {
-        target: { value: '' }
-    });
-
-    fireEvent.click(screen.getByTestId('folder-creation-button'));
-    expect(dispatch.mock.calls.length).toBe(0);
-    expect(screen.getByText('Ne peut pas être vide')).toBeInTheDocument();
-});
-it('Folder Creation -  Too big name (>50chars)', async () => {
-    server.use(
-        rest.post('http://localhost:3001/api/v1/folders', (req, res, ctx) => res(ctx.json({ test: 'test' })))
-    );
-    render(
-        <MainContext.Provider
-            value={{
-                main: {
-                    user: {
-                        firstname: 'Stefan',
-                        lastname: 'Teofanovic',
-                        email: 'st@novic.ch',
-                        isAuthenticated: true
-                    }
-                },
-                dialog: null
-            }}
-        >
-            <NoteContext.Provider value={{ notes, dispatch }}>
-                <FolderCreationMainMenuItem />
-            </NoteContext.Provider>
-        </MainContext.Provider>
-    );
-
-    fireEvent.click(screen.getByTestId('MainMenu-add-folder-btn'));
-
-    expect(screen.getByTestId('folder-creation-modal')).toBeInTheDocument();
-
-    fireEvent.change(screen.getByTestId('folder-creation-input').querySelector('input'), {
-        target: { value: new Array(52).join('a') } // create a string of  51 chars
-    });
-
-    fireEvent.click(screen.getByTestId('folder-creation-button'));
-    expect(dispatch.mock.calls.length).toBe(0);
-    expect(screen.getByText('Ne doit pas dépasser 50 caractères')).toBeInTheDocument();
-});*/

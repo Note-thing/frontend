@@ -125,6 +125,7 @@ export const NoteProvider = ({ children }) => {
         */
         if (notes.directories && notes.directories.length > 0) {
             const active = getActiveFromURL(notes.directories);
+            console.log(active);
             if (active.directory) {
                 dispatch({
                     type: 'change_directory',
