@@ -48,7 +48,7 @@ export default function MainMenuItem({ directory, show }) {
             console.log('url change');
             dispatch({
                 type: 'change_note',
-                note: { }
+                note: {}
             });
             history.push(`/directory/${notes.directory.id}/note/${note.id}`);
         },

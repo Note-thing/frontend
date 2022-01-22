@@ -2,13 +2,13 @@ import React, { useContext } from 'react';
 import {
     List, Grid
 } from '@mui/material';
+import { useLocation } from 'react-router-dom';
 import { MainContext } from '../../context/MainContext';
 import { NoteContext } from '../../context/NoteContext';
 import User from './User';
 import MainMenuItem from './MainMenuItem';
 import FolderCreation from '../directory/FolderCreation/FolderCreation';
 import SearchComponent from '../search/SearchComponent';
-
 /**
  * Main menu of the application (left panel with directories, notes, search and access
  * to user parameters)
@@ -16,10 +16,13 @@ import SearchComponent from '../search/SearchComponent';
  * @returns
  */
 export default function MainMenu() {
+    const location = useLocation();
+    // List of URLS for which the menu should be opened.
+    const OPENED_URL = ['/'];
     const { main: { user } } = useContext(MainContext);
     const { notes: { directories, directory } } = useContext(NoteContext);
     return (
-        <section className={`main-menu-container ${directory?.id ? '' : 'open'}`}>
+        <section className={`main-menu-container ${OPENED_URL.includes(location.pathname) ? 'open' : ''}`}>
             <Grid
                 container
                 className="main-menu"
