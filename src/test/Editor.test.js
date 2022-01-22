@@ -71,7 +71,7 @@ describe('Editor Component', () => {
             ]
         );
         const edit = editor();
-        await waitFor(() => expect(fetch).toHaveBeenCalledTimes(3));
+        await waitFor(() => expect(fetch).toHaveBeenCalledTimes(2));
         container = edit.container;
         // testing layout
         const [textareaElement] = container.getElementsByClassName('editor-textarea');

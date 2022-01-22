@@ -11,34 +11,55 @@ import MOCK_DATA from './data';
 import { MainContext } from '../context/MainContext';
 import { mockStorage } from './Mock';
 
-const server = setupServer();
+Object.defineProperty(window, 'options', { offset: 210 });
+Object.defineProperty(window, 'localStorage', mockStorage());
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useLocation: () => ({
+        pathname: 'localhost:3000/directory/1'
+    }),
+    useHistory: () => ({
+        push: (where) => `localhost:3000${where}`
+    })
+}));
 
+const notes = MOCK_DATA;
+beforeEach(() => {
+    document.body.innerHTML = '';
+    render(
+        <MainContext.Provider
+            value={{
+                main: {
+                    user: {
+                        firstname: 'Stefan',
+                        lastname: 'Teofanovic',
+                        email: 'st@novic.ch',
+                        isAuthenticated: true
+                    }
+                },
+                dialog: null,
+                dispatch: dispatchMain
+            }}
+        >
+            <NoteContext.Provider value={{ notes, dispatch }}>
+                <EditorHeader />
+            </NoteContext.Provider>
+        </MainContext.Provider>
+    );
+});
+
+const server = setupServer();
 let dispatch;
 let dispatchMain;
-
-beforeEach(() => {
-    dispatch = jest.fn();
-    dispatchMain = jest.fn();
-});
+dispatch = jest.fn();
+dispatchMain = jest.fn();
 
 beforeAll(() => {
     server.listen();
-    dispatch = jest.fn();
-    dispatchMain = jest.fn();
 });
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
-Object.defineProperty(window, 'options', { offset: 210 });
-Object.defineProperty(window, 'localStorage', mockStorage());
-
-// Mock useParams used in SharedNoteComponent
-jest.mock('react-router-dom', () => ({
-    useParams: () => ({ directoryId: '123' }),
-    useHistory: () => {}
-}));
-
-const notes = MOCK_DATA;
 const sharedNote = [
     {
         id: 5,
@@ -67,28 +88,36 @@ it('Editor header - delete note', async () => {
     server.use(
         rest.get(`http://localhost:3001/api/v1/notes/${notes.note.id}/shared_notes`, (req, res, ctx) => res(ctx.json(sharedNote)))
     );
-    render(
-        <MainContext.Provider
-            value={{
-                main: {
-                    user: {
-                        firstname: 'Stefan',
-                        lastname: 'Teofanovic',
-                        email: 'st@novic.ch',
-                        isAuthenticated: true
-                    }
-                },
-                dialog: null,
-                dispatch: dispatchMain
-            }}
-        >
-            <NoteContext.Provider value={{ notes, dispatch }}>
-                <EditorHeader />
-            </NoteContext.Provider>
-        </MainContext.Provider>
-    );
     fireEvent.click(screen.getByTestId('editor-header-delete-btn'));
     await waitFor(() => expect(screen.getByTestId('confirmation-modal')).toBeInTheDocument());
     fireEvent.click(screen.getByTestId('confirmation-modal-confirm-btn'));
     await waitFor(() => expect(dispatch.mock.calls.length).toBe(1));
+});
+
+it('Editor header - change note name', async () => {
+    server.use(
+        rest.patch(`http://localhost:3001/api/v1/notes/${notes.note.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
+    );
+
+    fireEvent.change(screen.getByTestId('note-title-input').querySelector('input'), {
+        target: { value: 'bonjour' }
+    });
+
+    // <!> We have to set the timeout because the title input use a debounce function
+    // which wait a second(by default) before fetching
+    await waitFor(() => expect(dispatch.mock.calls.length).toBe(1), { timeout: 3000 });
+});
+it('Editor header - no title should show error message and no fetching should occur', async () => {
+    server.use(
+        rest.patch(`http://localhost:3001/api/v1/notes/${notes.note.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
+    );
+
+    fireEvent.change(screen.getByTestId('note-title-input').querySelector('input'), {
+        target: { value: '' }
+    });
+
+    expect(screen.getByText('Titre obligatoire')).toBeInTheDocument();
+    // <!> We have to set the timeout because the title input use a debounce function
+    // which wait a second(by default) before fetching
+    await waitFor(() => expect(dispatch.mock.calls.length).toBe(0), { timeout: 3000 });
 });
