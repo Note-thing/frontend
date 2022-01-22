@@ -68,7 +68,7 @@ export default function DirectoryComponent() {
         try {
             await Delete(`/folders/${notes.directory.id}`);
 
-            dispatchNote({ type: 'update_directory', directory: notes.directory });
+            dispatchNote({ type: 'delete_directory', directory: notes.directory });
             history.push('/');
         } catch (err) {
             dispatchMain({ type: 'dialog', dialog: { id: 'cannotDeleteFolder', is_open: true } });
