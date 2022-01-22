@@ -68,11 +68,12 @@ export default function SearchComponent() {
                         position: 'absolute',
                         left: '327px',
                         bottom: -17,
-                        width: '383px',
+                        width: '100%',
                         maxHeight: '800px',
                         minHeight: '400px',
                         overflowY: 'scroll',
-                        border: '1px solid #e9f0f0'
+                        border: '1px solid #e9f0f0',
+                        background: '#fff'
                     }}
                 >
                     <h4>
@@ -83,9 +84,8 @@ export default function SearchComponent() {
 
                     <List
                         sx={{
-                            width: '383px',
-                            maxHeight: '800px',
-                            overflowY: 'scroll'
+                            width: '100%',
+                            maxHeight: '800px'
                         }}
                         data-testid="search-result-list"
                     >
