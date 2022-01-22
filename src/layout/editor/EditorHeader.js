@@ -2,13 +2,16 @@ import React, {
     useState, useContext, useEffect, useCallback
 } from 'react';
 
-import { Grid, TextField, Button, IconButton } from '@mui/material';
-import { PictureAsPdf, Share, Delete as DeleteIcon } from '@mui/icons-material';
+import {
+    Grid, TextField, Button, IconButton
+} from '@mui/material';
+import { Share, Delete as DeleteIcon } from '@mui/icons-material';
 import { useHistory } from 'react-router-dom';
 
 import { ReactComponent as Code } from '../../resource/icons/editor-viewmode-code.svg';
 import { ReactComponent as View } from '../../resource/icons/editor-viewmode-view.svg';
 import { ReactComponent as Split } from '../../resource/icons/editor-viewmode-split.svg';
+
 import ShareNoteModal from './shareNoteModal/ShareNoteModal';
 import ConfirmationModal from '../common/ConfirmationModal';
 import { NoteContext } from '../../context/NoteContext';
