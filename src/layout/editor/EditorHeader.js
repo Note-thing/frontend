@@ -3,6 +3,7 @@ import React, {
 } from 'react';
 import { Grid, Input, Button, IconButton } from '@mui/material';
 import { PictureAsPdf, Share, Delete as DeleteIcon } from '@mui/icons-material';
+import { useHistory } from 'react-router-dom';
 import { ReactComponent as Code } from '../../resource/icons/editor-viewmode-code.svg';
 import { ReactComponent as View } from '../../resource/icons/editor-viewmode-view.svg';
 import { ReactComponent as Split } from '../../resource/icons/editor-viewmode-split.svg';
@@ -24,6 +25,7 @@ export default function EditorHeader({ setPreviewWidth }) {
     const { notes, dispatch: noteDispatch } = useContext(NoteContext);
     const { dispatch: mainDispatch } = useContext(MainContext);
     const [noteTitle, setNoteTitle] = useState('');
+    const history = useHistory();
     const handleViewModeClick = (width) => setPreviewWidth(width);
     const handleNoteSuppression = useCallback(async () => {
         try {
@@ -32,10 +34,15 @@ export default function EditorHeader({ setPreviewWidth }) {
             directory.notes = directory.notes.filter((note) => note.id !== notes.note.id);
             noteDispatch({ type: 'update_directory', directory });
             setShowDeleteModal(false);
+            mainDispatch({
+                type: 'dialog',
+                dialog: { id: 'delete_note_succeed', is_open: true }
+            });
+            history.push(`/directory/${notes.directory.id}`);
         } catch (err) {
             mainDispatch({
                 type: 'dialog',
-                dialog: { id: 'Impossible de supprimer la note note', is_open: true }
+                dialog: { id: 'delete_note_failed', is_open: true }
             });
         }
     }, [notes, noteDispatch, mainDispatch]);
