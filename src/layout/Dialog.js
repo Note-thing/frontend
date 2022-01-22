@@ -208,6 +208,19 @@ const Dialog = () => {
                     </Alert>
                 </Snackbar>
             )}
+
+            {dialog && dialog.id === 'create_note' && (
+                <Snackbar
+                    anchorOrigin={position}
+                    open={dialog.is_open}
+                    onClose={() => handleClose({ is_open: false })}
+                    autoHideDuration={6000}
+                >
+                    <Alert variant="filled" severity="info">
+                         La note a été créée
+                    </Alert>
+                </Snackbar>
+            )}
             {dialog && dialog.id === 'delete_note_succeed' && (
                 <Snackbar
                     anchorOrigin={position}
