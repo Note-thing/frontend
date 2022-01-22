@@ -28,7 +28,7 @@ export default function ShareNoteModal({ open, setOpen }) {
     const { notes } = useContext(NoteContext);
     useEffect(() => {
         (async () => {
-            if (notes.note.id) {
+            if (notes.note.id && open) {
                 try {
                     setIsFetching(true);
                     const sharedNotes = await Get(`/notes/${notes.note.id}/shared_notes`);
@@ -39,7 +39,7 @@ export default function ShareNoteModal({ open, setOpen }) {
                 }
             }
         })();
-    }, [notes.note.id]);
+    }, [notes.note.id, open]);
     const displaySpinner = () => (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <CircularProgress />

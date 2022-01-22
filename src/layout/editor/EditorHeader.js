@@ -1,8 +1,11 @@
 import React, {
     useState, useContext, useEffect, useCallback
 } from 'react';
-import { Grid, Input, Button, IconButton } from '@mui/material';
+
+import { Grid, TextField, Button, IconButton } from '@mui/material';
 import { PictureAsPdf, Share, Delete as DeleteIcon } from '@mui/icons-material';
+import { useHistory } from 'react-router-dom';
+
 import { ReactComponent as Code } from '../../resource/icons/editor-viewmode-code.svg';
 import { ReactComponent as View } from '../../resource/icons/editor-viewmode-view.svg';
 import { ReactComponent as Split } from '../../resource/icons/editor-viewmode-split.svg';
@@ -24,6 +27,7 @@ export default function EditorHeader({ setPreviewWidth }) {
     const { notes, dispatch: noteDispatch } = useContext(NoteContext);
     const { dispatch: mainDispatch } = useContext(MainContext);
     const [noteTitle, setNoteTitle] = useState('');
+    const history = useHistory();
     const handleViewModeClick = (width) => setPreviewWidth(width);
     const handleNoteSuppression = useCallback(async () => {
         try {
@@ -32,15 +36,23 @@ export default function EditorHeader({ setPreviewWidth }) {
             directory.notes = directory.notes.filter((note) => note.id !== notes.note.id);
             noteDispatch({ type: 'update_directory', directory });
             setShowDeleteModal(false);
+            mainDispatch({
+                type: 'dialog',
+                dialog: { id: 'delete_note_succeed', is_open: true }
+            });
+            history.push(`/directory/${notes.directory.id}`);
         } catch (err) {
             mainDispatch({
                 type: 'dialog',
-                dialog: { id: 'Impossible de supprimer la note note', is_open: true }
+                dialog: { id: 'delete_note_failed', is_open: true }
             });
         }
     }, [notes, noteDispatch, mainDispatch]);
 
     const debounceTitle = useCallback(debounceInput(async (value) => {
+        if (value.length === 0) {
+            return;
+        }
         try {
             const note = await Patch(`/notes/${notes.note.id}`, { title: value });
             const oldNote = notes.note;
@@ -84,13 +96,18 @@ export default function EditorHeader({ setPreviewWidth }) {
                 </Button>
             </Grid>
 
-            {noteTitle && <Input
+            <TextField
+                helperText={noteTitle?.length === 0 && 'Titre obligatoire'}
                 className="noBorderInput"
-                sx={{ width: '10rem', fontSize: '1.2rem' }}
+                sx={{ fontSize: '1.4rem', minWidth: '10rem', maxWidth: '20rem' }}
+                size="medium"
                 value={noteTitle}
+                error={noteTitle?.length === 0}
                 onChange={handleChangeTitle}
                 placeholder="Titre de la note"
-            />}
+                variant="standard"
+                data-testid="note-title-input"
+            />
 
             <Grid display="flex" justifyContent="space-around" width="10%">
                 <IconButton
