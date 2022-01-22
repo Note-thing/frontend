@@ -50,6 +50,7 @@ const User = () => {
                 >
                     <MenuItem onClick={() => redirectPage('/profile')}>Profil</MenuItem>
                     <MenuItem onClick={userLogout}>Logout</MenuItem>
+                    <MenuItem onClick={() => redirectPage('tutorial')}>Tutoriel</MenuItem>
                 </Menu>
                 <Person user={user} />
             </Box>
