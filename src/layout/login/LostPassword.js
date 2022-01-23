@@ -12,7 +12,7 @@ import {
 import { CONFIG, Post } from '../../config/config';
 import { MainContext } from '../../context/MainContext';
 import useInput from '../../hooks/useInput';
-import { validateEmail } from './inputValidation';
+import { validateEmail } from '../common/inputValidation';
 
 const LostPassword = () => {
     const history = useHistory();
