@@ -69,7 +69,7 @@ const Dialog = () => {
                     <Alert variant="filled" severity="error">
                         Signup failed.
                         <br />
-                        { dialog.info }
+                        {dialog.info}
                     </Alert>
                 </Snackbar>
             )}
@@ -131,7 +131,7 @@ const Dialog = () => {
                     <Alert variant="filled" severity="error">
                         Your password could not be reset.
                         <br />
-                        { dialog.info }
+                        {dialog.info}
                     </Alert>
                 </Snackbar>
             )}
@@ -205,6 +205,43 @@ const Dialog = () => {
                 >
                     <Alert variant="filled" severity="error">
                         Impossible de modifier le body de la note
+                    </Alert>
+                </Snackbar>
+            )}
+
+            {dialog && dialog.id === 'create_note' && (
+                <Snackbar
+                    anchorOrigin={position}
+                    open={dialog.is_open}
+                    onClose={() => handleClose({ is_open: false })}
+                    autoHideDuration={6000}
+                >
+                    <Alert variant="filled" severity="info">
+                         La note a été créée
+                    </Alert>
+                </Snackbar>
+            )}
+            {dialog && dialog.id === 'delete_note_succeed' && (
+                <Snackbar
+                    anchorOrigin={position}
+                    open={dialog.is_open}
+                    onClose={() => handleClose({ is_open: false })}
+                    autoHideDuration={6000}
+                >
+                    <Alert variant="filled" severity="info">
+                        Note supprimé correctement
+                    </Alert>
+                </Snackbar>
+            )}
+            {dialog && dialog.id === 'delete_note_failed' && (
+                <Snackbar
+                    anchorOrigin={position}
+                    open={dialog.is_open}
+                    onClose={() => handleClose({ is_open: false })}
+                    autoHideDuration={6000}
+                >
+                    <Alert variant="filled" severity="error">
+                        Impossible de supprimer la Note
                     </Alert>
                 </Snackbar>
             )}

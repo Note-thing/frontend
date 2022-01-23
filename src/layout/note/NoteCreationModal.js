@@ -2,10 +2,12 @@ import React, { useState, useContext } from 'react';
 import {
     TextField, Button, Alert, Grid
 } from '@mui/material';
+import { useHistory } from 'react-router';
 import CustomModal from '../common/Modal';
 import { Post } from '../../config/config';
 import HttpError from '../../errors/HttpError';
 import { NoteContext } from '../../context/NoteContext';
+import { MainContext } from '../../context/MainContext';
 
 /**
  * Modal for creating a new note
@@ -15,6 +17,7 @@ import { NoteContext } from '../../context/NoteContext';
  * @returns
  */
 export default function NoteCreationModal({ open, onClose }) {
+    const history = useHistory();
     const [newNoteName, setNewNoteName] = useState('');
     const [error, setError] = useState('');
     const {
@@ -23,6 +26,7 @@ export default function NoteCreationModal({ open, onClose }) {
         },
         dispatch
     } = useContext(NoteContext);
+    const { dispatch: mainDispatch } = useContext(MainContext);
     const handleNewNoteNameChange = (ev) => {
         setNewNoteName(ev.target.value);
     };
@@ -44,14 +48,19 @@ export default function NoteCreationModal({ open, onClose }) {
         try {
             const response = await Post('/notes', {
                 title: newNoteName,
-                body: '',
+                body: `# ${newNoteName}`,
                 folder_id: directoryid
             });
             dispatch({
                 type: 'update_note',
                 note: response
             });
+            mainDispatch({
+                type: 'dialog',
+                dialog: { id: 'create_note', is_open: true }
+            });
             onClose(false);
+            history.push(`/directory/${response.folder_id}/note/${response.id}`);
         } catch (err) {
             // TODO should probably use Stefan dialog dispatch
             if (err instanceof HttpError) {

@@ -12,6 +12,15 @@ body {
 .h-100{
    height: 100%;
 }
-.noBorderInput::before{
+.noBorderInput input::before{
     border-bottom: 0 !important;
+}
+.noBorderInput > p {
+    position: absolute;
+    top:30px;
+    z-index: 1000;
+    font-size: 0.8rem;
+}
+.noBorderInput input {
+    font-size: 1.2rem;
 }
