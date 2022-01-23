@@ -45,8 +45,8 @@ export default function EditorHeader({ setPreviewWidth }) {
     }, [notes.note.title]);
 
     useEffect(() => {
-        setLock(notes.note.lock);
-    }, [notes.note.lock]);
+        setLock(notes.note.lock || notes.note.read_only === true);
+    }, [notes.note.lock, notes.note.read_only]);
 
     const handleNoteSuppression = useCallback(async () => {
         try {
@@ -72,19 +72,18 @@ export default function EditorHeader({ setPreviewWidth }) {
         if (value.length === 0) {
             return;
         }
-            try {
-                const note = await Patch(`/notes/${notes.note.id}`, { title: value });
-                const oldNote = notes.note;
-                noteDispatch({ type: 'update_note', note: { ...oldNote, ...note } });
-            } catch (err) {
-                mainDispatch({
-                    type: 'dialog',
-                    dialog: { id: 'update_name_note', is_open: true }
-                });
-            }
-        }),
-        [notes, noteDispatch, mainDispatch, debounceInput]
-    );
+        try {
+            const note = await Patch(`/notes/${notes.note.id}`, { title: value });
+            const oldNote = notes.note;
+            noteDispatch({ type: 'update_note', note: { ...oldNote, ...note } });
+        } catch (err) {
+            mainDispatch({
+                type: 'dialog',
+                dialog: { id: 'update_name_note', is_open: true }
+            });
+        }
+    }),
+    [notes, noteDispatch, mainDispatch, debounceInput]);
 
     const handleChangeTitle = async (ev) => {
         setNoteTitle(ev.target.value);
@@ -179,7 +178,7 @@ export default function EditorHeader({ setPreviewWidth }) {
     const displaySharedNoteBtns = () => {
         const btns = [];
         if (notes.note.lock !== null || notes.note.read_only !== null) {
-            if (notes.note?.lock !== null) {
+            if (notes.note?.read_only === null) {
                 btns.push(
                     <IconButton
                         color="primary"
@@ -198,7 +197,7 @@ export default function EditorHeader({ setPreviewWidth }) {
                     <IconButton
                         color="primary"
                         label="Partager la note"
-                        disabled={syncBtnDisabled || !lock}
+                        disabled={syncBtnDisabled || (!lock && notes.note.read_only !== true)}
                         onClick={syncNote}
                     >
                         <SyncIcon />
@@ -255,6 +254,7 @@ export default function EditorHeader({ setPreviewWidth }) {
                 size="medium"
                 value={noteTitle}
                 error={noteTitle?.length === 0}
+                disabled={lock}
                 onChange={handleChangeTitle}
                 placeholder="Titre de la note"
                 variant="standard"
