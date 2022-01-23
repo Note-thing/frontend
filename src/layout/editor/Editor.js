@@ -76,7 +76,7 @@ export default function Editor() {
                         <textarea
                             className="editor-textarea"
                             id="editor"
-                            disabled={lock}
+                            disabled={lock && note.read_only}
                             data-preview="#preview"
                             value={bindNoteBody.value}
                             onChange={handleChangeBody}
