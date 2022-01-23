@@ -8,7 +8,9 @@ import IconButton from '@mui/material/IconButton';
 import CopyIcon from '@mui/icons-material/ContentCopy';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CircularProgress from '@mui/material/CircularProgress';
-import { Alert, Grow } from '@mui/material';
+import {
+    Alert, FormControl, Grow, Select, InputLabel, MenuItem, Grid
+} from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '../../common/Modal';
@@ -17,9 +19,11 @@ import {
 } from '../../../config/config';
 import { MainContext } from '../../../context/MainContext';
 import { NoteContext } from '../../../context/NoteContext';
+import { SHARED_NOTE_DEFAULT_TYPE, SHARED_NOTE_TYPE } from '../../sharedNote/SharedNoteTypes';
 
 export default function ShareNoteModal({ open, setOpen }) {
     const [sharedNotesList, setSharedNotesList] = useState([]);
+    const [noteType, setNoteType] = useState(SHARED_NOTE_DEFAULT_TYPE);
     const [isFetching, setIsFetching] = useState(false);
     const [isCreatingSharedNote, setIsCreatingSharedNote] = useState(false);
     const [isDeletingSharedNote, setIsDeletingSharedNote] = useState(false);
@@ -111,12 +115,16 @@ export default function ShareNoteModal({ open, setOpen }) {
     const createNewSharedNote = async () => {
         setIsCreatingSharedNote(true);
         try {
-            const newSharedNotes = await Post('/shared_notes', { id: notes.note?.id });
+            const newSharedNotes = await Post('/shared_notes', { note_id: notes.note?.id, sharing_type: noteType.key });
             setSharedNotesList([newSharedNotes, ...sharedNotesList]);
         } catch (err) {
             dispatch({ type: 'dialog', dialog: { id: 'cannotCopySharedNote', is_open: true } });
         }
         setIsCreatingSharedNote(false);
+    };
+    const handleNoteTypeChange = (ev) => {
+        const type = Object.values(SHARED_NOTE_TYPE).find((t) => t.key === ev.target.value);
+        setNoteType(type);
     };
     return (
         <Modal title="Partager votre note" open={open} onClose={setOpen}>
@@ -130,10 +138,31 @@ export default function ShareNoteModal({ open, setOpen }) {
                 </Alert>
             </Grow>
             {isFetching ? displaySpinner() : displayNotesList()}
-            <Button onClick={() => createNewSharedNote()} disabled={isCreatingSharedNote}>
-                {isCreatingSharedNote && <CircularProgress />}
-                Générer un nouveau lien
-            </Button>
+            <Grid container mt={5}>
+                <Grid item xs={8}>
+                    <FormControl variant="standard" sx={{ width: '95%', paddingRight: '10px' }} mr={6}>
+                        <InputLabel id="note-type-select-label">Type de la note</InputLabel>
+                        <Select
+                            labelId="note-type-select-label"
+                            value={noteType.key}
+                            onChange={handleNoteTypeChange}
+                            label="Note Type"
+                        >
+                            {Object.values(SHARED_NOTE_TYPE).map((type) => (
+                                <MenuItem value={type.key}>
+                                    {type.display}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                </Grid>
+                <Grid item xs={4} sx={{ maxHeight: '10px' }}>
+                    <Button variant="outlined" onClick={() => createNewSharedNote()} disabled={isCreatingSharedNote}>
+                        {isCreatingSharedNote && <CircularProgress />}
+                        Générer un lien
+                    </Button>
+                </Grid>
+            </Grid>
         </Modal>
     );
 }

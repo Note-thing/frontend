@@ -131,7 +131,8 @@ export const NoteProvider = ({ children }) => {
                     directory: active.directory
                 });
             }
-            if (active.note) {
+            // Update note when the active note has changed only !
+            if (active.note && notes.note.id !== active.note.id) {
                 (async () => {
                     try {
                         const data = await Get(`/notes/${active.note.id}`);

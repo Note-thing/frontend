@@ -208,6 +208,91 @@ const Dialog = () => {
                     </Alert>
                 </Snackbar>
             )}
+            {dialog && dialog.id === 'locked_note' && (
+                <Snackbar
+                    anchorOrigin={position}
+                    open={dialog.is_open}
+                    onClose={() => handleClose({ is_open: false })}
+                    autoHideDuration={6000}
+                >
+                    <Alert variant="filled" severity="error">
+                        La note est verrouillée par un autre utilisateur
+                    </Alert>
+                </Snackbar>
+            )}
+            {dialog && dialog.id === 'sync_note' && (
+                <Snackbar
+                    anchorOrigin={position}
+                    open={dialog.is_open}
+                    onClose={() => handleClose({ is_open: false })}
+                    autoHideDuration={6000}
+                >
+                    <Alert variant="filled" severity="info">
+                        Note synchronisée
+                    </Alert>
+                </Snackbar>
+            )}
+            {dialog && dialog.id === 'sync_note_failed' && (
+                <Snackbar
+                    anchorOrigin={position}
+                    open={dialog.is_open}
+                    onClose={() => handleClose({ is_open: false })}
+                    autoHideDuration={6000}
+                >
+                    <Alert variant="filled" severity="error">
+                        Problème de synchronisation 😭
+                    </Alert>
+                </Snackbar>
+            )}
+            {dialog && dialog.id === 'lock_note' && (
+                <Snackbar
+                    anchorOrigin={position}
+                    open={dialog.is_open}
+                    onClose={() => handleClose({ is_open: false })}
+                    autoHideDuration={6000}
+                >
+                    <Alert variant="filled" severity="info">
+                        Note déverrouiler
+                    </Alert>
+                </Snackbar>
+            )}
+            {dialog && dialog.id === 'lock_failed' && (
+                <Snackbar
+                    anchorOrigin={position}
+                    open={dialog.is_open}
+                    onClose={() => handleClose({ is_open: false })}
+                    autoHideDuration={6000}
+                >
+                    <Alert variant="filled" severity="error">
+                        Impossible de vérouiller la note 😭
+                    </Alert>
+                </Snackbar>
+            )}
+            {dialog && dialog.id === 'unlock_note' && (
+                <Snackbar
+                    anchorOrigin={position}
+                    open={dialog.is_open}
+                    onClose={() => handleClose({ is_open: false })}
+                    autoHideDuration={6000}
+                >
+                    <Alert variant="filled" severity="info">
+                        Note libérée
+                    </Alert>
+                </Snackbar>
+            )}
+            {dialog && dialog.id === 'unlock_failed' && (
+                <Snackbar
+                    anchorOrigin={position}
+                    open={dialog.is_open}
+                    onClose={() => handleClose({ is_open: false })}
+                    autoHideDuration={6000}
+                >
+                    <Alert variant="filled" severity="error">
+                        Impossible de libérer la note Note 😭
+                    </Alert>
+                </Snackbar>
+            )}
+
         </section>
     );
 };

@@ -12,14 +12,17 @@ import useInput from '../../hooks/useInput';
 import { debounceInput } from '../../utils/utils';
 import { Patch } from '../../config/config';
 import '../../resource/css/editor.css';
+import UnProcessableEntityError from '../../errors/UnprocessableEntityError';
 
 export default function Editor() {
     const { dispatch: mainDispatch } = useContext(MainContext);
+    const { dispatch: noteDispatch } = useContext(NoteContext);
     const {
         notes: {
-            note: { id, body }
+            note
         }
     } = useContext(NoteContext);
+    const { id, body, lock } = note;
     const { bind: bindNoteBody } = useInput(body);
 
     const [previewWidth, setPreviewWidth] = useState(50);
@@ -39,10 +42,21 @@ export default function Editor() {
         try {
             await Patch(`/notes/${id}`, { body: value });
         } catch (err) {
-            mainDispatch({
-                type: 'dialog',
-                dialog: { id: 'update_body_note', is_open: true }
-            });
+            if (err instanceof UnProcessableEntityError) {
+                noteDispatch({
+                    type: 'update_note',
+                    note: { ...note, lock: true }
+                });
+                mainDispatch({
+                    type: 'dialog',
+                    dialog: { id: 'locked_note', is_open: true }
+                });
+            } else {
+                mainDispatch({
+                    type: 'dialog',
+                    dialog: { id: 'update_body_note', is_open: true }
+                });
+            }
         }
     }), [id, mainDispatch, debounceInput]);
 
@@ -62,6 +76,7 @@ export default function Editor() {
                         <textarea
                             className="editor-textarea"
                             id="editor"
+                            disabled={lock}
                             data-preview="#preview"
                             value={bindNoteBody.value}
                             onChange={handleChangeBody}

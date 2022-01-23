@@ -85,8 +85,11 @@ const requestWithBody = async (method, endpoint, data = null) => {
         if (!res.ok) {
             const errorJson = JSON.parse((await res.text()));
             throwHttpError(res.status, errorJson.message, errorJson);
+        } else if (res.status === 204) {
+            return undefined;
         }
         const response = await res.json();
+
         return response;
     } catch (err) {
         // ControlTokenAfterResponse will redirect if 403. It will return true otherwise

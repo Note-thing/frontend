@@ -54,7 +54,7 @@ export default function SharedNoteComponent() {
         setIsCopying(true);
         setHasError(false);
         try {
-            const note = await Post(`/shared_notes/${uuid}/copy`, { folderId });
+            const note = await Post(`/shared_notes/${uuid}/copy`, { folder_id: folderId });
             const contextDirectory = directoriesList.find((dir) => dir.id === folderId);
             if (contextDirectory !== undefined) {
                 contextDirectory.notes.push(note);
@@ -64,8 +64,6 @@ export default function SharedNoteComponent() {
         } catch (err) {
             setHasError(true);
         }
-
-        // TODO call context note pour ajouter la note
         setIsCopying(false);
     };
     const directoryChangedHandler = async (directoryId) => {
