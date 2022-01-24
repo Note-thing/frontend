@@ -52,7 +52,7 @@ export default function EditorHeader({ setPreviewWidth }) {
         }
     }, [notes, noteDispatch, mainDispatch]);
 
-    const debounceTitle = useCallback(debounceInput('note_title', async (value) => {
+    const debounceTitle = useCallback(debounceInput(async (value) => {
         if (value.length === 0) {
             return;
         }
