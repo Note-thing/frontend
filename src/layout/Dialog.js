@@ -217,7 +217,7 @@ const Dialog = () => {
                     autoHideDuration={6000}
                 >
                     <Alert variant="filled" severity="info">
-                         La note a été créée
+                        La note a été créée
                     </Alert>
                 </Snackbar>
             )}
@@ -245,6 +245,34 @@ const Dialog = () => {
                     </Alert>
                 </Snackbar>
             )}
+            {dialog && dialog.id === 'profil_update_success' && (
+                <Snackbar
+                    anchorOrigin={position}
+                    open={dialog.is_open}
+                    onClose={() => handleClose({ is_open: false })}
+                    autoHideDuration={6000}
+                >
+                    <Alert variant="filled" severity="info">
+                        Votre profil a bien été mis à jour
+                    </Alert>
+                </Snackbar>
+            )}
+            {dialog && dialog.id === 'profil_update_failed' && (
+                <Snackbar
+                    anchorOrigin={position}
+                    open={dialog.is_open}
+                    onClose={() => handleClose({ is_open: false })}
+                    autoHideDuration={6000}
+                >
+                    <Alert variant="filled" severity="error">
+                        Erreur pendant la modification de profil
+                        <br />
+                        {dialog.info}
+                    </Alert>
+                </Snackbar>
+            )}
+
+
         </section>
     );
 };
