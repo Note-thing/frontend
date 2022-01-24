@@ -1,4 +1,4 @@
-export function debounceInput(cb, timeout = 1000) {
+export default function debounceInput(cb, timeout = 1000) {
     let timer;
     return (...args) => {
         clearTimeout(timer);
