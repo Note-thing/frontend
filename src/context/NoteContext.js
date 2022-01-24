@@ -129,7 +129,7 @@ export const NoteProvider = ({ children }) => {
                     directory: active.directory
                 });
             }
-            if (active.note) {
+            if (active.note && notes.note.id !== active.note.id) {
                 (async () => {
                     try {
                         const data = await Get(`/notes/${active.note.id}`);

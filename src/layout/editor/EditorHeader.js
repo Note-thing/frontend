@@ -17,7 +17,7 @@ import ConfirmationModal from '../common/ConfirmationModal';
 import { NoteContext } from '../../context/NoteContext';
 import { MainContext } from '../../context/MainContext';
 import { Delete, Patch } from '../../config/config';
-import { debounceInput } from '../../utils/utils';
+import debounceInput from '../../utils/utils';
 import EditorDownloadPDF from './EditorDownloadPDF';
 
 /**

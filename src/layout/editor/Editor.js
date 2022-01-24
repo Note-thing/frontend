@@ -9,7 +9,7 @@ import EditorHeader from './EditorHeader';
 import { MainContext } from '../../context/MainContext';
 import { NoteContext } from '../../context/NoteContext';
 import useInput from '../../hooks/useInput';
-import { debounceInput } from '../../utils/utils';
+import debounceInput from '../../utils/utils';
 import { Patch } from '../../config/config';
 import '../../resource/css/editor.css';
 
