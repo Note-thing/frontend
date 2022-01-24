@@ -1,10 +1,10 @@
-export function debounceInput(cb, timeout = 1000) {
-    let timer;
+export function debounceInput(field, cb, timeout = 1000) {
+    const timer = new Map();
     return (...args) => {
-        clearTimeout(timer);
-        timer = setTimeout(() => {
+        clearTimeout(timer.get(field));
+        timer.set(field, setTimeout(() => {
             cb.apply(this, args);
-        }, timeout);
+        }, timeout));
     };
 }
 export function teapot() {

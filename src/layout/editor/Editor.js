@@ -35,7 +35,7 @@ export default function Editor() {
         setPreviewWidth(width);
     }, [setPreviewWidth]);
 
-    const debounceBody = useCallback(debounceInput(async (value) => {
+    const debounceBody = useCallback(debounceInput('note_body', async (value) => {
         try {
             await Patch(`/notes/${id}`, { body: value });
         } catch (err) {
