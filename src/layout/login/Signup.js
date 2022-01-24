@@ -87,13 +87,12 @@ const Signup = () => {
                 }
             });
         } catch (error) {
-            // TODO: gestion erreur, à voir comment faire
             dispatch({
                 type: 'dialog',
                 dialog: {
                     id: 'signup_failed',
                     is_open: true,
-                    info: error.getMessage().join('.\n')
+                    info: error.getMessage()
                 }
             });
             return;

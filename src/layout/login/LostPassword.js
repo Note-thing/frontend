@@ -49,7 +49,7 @@ const LostPassword = () => {
                 dialog: {
                     id: 'forgot_email_failed',
                     is_open: true,
-                    info: error.getMessage().join('.\n')
+                    info: error.getMessage()
                 }
             });
         }

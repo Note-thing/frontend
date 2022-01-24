@@ -5,13 +5,12 @@ import {
 import PasswordStrengthBar from 'react-password-strength-bar';
 import { MainContext } from '../../context/MainContext';
 import useInput from '../../hooks/useInput';
-import { validateName, validateEmail, validatePassword } from '../common/inputValidation';
+import { validateName, validateEmail } from '../common/inputValidation';
+import { Patch } from '../../config/config';
 
 const Profile = () => {
     const { main: { user }, dispatch } = useContext(MainContext);
 
-    // keep track of the input states
-    // each keystroke (onChange event listener) is saved within the state
     const {
         value: firstname,
         bind: bindFirstname,
@@ -23,8 +22,6 @@ const Profile = () => {
         setError: setLastNameError
     } = useInput(user.lastname);
     const { value: email, bind: bindEmail, setError: setEmailError } = useInput(user.email);
-    const { value: password, bind: bindPassword, setError: setPasswordError } = useInput('');
-    const { value: passwordRepeat, bind: bindPasswordRepeat, setError: setPasswordRepeatError } = useInput('');
     const buttonUpdate = async (e) => {
         e.preventDefault();
         let inputError = false;
@@ -50,57 +47,37 @@ const Profile = () => {
             inputError = true;
         }
 
-        if (password.length > 0) {
-            if (!validatePassword(password)) {
-                setPasswordError({
-                    error: true,
-                    helperText: 'Password valide est obligatoire'
-                });
-                inputError = true;
-            }
-            if (!validatePassword(passwordRepeat)) {
-                setLastNameError({
-                    error: true,
-                    helperText: 'Répetez le password'
-                });
-                inputError = true;
-            }
-            if (password !== passwordRepeat) {
-                setPasswordRepeatError({
-                    error: true,
-                    helperText: 'Les passwords ne correspondent pas'
-                });
-                inputError = true;
-            }
-            if (inputError) {
-                return;
-            }
-            try {
-                await Post('/signup', {
-                    email,
-                    firstname,
-                    lastname,
-                    password,
-                    password_confirmation: passwordRepeat
-                });
-                dispatch({
-                    type: 'dialog',
-                    dialog: {
-                        id: 'signup_success',
-                        is_open: true
-                    }
-                });
-            } catch (error) {
-                // TODO: gestion erreur, à voir comment faire
-                dispatch({
-                    type: 'dialog',
-                    dialog: {
-                        id: 'signup_failed',
-                        is_open: true,
-                        info: error.getMessage().join('.\n')
-                    }
-                });
-            }
+        if (inputError) {
+            return;
+        }
+        try {
+            const response = await Patch('/users', {
+                email,
+                firstname,
+                lastname
+            });
+            delete response.password_digest;
+            localStorage.setItem('User', JSON.stringify(response));
+            dispatch({
+                type: 'login',
+                user: response
+            });
+            dispatch({
+                type: 'dialog',
+                dialog: {
+                    id: 'profil_update_success',
+                    is_open: true
+                }
+            });
+        } catch (error) {
+            dispatch({
+                type: 'dialog',
+                dialog: {
+                    id: 'profil_update_failed',
+                    is_open: true,
+                    info: error.getMessage()
+                }
+            });
         }
     };
     return (
@@ -151,34 +128,6 @@ const Profile = () => {
                         name="email"
                         autoComplete="email"
                         {...bindEmail}
-                    />
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Mot de passe"
-                        type="password"
-                        id="password"
-                        autoComplete="new-password"
-                        inputProps={{
-                            autoComplete: 'new-password'
-                        }}
-                        {...bindPassword}
-                    />
-                    <PasswordStrengthBar password={password} />
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="passwordRepeat"
-                        label="Répéter le mot de passe"
-                        type="password"
-                        id="passwordRepeat"
-                        autoComplete="new-password"
-                        {...bindPasswordRepeat}
                     />
                     <Button
                         type="submit"
