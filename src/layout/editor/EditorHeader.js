@@ -1,6 +1,10 @@
-import React, { useState, useContext, useEffect, useCallback } from 'react';
+import React, {
+    useState, useContext, useEffect, useCallback
+} from 'react';
 
-import { Grid, TextField, Button, IconButton } from '@mui/material';
+import {
+    Grid, TextField, Button, IconButton
+} from '@mui/material';
 import { Share, Delete as DeleteIcon } from '@mui/icons-material';
 import { useHistory } from 'react-router-dom';
 
@@ -61,7 +65,7 @@ export default function EditorHeader({ setPreviewWidth }) {
             if (err instanceof UnProcessableEntityError) {
                 mainDispatch({
                     type: 'dialog',
-                    dialog: { id: 'delete_locked_note_failed', is_open: true }
+                    dialog: { id: 'delete_locked_note_failed', severity: 'error', is_open: true }
                 });
             } else {
                 mainDispatch({
@@ -79,12 +83,11 @@ export default function EditorHeader({ setPreviewWidth }) {
             }
             try {
                 const note = await Patch(`/notes/${notes.note.id}`, { title: value });
-                const oldNote = notes.note;
-                noteDispatch({ type: 'update_note', note: { ...oldNote, ...note } });
+                noteDispatch({ type: 'update_note', note });
             } catch (err) {
                 mainDispatch({
                     type: 'dialog',
-                    dialog: { id: 'update_name_note', is_open: true }
+                    dialog: { id: 'update_name_note', severity: 'error', is_open: true }
                 });
             }
         }),
@@ -108,12 +111,12 @@ export default function EditorHeader({ setPreviewWidth }) {
             noteDispatch({ type: 'update_note', note });
             mainDispatch({
                 type: 'dialog',
-                dialog: { id: 'sync_note', severity: 'error', is_open: true }
+                dialog: { id: 'sync_note', severity: 'info', is_open: true }
             });
         } catch (err) {
             mainDispatch({
                 type: 'dialog',
-                dialog: { id: 'sync_note_failed', is_open: true }
+                dialog: { id: 'sync_note_failed', severity: 'error', is_open: true }
             });
         }
         setSyncBtnDisabled(false);
@@ -132,12 +135,12 @@ export default function EditorHeader({ setPreviewWidth }) {
             }
             mainDispatch({
                 type: 'dialog',
-                dialog: { id: 'lock_note', is_open: true }
+                dialog: { id: 'lock_note', severity: 'info', is_open: true }
             });
         } catch (err) {
             mainDispatch({
                 type: 'dialog',
-                dialog: { id: 'lock_failed', is_open: true }
+                dialog: { id: 'lock_failed', severity: 'error', is_open: true }
             });
         }
         pendingLockRequest = false;
@@ -183,7 +186,6 @@ export default function EditorHeader({ setPreviewWidth }) {
      */
     const displaySharedNoteBtns = () => {
         const btns = [];
-
         if (notes.note?.has_mirror === true) {
             btns.push(
                 <IconButton
@@ -260,7 +262,7 @@ export default function EditorHeader({ setPreviewWidth }) {
                 size="medium"
                 value={noteTitle}
                 error={noteTitle?.length === 0}
-                disabled={lock}
+                disabled={(lock && notes.note.has_mirror) || notes.note.read_only}
                 onChange={handleChangeTitle}
                 placeholder="Titre de la note"
                 variant="standard"

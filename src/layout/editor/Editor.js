@@ -1,4 +1,6 @@
-import React, { useContext, useEffect, useState, useMemo, useCallback } from 'react';
+import React, {
+    useContext, useEffect, useState, useMemo, useCallback
+} from 'react';
 import { Grid } from '@mui/material';
 import TextareaMarkdown from 'textarea-markdown';
 import ResizePannel from './ResizePannel';
@@ -26,11 +28,14 @@ export default function Editor() {
 
     useEffect(() => {
         // On modifie via l'état est non la value
-        // const textarea = document.querySelector('textarea#editor');
+        //
         // textarea = body || '';
-        // runEditor(textarea);
+        //
         // Benedicite mihi, pater, quia peccatum...
         bindNoteBody.onChange({ target: { value: body || '' } });
+        const textarea = document.querySelector('textarea#editor');
+        textarea.value = body || '';
+        runEditor(textarea);
 
         // if (note.read_only === true || lock === true) {
         //     const ev = { target: { value: body } };
@@ -48,7 +53,8 @@ export default function Editor() {
     const debounceBody = useCallback(
         debounceInput(async (value) => {
             try {
-                await Patch(`/notes/${id}`, { body: value });
+                const updatedNote = await Patch(`/notes/${id}`, { body: value });
+                noteDispatch({ type: 'update_note', note: updatedNote });
             } catch (err) {
                 if (err instanceof UnProcessableEntityError) {
                     noteDispatch({
@@ -85,7 +91,7 @@ export default function Editor() {
                             <textarea
                                 className="editor-textarea"
                                 id="editor"
-                                disabled={lock || note.read_only}
+                                disabled={(lock && note.has_mirror) || note.read_only}
                                 data-preview="#preview"
                                 value={bindNoteBody.value}
                                 onChange={handleChangeBody}

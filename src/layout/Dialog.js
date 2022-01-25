@@ -64,6 +64,8 @@ const getText = (dialogId) => {
         case 'lock_failed':
             return 'La note est déjà verrouiller';
         case 'unlock_note':
+            return 'Note déverrouillée pour les autre';
+        case 'lock_note':
             return 'Note déverrouillée';
         case 'sync_note':
             return 'Note synchronisée';
@@ -71,6 +73,8 @@ const getText = (dialogId) => {
             return 'Un problème est survenue pendant la synchronisation de la note';
         case 'unlock_failed':
             return 'Déverrouillage impossible.';
+        case 'delete_locked_note_failed':
+            return "La note est verrouiller par quelqu'un d' autre et donc ne peut etre supprimée";
         default:
             return 'Une erreur inconnue est survenue';
     }
