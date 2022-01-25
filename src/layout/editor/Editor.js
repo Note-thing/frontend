@@ -47,7 +47,7 @@ export default function Editor() {
         },
         [setPreviewWidth]
     );
-    p;
+    
     const debounceBody = useCallback(
         debounceInput(async (value) => {
             try {
