@@ -25,13 +25,17 @@ export default function Editor() {
     const runEditor = (area) => new TextareaMarkdown(area);
 
     useEffect(() => {
-        const textarea = document.querySelector('textarea#editor');
-        textarea.value = body || '';
-        runEditor(textarea);
-        if (note.read_only === true || lock) {
-            const ev = { target: { value: body } };
-            bindNoteBody.onChange(ev);
-        }
+        // On modifie via l'état est non la value
+        // const textarea = document.querySelector('textarea#editor');
+        // textarea = body || '';
+        // runEditor(textarea);
+        // Benedicite mihi, pater, quia peccatum...
+        bindNoteBody.onChange({ target: { value: body || '' } });
+
+        // if (note.read_only === true || lock === true) {
+        //     const ev = { target: { value: body } };
+        //     bindNoteBody.onChange(ev);
+        // }
     }, [body]);
 
     const handlePreviewWidth = useCallback(
@@ -53,12 +57,12 @@ export default function Editor() {
                     });
                     mainDispatch({
                         type: 'dialog',
-                        dialog: { id: 'locked_note', severity: "error", is_open: true }
+                        dialog: { id: 'locked_note', severity: 'error', is_open: true }
                     });
                 } else {
                     mainDispatch({
                         type: 'dialog',
-                        dialog: { id: 'update_body_note', severity: "error",is_open: true }
+                        dialog: { id: 'update_body_note', severity: 'error', is_open: true }
                     });
                 }
             }

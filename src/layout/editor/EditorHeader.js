@@ -16,7 +16,7 @@ import ConfirmationModal from '../common/ConfirmationModal';
 import { NoteContext } from '../../context/NoteContext';
 import { MainContext } from '../../context/MainContext';
 import { Delete, Get, Patch } from '../../config/config';
-import { debounceInput } from '../../utils/utils';
+import debounceInput from '../../utils/utils';
 import EditorDownloadPDF from './EditorDownloadPDF';
 import UnProcessableEntityError from '../../errors/UnprocessableEntityError';
 
@@ -66,7 +66,7 @@ export default function EditorHeader({ setPreviewWidth }) {
             } else {
                 mainDispatch({
                     type: 'dialog',
-                    dialog: { id: 'delete_note_failed', is_open: true }
+                    dialog: { id: 'delete_note_failed', severity: 'error', is_open: true }
                 });
             }
         }
@@ -108,7 +108,7 @@ export default function EditorHeader({ setPreviewWidth }) {
             noteDispatch({ type: 'update_note', note });
             mainDispatch({
                 type: 'dialog',
-                dialog: { id: 'sync_note', severity: "error", is_open: true }
+                dialog: { id: 'sync_note', severity: 'error', is_open: true }
             });
         } catch (err) {
             mainDispatch({
@@ -160,7 +160,7 @@ export default function EditorHeader({ setPreviewWidth }) {
         } catch (err) {
             mainDispatch({
                 type: 'dialog',
-                dialog: { id: 'unlock_failed', severity: "error", is_open: true }
+                dialog: { id: 'unlock_failed', severity: 'error', is_open: true }
             });
         }
     };
