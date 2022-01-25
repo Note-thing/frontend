@@ -10,6 +10,7 @@ export const CONFIG = {
     signup_url: '/signup',
     frontend_url: 'http://localhost:3000',
     shared_note_url: 'http://localhost:3000/shared_notes'
+
 };
 
 /**
