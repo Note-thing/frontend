@@ -1,7 +1,5 @@
 import React, { useContext } from 'react';
-import {
-    Grid, TextField, Button, FormControl
-} from '@mui/material';
+import { Grid, TextField, Button, FormControl } from '@mui/material';
 import PasswordStrengthBar from 'react-password-strength-bar';
 import { MainContext } from '../../context/MainContext';
 import useInput from '../../hooks/useInput';
@@ -9,7 +7,10 @@ import { validateName, validateEmail } from '../common/inputValidation';
 import { Patch } from '../../config/config';
 
 const Profile = () => {
-    const { main: { user }, dispatch } = useContext(MainContext);
+    const {
+        main: { user },
+        dispatch
+    } = useContext(MainContext);
 
     const {
         value: firstname,
@@ -66,6 +67,7 @@ const Profile = () => {
                 type: 'dialog',
                 dialog: {
                     id: 'profil_update_success',
+                    severity: 'info',
                     is_open: true
                 }
             });
@@ -75,6 +77,7 @@ const Profile = () => {
                 dialog: {
                     id: 'profil_update_failed',
                     is_open: true,
+                    severity: 'error',
                     info: error.getMessage()
                 }
             });
@@ -85,11 +88,7 @@ const Profile = () => {
             <h3>Mon profil</h3>
             <Grid item>
                 <FormControl>
-                    <Grid
-                        container
-                        columnSpacing={2}
-                        justifyContent="space-between"
-                    >
+                    <Grid container columnSpacing={2} justifyContent="space-between">
                         <Grid item xs>
                             <TextField
                                 variant="outlined"
