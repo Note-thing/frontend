@@ -66,11 +66,11 @@ const getText = (dialogId) => {
         case 'account_validate_missing_token':
             return 'Token de validation invalide';
         case 'missing_ressource':
-            return 'La ressource que vous tentez d\'accéder n\'existe pas';
+            return "La ressource que vous tentez d'accéder n'existe pas";
         case 'tag_delete_failed':
             return 'Impossible de supprimer le tag';
         case 'tag_add_failed':
-            return 'Impossible d\'ajouter le tag';
+            return "Impossible d'ajouter le tag";
         case 'lock_failed':
             return 'La note est déjà verrouiller';
         case 'unlock_note':
@@ -85,6 +85,10 @@ const getText = (dialogId) => {
             return 'Déverrouillage impossible.';
         case 'delete_locked_note_failed':
             return "La note est verrouiller par quelqu'un d' autre et donc ne peut etre supprimée";
+        case 'profil_update_success':
+            return 'Profil mise à jour';
+        case 'profil_update_failed':
+            return 'La mise à jour du profil a échouée';
         default:
             return 'Une erreur inconnue est survenue';
     }
