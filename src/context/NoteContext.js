@@ -109,7 +109,6 @@ export const NoteProvider = ({ children }) => {
             } catch (err) {
                 window.location.replace(CONFIG.frontend_url + CONFIG.signin_url);
                 return false;
-
             }
         })();
     }, []);

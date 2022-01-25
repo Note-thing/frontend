@@ -3,7 +3,7 @@ import throwHttpError from '../errors/HttpErrorUtils';
 
 export const CONFIG = {
     api_url: 'http://localhost:3001/api/v1',
-    no_token_api_endpoints: ['/signin', '/signup', '/password/forgot', '/password/reset'],
+    no_token_api_endpoints: ['/signin', '/signup', '/password/forgot', '/password/reset', '/users/validate'],
     no_redirection_endpoints: ['/signin'],
     signin_url: '/signin',
     lost_password_url: '/lost_password',
@@ -85,6 +85,8 @@ const requestWithBody = async (method, endpoint, data = null) => {
         if (!res.ok) {
             const errorJson = JSON.parse((await res.text()));
             throwHttpError(res.status, errorJson.messages, errorJson);
+        } else if (res.status === 204) {
+            return undefined;
         }
         const response = await res.json();
         return response;
