@@ -16,9 +16,7 @@ const DialogWrapper = ({ dialog: { is_open, severity, info }, text, handleClose 
     >
         <Alert variant="filled" severity={severity}>
             {text}
-            <br />
             {info && <br />}
-            {info}
         </Alert>
     </Snackbar>
 );
@@ -61,6 +59,12 @@ const getText = (dialogId) => {
             return 'Note supprimé correctement';
         case 'delete_note_failed':
             return 'Impossible de supprimer la Note';
+        case 'missing_ressource':
+            return 'La ressource que vous tentez d\'accéder n\'existe pas';
+        case 'tag_delete_failed':
+            return 'Impossible de supprimer le tag';
+        case 'tag_add_failed':
+            return 'Impossible d\'ajouter le tag';
         case 'lock_failed':
             return 'La note est déjà verrouiller';
         case 'unlock_note':

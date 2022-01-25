@@ -18,7 +18,6 @@ const User = () => {
         setOpen(false);
     }, [history, setAnchorEl]);
     const userLogout = async () => {
-        // await Post('/logout');
         localStorage.removeItem('User');
         localStorage.removeItem('Token');
         dispatch({
