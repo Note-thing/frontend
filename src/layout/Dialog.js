@@ -81,7 +81,7 @@ const Dialog = () => {
         });
     };
     return (
-        <section className="testtest">
+        <section>
             { dialog && <DialogWrapper
                 dialog={dialog}
                 text={getText(dialog.id)}

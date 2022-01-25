@@ -5,6 +5,7 @@ import EditorComponent from './editor/Editor';
 import { NoteProvider } from '../context/NoteContext';
 import SharedNoteComponent from './sharedNote/SharedNoteComponent';
 import DirectoryComponent from './directory/DirectoryComponent';
+import Profile from './profile/Profile';
 import '../resource/css/main.css';
 
 /**
@@ -21,6 +22,7 @@ export default function AppLayout() {
                     <Route exact path="/directory/:directoryId" component={DirectoryComponent} />
                     <Route path="/directory/**/note/**" component={EditorComponent} />
                     <Route path="/shared_notes/:uuid" component={SharedNoteComponent} />
+                    <Route exactr path="/profile" component={Profile} />
                 </Switch>
             </section>
         </NoteProvider>
