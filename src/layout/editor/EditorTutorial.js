@@ -279,7 +279,7 @@ export default function EditorTutorial() {
                     <p>
                         Une fois le type de partage choisis, cliquez sur le bouton
                         "Générer un lien". Vous pouvez ensuite copier et partager ce lien
-                        avec qui vous voulez.
+                        avec qui vous voulez. Un lien ne peut être utilisé que par une personne !
                     </p>
                 </center>
             </Slide>
