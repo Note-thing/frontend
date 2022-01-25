@@ -83,6 +83,7 @@ const Signup = () => {
                 type: 'dialog',
                 dialog: {
                     id: 'signup_success',
+                    severity: 'info',
                     is_open: true
                 }
             });
@@ -92,6 +93,7 @@ const Signup = () => {
                 type: 'dialog',
                 dialog: {
                     id: 'signup_failed',
+                    severity: 'error',
                     is_open: true,
                     info: error.getMessage().join('.\n')
                 }

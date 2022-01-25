@@ -109,7 +109,7 @@ export const NoteProvider = ({ children }) => {
             } catch (err) {
                 mainDispatch({
                     type: 'dialog',
-                    dialog: { id: 'cannotLoadStructure', is_open: true }
+                    dialog: { id: 'cannotLoadStructure', severity: 'error', is_open: true }
                 });
             }
         })();
@@ -152,7 +152,7 @@ export const NoteProvider = ({ children }) => {
                     } catch (err) {
                         mainDispatch({
                             type: 'dialog',
-                            dialog: { id: 'cannotLoadStructure', is_open: true }
+                            dialog: { id: 'cannotLoadStructure', severity: 'error', is_open: true }
                         });
                     }
                 })();
