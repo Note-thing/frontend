@@ -15,7 +15,7 @@ import { MainContext } from '../context/MainContext';
 import { mockStorage } from './Mock';
 
 const server = setupServer(
-    rest.post('http://note-thinh.ch/api/v1/folders', (req, res, ctx) => res(ctx.json({ test: 'test' })))
+    rest.post('http://note-thing.ch/api/v1/folders', (req, res, ctx) => res(ctx.json({ test: 'test' })))
 );
 
 Object.defineProperty(window, 'localStorage', mockStorage());
@@ -35,7 +35,7 @@ const dispatch = jest.fn();
 
 it('Folder Creation - The modal show on click', async () => {
     server.use(
-        rest.post('http://note-thinh.ch/api/v1/folders', (req, res, ctx) => res(ctx.json({ test: 'test' })))
+        rest.post('http://note-thing.ch/api/v1/folders', (req, res, ctx) => res(ctx.json({ test: 'test' })))
     );
 
     render(
@@ -65,7 +65,7 @@ it('Folder Creation - The modal show on click', async () => {
 
 it('Folder Creation - The modal show on click and dispear on creation', async () => {
     server.use(
-        rest.post('http://note-thinh.ch/api/v1/folders', (req, res, ctx) => res(ctx.json({ test: 'test' })))
+        rest.post('http://note-thing.ch/api/v1/folders', (req, res, ctx) => res(ctx.json({ test: 'test' })))
     );
     render(
         <MainContext.Provider
@@ -135,7 +135,7 @@ it('Folder Creation - Empty name', async () => {
 });
 it('Folder Creation -  Too big name (>50chars)', async () => {
     server.use(
-        rest.post('http://note-thinh.ch/api/v1/folders', (req, res, ctx) => res(ctx.json({ test: 'test' })))
+        rest.post('http://note-thing.ch/api/v1/folders', (req, res, ctx) => res(ctx.json({ test: 'test' })))
     );
     render(
         <MainContext.Provider
