@@ -3,24 +3,24 @@ import {
     Button, IconButton
 } from '@mui/material';
 import {
-    Code, ContentSlide as C, Step, Slide as S, Presentation
+    ContentSlide as C, Slide as S, Presentation
 } from 'react-presents';
-import { ReactComponent as Logo } from '../../logo.svg';
-import { ReactComponent as CodeIcon } from '../../resource/icons/editor-viewmode-code.svg';
-import { ReactComponent as ViewIcon } from '../../resource/icons/editor-viewmode-view.svg';
-import { ReactComponent as SplitIcon } from '../../resource/icons/editor-viewmode-split.svg';
-import { 
+import {
     Share as ShareIcon,
     Delete as DeleteIcon,
     PictureAsPdf as PictureAsPdfIcon,
     LockOpen as LockOpenIcon,
     Lock as LockIcon,
     Sync as SyncIcon
- } from '@mui/icons-material';
+} from '@mui/icons-material';
+import { ReactComponent as Logo } from '../../logo.svg';
+import { ReactComponent as CodeIcon } from '../../resource/icons/editor-viewmode-code.svg';
+import { ReactComponent as ViewIcon } from '../../resource/icons/editor-viewmode-view.svg';
+import { ReactComponent as SplitIcon } from '../../resource/icons/editor-viewmode-split.svg';
 
 function importAll(r) {
     const images = {};
-    r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
+    r.keys().map((item) => { images[item.replace('./', '')] = r(item); });
     return images;
 }
 
@@ -72,7 +72,7 @@ export default function EditorTutorial() {
                     </p>
                     <img src={images['frame home.png'].default} width="60%" />
                     <p>
-                        Cliquez sur le bouton "Nouveau dossier".
+                        Cliquez sur le bouton "Nouveau dossier" pour créer un nouveau dossier.
                     </p>
                 </center>
             </Slide>
@@ -139,7 +139,7 @@ export default function EditorTutorial() {
                         Pour l'example, nous allons appelez notre note: "Ma note".
                     </p>
                     <p>
-                        Une fois ceci fait, cliquez sur le bounton "Créer".
+                        Une fois ceci fait, cliquez sur le bouton "Créer".
                     </p>
                 </center>
             </Slide>
@@ -149,7 +149,7 @@ export default function EditorTutorial() {
                         Comment créer une note ?
                     </h1>
                     <p>
-                        Félicitation, ous venez de créer votre première note !
+                        Félicitation, vous venez de créer votre première note !
                     </p>
                     <img src={images['frame folder new note created.png'].default} width="60%" />
                     <p>
@@ -178,9 +178,10 @@ export default function EditorTutorial() {
                         Prise en main de l'interface
                     </h1>
                     <p>
-                        Les bouttons suivants permettent d'ajuster comment Vous
-                        souahitez affichez votre note:
+                        Les boutons suivants permettent d'ajuster comment vous
+                        souhaitez afficher votre note:
                     </p>
+                    <img src={images['frame note header.png'].default} width="80%" />
                 </center>
                 <ul>
                     <li>
@@ -209,9 +210,10 @@ export default function EditorTutorial() {
                         Prise en main de l'interface
                     </h1>
                     <p>
-                        Les bouttons suivants permettent d'effectuer
+                        Les boutons suivants permettent d'effectuer
                         une action sur la note ouverte:
                     </p>
+                    <img src={images['frame note header.png'].default} width="80%" />
                 </center>
                 <ul>
                     <li>
@@ -254,6 +256,7 @@ export default function EditorTutorial() {
                         </IconButton>
                         &nbsp;pour partager votre note, il vous sera offert trois options:
                     </p>
+                    <img src={images['frame note share.png'].default} width="60%" />
                 </center>
                 <ul>
                     <li>
@@ -286,9 +289,10 @@ export default function EditorTutorial() {
                         Prise en main de l'interface
                     </h1>
                     <p>
-                        Le boutton suivant apparaît pour toutes les notes partagées en mode
+                        Le bouton suivant apparaît pour toutes les notes partagées en mode
                         "Lecture seule" et "Note partagée":
                     </p>
+                    <img src={images['frame note shared readonly.png'].default} width="80%" />
                 </center>
                 <ul>
                     <li>
@@ -302,9 +306,10 @@ export default function EditorTutorial() {
                 </ul>
                 <center>
                     <p>
-                        Le boutton suivant apparaît pour toutes les notes partagées en mode
-                        "Lecture seule" et "Note partagée":
+                        Le bouton suivant apparaît pour toutes les notes partagées en mode
+                        "Note partagée":
                     </p>
+                    <img src={images['frame note shared edit.png'].default} width="80%" />
                 </center>
                 <ul>
                     <li>
