@@ -32,7 +32,7 @@ const getText = (dialogId) => {
         case 'signup_failed':
             return 'Création du compte a échoué';
         case 'signup_success':
-            return 'Création du compte est réussie';
+            return 'Création du compte est réussie. Vous devez valider votre adresse e-mail.';
         case 'forgot_email_sent':
             return 'Un lien pour réinitialiser votre mot de passe a été envoyé.';
         case 'forgot_email_failed':
@@ -59,6 +59,12 @@ const getText = (dialogId) => {
             return 'Note supprimé correctement';
         case 'delete_note_failed':
             return 'Impossible de supprimer la Note';
+        case 'account_validate_success':
+            return 'Votre compte a bien été validé';
+        case 'account_validate_failed':
+            return 'Erreur pendant la validation du compte';
+        case 'account_validate_missing_token':
+            return 'Token de validation invalide';
         case 'missing_ressource':
             return 'La ressource que vous tentez d\'accéder n\'existe pas';
         case 'tag_delete_failed':
