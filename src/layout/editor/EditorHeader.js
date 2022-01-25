@@ -1,10 +1,6 @@
-import React, {
-    useState, useContext, useEffect, useCallback
-} from 'react';
+import React, { useState, useContext, useEffect, useCallback } from 'react';
 
-import {
-    Grid, TextField, Button, IconButton
-} from '@mui/material';
+import { Grid, TextField, Button, IconButton } from '@mui/material';
 import { Share, Delete as DeleteIcon } from '@mui/icons-material';
 import { useHistory } from 'react-router-dom';
 
@@ -22,6 +18,7 @@ import { MainContext } from '../../context/MainContext';
 import { Delete, Get, Patch } from '../../config/config';
 import { debounceInput } from '../../utils/utils';
 import EditorDownloadPDF from './EditorDownloadPDF';
+import UnProcessableEntityError from '../../errors/UnprocessableEntityError';
 
 /**
  * Header of the editor containing the note menu (display switch, PDF export, delete the note etc.).
@@ -61,29 +58,38 @@ export default function EditorHeader({ setPreviewWidth }) {
             });
             history.push(`/directory/${notes.directory.id}`);
         } catch (err) {
-            mainDispatch({
-                type: 'dialog',
-                dialog: { id: 'delete_note_failed', is_open: true }
-            });
+            if (err instanceof UnProcessableEntityError) {
+                mainDispatch({
+                    type: 'dialog',
+                    dialog: { id: 'delete_locked_note_failed', is_open: true }
+                });
+            } else {
+                mainDispatch({
+                    type: 'dialog',
+                    dialog: { id: 'delete_note_failed', is_open: true }
+                });
+            }
         }
     }, [notes, noteDispatch, mainDispatch]);
 
-    const debounceTitle = useCallback(debounceInput(async (value) => {
-        if (value.length === 0) {
-            return;
-        }
-        try {
-            const note = await Patch(`/notes/${notes.note.id}`, { title: value });
-            const oldNote = notes.note;
-            noteDispatch({ type: 'update_note', note: { ...oldNote, ...note } });
-        } catch (err) {
-            mainDispatch({
-                type: 'dialog',
-                dialog: { id: 'update_name_note', is_open: true }
-            });
-        }
-    }),
-    [notes, noteDispatch, mainDispatch, debounceInput]);
+    const debounceTitle = useCallback(
+        debounceInput(async (value) => {
+            if (value.length === 0) {
+                return;
+            }
+            try {
+                const note = await Patch(`/notes/${notes.note.id}`, { title: value });
+                const oldNote = notes.note;
+                noteDispatch({ type: 'update_note', note: { ...oldNote, ...note } });
+            } catch (err) {
+                mainDispatch({
+                    type: 'dialog',
+                    dialog: { id: 'update_name_note', is_open: true }
+                });
+            }
+        }),
+        [notes, noteDispatch, mainDispatch, debounceInput]
+    );
 
     const handleChangeTitle = async (ev) => {
         setNoteTitle(ev.target.value);
@@ -177,34 +183,32 @@ export default function EditorHeader({ setPreviewWidth }) {
      */
     const displaySharedNoteBtns = () => {
         const btns = [];
-        if (notes.note.lock !== null || notes.note.read_only !== null) {
-            if (notes.note?.read_only === null) {
-                btns.push(
-                    <IconButton
-                        color="primary"
-                        label="Demander l'accès"
-                        disabled={lockBtnDisabled}
-                        onClick={toggleLock}
-                    >
-                        {lock ? <Lock /> : <LockOpen />}
-                    </IconButton>
-                );
-            }
 
-            if (notes.note?.lock !== null
-            || notes.note.read_only === true) {
-                btns.push(
-                    <IconButton
-                        color="primary"
-                        label="Partager la note"
-                        disabled={syncBtnDisabled || (!lock && notes.note.read_only !== true)}
-                        onClick={syncNote}
-                    >
-                        <SyncIcon />
-                    </IconButton>
-                );
-            }
+        if (notes.note?.has_mirror === true) {
+            btns.push(
+                <IconButton
+                    color="primary"
+                    label="Demander l'accès"
+                    disabled={lockBtnDisabled}
+                    onClick={toggleLock}
+                >
+                    {lock ? <Lock /> : <LockOpen />}
+                </IconButton>
+            );
         }
+        if (notes.note?.has_mirror === true || notes.note.read_only === true) {
+            btns.push(
+                <IconButton
+                    color="primary"
+                    label="Synchronisation avec le cloud"
+                    disabled={syncBtnDisabled || (!lock && notes.note.read_only !== true)}
+                    onClick={syncNote}
+                >
+                    <SyncIcon />
+                </IconButton>
+            );
+        }
+
         return btns;
     };
 
@@ -214,7 +218,9 @@ export default function EditorHeader({ setPreviewWidth }) {
      */
     useEffect(() => {
         const intervalId = setInterval(() => {
-            if (!lock || pendingLockRequest) { return; }
+            if (!lock || pendingLockRequest) {
+                return;
+            }
             syncNote();
         }, 10000);
 
@@ -266,6 +272,7 @@ export default function EditorHeader({ setPreviewWidth }) {
                 <IconButton
                     color="primary"
                     label="Partager la note"
+                    disabled={notes.note.reference_note !== null}
                     onClick={() => {
                         setShowShareModal(!showShareModal);
                     }}

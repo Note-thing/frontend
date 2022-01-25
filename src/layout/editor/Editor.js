@@ -1,6 +1,4 @@
-import React, {
-    useContext, useEffect, useState, useMemo, useCallback
-} from 'react';
+import React, { useContext, useEffect, useState, useMemo, useCallback } from 'react';
 import { Grid } from '@mui/material';
 import TextareaMarkdown from 'textarea-markdown';
 import ResizePannel from './ResizePannel';
@@ -18,9 +16,7 @@ export default function Editor() {
     const { dispatch: mainDispatch } = useContext(MainContext);
     const { dispatch: noteDispatch } = useContext(NoteContext);
     const {
-        notes: {
-            note
-        }
+        notes: { note }
     } = useContext(NoteContext);
     const { id, body, lock } = note;
     const { bind: bindNoteBody } = useInput(body);
@@ -32,64 +28,74 @@ export default function Editor() {
         const textarea = document.querySelector('textarea#editor');
         textarea.value = body || '';
         runEditor(textarea);
+        if (note.read_only === true || lock) {
+            const ev = { target: { value: body } };
+            bindNoteBody.onChange(ev);
+        }
     }, [body]);
 
-    const handlePreviewWidth = useCallback((width) => {
-        setPreviewWidth(width);
-    }, [setPreviewWidth]);
+    const handlePreviewWidth = useCallback(
+        (width) => {
+            setPreviewWidth(width);
+        },
+        [setPreviewWidth]
+    );
 
-    const debounceBody = useCallback(debounceInput(async (value) => {
-        try {
-            await Patch(`/notes/${id}`, { body: value });
-        } catch (err) {
-            if (err instanceof UnProcessableEntityError) {
-                noteDispatch({
-                    type: 'update_note',
-                    note: { ...note, lock: true }
-                });
-                mainDispatch({
-                    type: 'dialog',
-                    dialog: { id: 'locked_note', is_open: true }
-                });
-            } else {
-                mainDispatch({
-                    type: 'dialog',
-                    dialog: { id: 'update_body_note', is_open: true }
-                });
+    const debounceBody = useCallback(
+        debounceInput(async (value) => {
+            try {
+                await Patch(`/notes/${id}`, { body: value });
+            } catch (err) {
+                if (err instanceof UnProcessableEntityError) {
+                    noteDispatch({
+                        type: 'update_note',
+                        note: { ...note, lock: true }
+                    });
+                    mainDispatch({
+                        type: 'dialog',
+                        dialog: { id: 'locked_note', is_open: true }
+                    });
+                } else {
+                    mainDispatch({
+                        type: 'dialog',
+                        dialog: { id: 'update_body_note', is_open: true }
+                    });
+                }
             }
-        }
-    }), [id, mainDispatch, debounceInput]);
+        }),
+        [id, mainDispatch, debounceInput]
+    );
 
     const handleChangeBody = async (ev) => {
         bindNoteBody.onChange(ev);
         debounceBody(ev.target.value);
     };
-    return useMemo(() => (
-        <Grid container className="editor" data-testid="editor-component" direction="column">
-            <EditorHeader
-                setPreviewWidth={handlePreviewWidth}
-            />
-            <Grid item className="editor-content">
-                <ResizePannel
-                    rightWidth={previewWidth}
-                    leftPannel={
-                        <textarea
-                            className="editor-textarea"
-                            id="editor"
-                            disabled={lock && note.read_only}
-                            data-preview="#preview"
-                            value={bindNoteBody.value}
-                            onChange={handleChangeBody}
-                        />
-                    }
-                    rightPannel={
-                        <div className="preview-pannel" id="preview" />
-                    }
-                />
-            </Grid>
+    return useMemo(
+        () => (
+            <Grid container className="editor" data-testid="editor-component" direction="column">
+                <EditorHeader setPreviewWidth={handlePreviewWidth} />
+                <Grid item className="editor-content">
+                    <ResizePannel
+                        rightWidth={previewWidth}
+                        leftPannel={
+                            <textarea
+                                className="editor-textarea"
+                                id="editor"
+                                disabled={lock || note.read_only}
+                                data-preview="#preview"
+                                value={bindNoteBody.value}
+                                onChange={handleChangeBody}
+                            />
+                        }
+                        rightPannel={<div className="preview-pannel" id="preview" />}
+                    />
+                </Grid>
 
-            <Grid item className="editor-footer">
-                <EditorFooter />
+                <Grid item className="editor-footer">
+                    <EditorFooter />
+                </Grid>
             </Grid>
-        </Grid>), [previewWidth, bindNoteBody, handlePreviewWidth, handleChangeBody]);
+        ),
+        [previewWidth, bindNoteBody, handlePreviewWidth, handleChangeBody]
+    );
 }

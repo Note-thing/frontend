@@ -217,7 +217,7 @@ const Dialog = () => {
                     autoHideDuration={6000}
                 >
                     <Alert variant="filled" severity="info">
-                         La note a été créée
+                        La note a été créée
                     </Alert>
                 </Snackbar>
             )}
@@ -230,6 +230,18 @@ const Dialog = () => {
                 >
                     <Alert variant="filled" severity="info">
                         Note supprimé correctement
+                    </Alert>
+                </Snackbar>
+            )}
+            {dialog && dialog.id === 'delete_locked_note_failed' && (
+                <Snackbar
+                    anchorOrigin={position}
+                    open={dialog.is_open}
+                    onClose={() => handleClose({ is_open: false })}
+                    autoHideDuration={6000}
+                >
+                    <Alert variant="filled" severity="error">
+                        Impossible de supprimer une note verrouillée par un autre utilisateur...
                     </Alert>
                 </Snackbar>
             )}
@@ -329,7 +341,31 @@ const Dialog = () => {
                     </Alert>
                 </Snackbar>
             )}
-
+            {dialog && dialog.id === 'shared_not_link_cannot_be_deleted' && (
+                <Snackbar
+                    anchorOrigin={position}
+                    open={dialog.is_open}
+                    onClose={() => handleClose({ is_open: false })}
+                    autoHideDuration={6000}
+                >
+                    <Alert variant="filled" severity="error">
+                        Une erreur inconnu s'est passé lors de la suppression 😭
+                    </Alert>
+                </Snackbar>
+            )}
+            {dialog && dialog.id === 'shared_not_exist' && (
+                <Snackbar
+                    anchorOrigin={position}
+                    open={dialog.is_open}
+                    onClose={() => handleClose({ is_open: false })}
+                    autoHideDuration={6000}
+                >
+                    <Alert variant="filled" severity="error">
+                        Le lien fourni n'existe pas. Ceci peut etre dû à la suppression de la note
+                        ou du lien (il être peut temps de trouver de nouveau ami). 😭
+                    </Alert>
+                </Snackbar>
+            )}
         </section>
     );
 };
