@@ -1,10 +1,6 @@
-import React, {
-    useState, useContext, useEffect, useCallback
-} from 'react';
+import React, { useState, useContext, useEffect, useCallback } from 'react';
 
-import {
-    Grid, TextField, Button, IconButton
-} from '@mui/material';
+import { Grid, TextField, Button, IconButton } from '@mui/material';
 import { Share, Delete as DeleteIcon } from '@mui/icons-material';
 import { useHistory } from 'react-router-dom';
 
@@ -75,29 +71,6 @@ export default function EditorHeader({ setPreviewWidth }) {
             }
         }
     }, [notes, noteDispatch, mainDispatch]);
-
-    const debounceTitle = useCallback(
-        debounceInput(async (value) => {
-            if (value.length === 0) {
-                return;
-            }
-            try {
-                const note = await Patch(`/notes/${notes.note.id}`, { title: value });
-                noteDispatch({ type: 'update_note', note });
-            } catch (err) {
-                mainDispatch({
-                    type: 'dialog',
-                    dialog: { id: 'update_name_note', severity: 'error', is_open: true }
-                });
-            }
-        }),
-        [notes, noteDispatch, mainDispatch, debounceInput]
-    );
-
-    const handleChangeTitle = async (ev) => {
-        setNoteTitle(ev.target.value);
-        debounceTitle(ev.target.value);
-    };
     /**
      * Sync the note. Simply get the note with its last updates. No unlock, no lock
      */
@@ -120,6 +93,40 @@ export default function EditorHeader({ setPreviewWidth }) {
             });
         }
         setSyncBtnDisabled(false);
+    };
+    const debounceTitle = useCallback(
+        debounceInput(async (value) => {
+            if (value.length === 0) {
+                return;
+            }
+            try {
+                const note = await Patch(`/notes/${notes.note.id}`, { title: value });
+                noteDispatch({ type: 'update_note', note });
+            } catch (err) {
+                if (err instanceof UnProcessableEntityError) {
+                    noteDispatch({
+                        type: 'update_note',
+                        note: { ...notes.note, lock: true }
+                    });
+                    mainDispatch({
+                        type: 'dialog',
+                        dialog: { id: 'locked_note', severity: 'error', is_open: true }
+                    });
+                    await syncNote();
+                } else {
+                    mainDispatch({
+                        type: 'dialog',
+                        dialog: { id: 'update_body_note', severity: 'error', is_open: true }
+                    });
+                }
+            }
+        }),
+        [notes, noteDispatch, mainDispatch, debounceInput]
+    );
+
+    const handleChangeTitle = async (ev) => {
+        setNoteTitle(ev.target.value);
+        debounceTitle(ev.target.value);
     };
 
     /**

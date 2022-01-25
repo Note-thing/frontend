@@ -85,7 +85,7 @@ const requestWithBody = async (method, endpoint, data = null) => {
         const res = await fetch(CONFIG.api_url + endpoint, getRequestInfoWithHeaders(method, data));
         if (!res.ok) {
             const errorJson = JSON.parse((await res.text()));
-            throwHttpError(res.status, errorJson.message, errorJson);
+            throwHttpError(res.status, errorJson.messages, errorJson);
         } else if (res.status === 204) {
             return undefined;
         }

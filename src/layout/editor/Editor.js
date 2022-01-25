@@ -1,6 +1,4 @@
-import React, {
-    useContext, useEffect, useState, useMemo, useCallback
-} from 'react';
+import React, { useContext, useEffect, useState, useMemo, useCallback } from 'react';
 import { Grid } from '@mui/material';
 import TextareaMarkdown from 'textarea-markdown';
 import ResizePannel from './ResizePannel';
@@ -10,7 +8,7 @@ import { MainContext } from '../../context/MainContext';
 import { NoteContext } from '../../context/NoteContext';
 import useInput from '../../hooks/useInput';
 import debounceInput from '../../utils/utils';
-import { Patch } from '../../config/config';
+import { Patch, Get } from '../../config/config';
 import '../../resource/css/editor.css';
 import UnProcessableEntityError from '../../errors/UnprocessableEntityError';
 
@@ -49,7 +47,7 @@ export default function Editor() {
         },
         [setPreviewWidth]
     );
-
+    
     const debounceBody = useCallback(
         debounceInput(async (value) => {
             try {
@@ -65,6 +63,8 @@ export default function Editor() {
                         type: 'dialog',
                         dialog: { id: 'locked_note', severity: 'error', is_open: true }
                     });
+                    const updatedNote = await Get(`/notes/read_only/${note.id}`);
+                    noteDispatch({ type: 'update_note', note: updatedNote });
                 } else {
                     mainDispatch({
                         type: 'dialog',
