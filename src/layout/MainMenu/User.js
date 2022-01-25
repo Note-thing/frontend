@@ -48,7 +48,8 @@ const User = () => {
                     transformOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                 >
                     <MenuItem onClick={() => redirectPage('/profile')}>Profil</MenuItem>
-                    <MenuItem onClick={userLogout}>Logout</MenuItem>
+                    <MenuItem onClick={() => redirectPage('/tutorial')}>Tutoriel</MenuItem>
+                    <MenuItem onClick={userLogout}>Se déconnecter</MenuItem>
                 </Menu>
                 <Person user={user} />
             </Box>
