@@ -6,7 +6,7 @@ import { CONFIG, Get } from '../config/config';
 export const NoteContext = createContext();
 
 const getActiveFromURL = (directories) => {
-    const [, , directoryId, , noteId] = window.location.pathname.split('/');
+    const [, page, directoryId, , noteId] = window.location.pathname.split('/');
     let directory;
     let note;
     if (directoryId) {
@@ -15,7 +15,8 @@ const getActiveFromURL = (directories) => {
     if (directory && noteId) {
         note = directory.notes.find((d) => d.id === parseInt(noteId, 10));
     }
-    const anyMissing = (directoryId && !directory) || (noteId && !note);
+
+    const anyMissing = page === 'directory' && ((directoryId && !directory) || (noteId && !note));
     return {
         directory,
         note,
