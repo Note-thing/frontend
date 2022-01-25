@@ -1,12 +1,14 @@
 import React, { useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
 import {
-    Typography, Box, Grid, TextField, Button, Link
+    Typography, Box, Grid, TextField, Button, FormControl
 } from '@mui/material';
-import { CONFIG } from '../../config/config';
+import PasswordStrengthBar from 'react-password-strength-bar';
+import { CONFIG, Post } from '../../config/config';
 import { MainContext } from '../../context/MainContext';
-import { useInput } from '../../hooks/useInput';
+import useInput from '../../hooks/useInput';
+import { validateName, validateEmail, validatePassword } from '../common/inputValidation';
 
 const Signup = () => {
     const history = useHistory();
@@ -15,27 +17,92 @@ const Signup = () => {
 
     // keep track of the input states
     // each keystroke (onChange event listener) is saved within the state
-    const { value: firstname, bind: bindFirstname } = useInput('');
-    const { value: lastname, bind: bindLastname } = useInput('');
-    const { value: email, bind: bindEmail } = useInput('');
-    const { value: password, bind: bindPassword } = useInput('');
-    const { value: passwordRepeat, bind: bindPasswordRepeat } = useInput('');
+    const { value: firstname, bind: bindFirstname, setError: setFirstNameError } = useInput('');
+    const { value: lastname, bind: bindLastname, setError: setLastNameError } = useInput('');
+    const { value: email, bind: bindEmail, setError: setEmailError } = useInput('');
+    const { value: password, bind: bindPassword, setError: setPasswordError } = useInput('');
+    const { value: passwordRepeat, bind: bindPasswordRepeat, setError: setPasswordRepeatError } = useInput('');
 
-    const buttonSignUp = (e) => {
+    const buttonSignUp = async (e) => {
         e.preventDefault();
-        dispatch({
-            type: 'signup',
-            user: {
+        let inputError = false;
+        if (!validateName(firstname)) {
+            setFirstNameError({
+                error: true,
+                helperText: 'First name is mandatory'
+            });
+            inputError = true;
+        }
+        if (!validateName(lastname)) {
+            setLastNameError({
+                error: true,
+                helperText: 'Last name is mandatory'
+            });
+            inputError = true;
+        }
+        if (!validateEmail(email)) {
+            setEmailError({
+                error: true,
+                helperText: 'Valid email adresse must be provided'
+            });
+            inputError = true;
+        }
+        if (!validatePassword(password)) {
+            setPasswordError({
+                error: true,
+                helperText: 'Password is mandatory'
+            });
+            inputError = true;
+        }
+        if (!validatePassword(passwordRepeat)) {
+            setLastNameError({
+                error: true,
+                helperText: 'Password repeat is mandatory'
+            });
+            inputError = true;
+        }
+        if (password !== passwordRepeat) {
+            setPasswordRepeatError({
+                error: true,
+                helperText: 'Password repeat miss match'
+            });
+            inputError = true;
+        }
+        if (inputError) {
+            return;
+        }
+        try {
+            await Post('/signup', {
+                email,
                 firstname,
                 lastname,
-                email,
-                isAuthenticated: false
-            }
-        });
-        history.push('/');
+                password,
+                password_confirmation: passwordRepeat
+            });
+            dispatch({
+                type: 'dialog',
+                dialog: {
+                    id: 'signup_success',
+                    severity: 'info',
+                    is_open: true
+                }
+            });
+        } catch (error) {
+            dispatch({
+                type: 'dialog',
+                dialog: {
+                    id: 'signup_failed',
+                    severity: 'error',
+                    is_open: true,
+                    info: error.getMessage()
+                }
+            });
+            return;
+        }
+        setTimeout(() => history.push('/'), 2000);
     };
-
-    const redirectPage = (link) => history.push(link);
+    // TODO: remove ??
+    // const redirectPage = (link) => history.push(link);
     return (
         <Grid container spacing={4} direction="column" alignItems="center">
             <Grid item square>
@@ -50,7 +117,7 @@ const Signup = () => {
                     Nouveau compte
                 </Typography>
 
-                <form noValidate>
+                <FormControl>
                     <Grid
                         container
                         columnSpacing={2}
@@ -104,9 +171,13 @@ const Signup = () => {
                         label="Mot de passe"
                         type="password"
                         id="password"
-                        autoComplete="current-password"
+                        autoComplete="new-password"
+                        inputProps={{
+                            autoComplete: 'new-password'
+                        }}
                         {...bindPassword}
                     />
+                    <PasswordStrengthBar password={password} />
                     <TextField
                         variant="outlined"
                         margin="normal"
@@ -114,9 +185,9 @@ const Signup = () => {
                         fullWidth
                         name="passwordRepeat"
                         label="Répéter le mot de passe"
-                        type="passwordRepeat"
+                        type="password"
                         id="passwordRepeat"
-                        autoComplete="repeated-password"
+                        autoComplete="new-password"
                         {...bindPasswordRepeat}
                     />
                     <Button
@@ -132,18 +203,18 @@ const Signup = () => {
                     <Grid container>
                         <Grid item xs>
                             <Link
-                                href="#"
+                                to={CONFIG.signin_url}
                                 variant="body2"
-                                onClick={() => redirectPage(CONFIG.signin_url)}
+                                // onClick={() => redirectPage(CONFIG.signin_url)}
                             >
                                 Se connecter
                             </Link>
                         </Grid>
                         <Grid item>
                             <Link
-                                href="#"
+                                to={CONFIG.lost_password_url}
                                 variant="body2"
-                                onClick={() => redirectPage(CONFIG.lost_password_url)}
+                                // onClick={() => redirectPage(CONFIG.lost_password_url)}
                             >
                                 Mot de passe oublié ?
                             </Link>
@@ -152,7 +223,7 @@ const Signup = () => {
                     <Box mt={5}>
                         <Copyright />
                     </Box>
-                </form>
+                </FormControl>
             </Grid>
         </Grid>
     );
@@ -162,7 +233,7 @@ function Copyright() {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
             {'Copyright © '}
-            <Link color="inherit" href="https://heig-vd.ch//">
+            <Link color="inherit" href="https://heig-vd.ch/">
                 HEIG-VD
             </Link>
             {' '}

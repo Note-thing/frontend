@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
-    List, Grid, Avatar, Input
+    List, Grid
 } from '@mui/material';
-import { PersonOutline } from '@mui/icons-material';
+import { useLocation } from 'react-router-dom';
+import { MainContext } from '../../context/MainContext';
+import { NoteContext } from '../../context/NoteContext';
+import User from './User';
 import MainMenuItem from './MainMenuItem';
-
+import FolderCreation from '../directory/FolderCreation/FolderCreation';
+import SearchComponent from '../search/SearchComponent';
 /**
  * Main menu of the application (left panel with directories, notes, search and access
  * to user parameters)
@@ -12,75 +16,46 @@ import MainMenuItem from './MainMenuItem';
  * @returns
  */
 export default function MainMenu() {
-    const user = {};
-    user.name = 'Frank Letest';
-    const notesDirectories = [
-        {
-            name: 'TWEB',
-            notes: [
-                { title: 'CSS', tags: ['Web', 'design '] },
-                { title: 'JS', tags: ['JS', 'prototype'] },
-                { title: 'Node', tags: ['JS', 'SSR'] }
-            ]
-        },
-        {
-            name: 'PDG',
-            notes: [
-                { title: 'Note-thing', tags: ['Web', 'design'] },
-                { title: 'Ruby on Rails', tags: ['Model', 'Controller'] },
-                { title: 'CI/CD', tags: ['Jest.js', 'Unit test'] }
-            ]
-        },
-        {
-            name: 'AMT',
-            notes: [
-                { title: 'Guide de survie total', tags: ['Spring'] },
-                { title: 'Survire en haute mer', tags: ['Spring', 'MVC'] },
-                {
-                    title: 'Apprendre à utiliser une boussole',
-                    tags: ['Navigation']
-                }
-            ]
-        }
-    ];
+    const location = useLocation();
+    // List of URLS for which the menu should be opened.
+    const OPENED_URL = ['/'];
+    const { main: { user } } = useContext(MainContext);
+    const { notes: { directories, directory } } = useContext(NoteContext);
     return (
-        <Grid
-            container
-            sx={{ height: '100%' }}
-            display="flex"
-            direction="column"
-            justifyContent="space-between"
-        >
-            <Grid sx={{ height: '80%', overflowY: 'scroll' }}>
-                <List>
-                    {notesDirectories.map((dir, idx) => (
-                        <MainMenuItem key={idx} directory={dir} />
-                    ))}
-                </List>
-            </Grid>
+        <section className={`main-menu-container ${OPENED_URL.includes(location.pathname) ? 'open' : ''}`}>
             <Grid
                 container
-                sx={{
-                    padding: '1rem',
-                    height: '20%',
-                    alignSelf: 'flex-end'
-                }}
+                className="main-menu"
+                sx={{ height: '100%', width: '100%' }}
+                display="flex"
+                direction="column"
+                justifyContent="space-between"
             >
-                <Input
-                    sx={{ width: '100%', marginBottom: '1rem' }}
-                    placeholder="Rechercher dans les notes"
-                />
+                <Grid className="main-menu-scrollable">
+                    <List>
+                        { directories?.map((dir) => (
+                            <MainMenuItem
+                                key={dir.id}
+                                show={directory && dir.id === directory.id}
+                                directory={dir}
+                            />
+                        ))}
+                        <FolderCreation />
+                    </List>
+                </Grid>
                 <Grid
-                    sx={{ width: '100%', alignItems: 'center' }}
-                    display="flex"
-                    justifyContent="space-between"
+                    container
+                    sx={{
+                        padding: '1rem',
+                        height: '15%',
+                        alignSelf: 'flex-end'
+                    }}
                 >
-                    <span>{user.name}</span>
-                    <Avatar alt="user-avatar">
-                        <PersonOutline />
-                    </Avatar>
+
+                    <SearchComponent />
+                    <User user={user} />
                 </Grid>
             </Grid>
-        </Grid>
+        </section>
     );
 }

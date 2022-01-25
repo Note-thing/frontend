@@ -3,17 +3,11 @@ import React, { createContext, useReducer } from 'react';
 const mainReducer = (state, action) => {
     switch (action.type) {
         case 'login':
-            localStorage.setItem(
-                'User',
-                JSON.stringify({ ...state.user, ...action.user })
-            );
             return { ...state, user: { ...state.user, ...action.user } };
         case 'logout':
-            localStorage.removeItem('User');
-            return {
-                ...state,
-                user: { ...state.user, isAuthenticated: false }
-            };
+            return { ...state, user: null };
+        case 'dialog':
+            return { ...state, dialog: { ...action.dialog } };
         default:
             return state;
     }
@@ -21,14 +15,15 @@ const mainReducer = (state, action) => {
 
 export const MainContext = createContext();
 
-export const MainProvider = (props) => {
+export const MainProvider = ({ children }) => {
     const [main, dispatch] = useReducer(mainReducer, {
-        user: {}
+        user: JSON.parse(localStorage.getItem('User')),
+        dialog: null
     });
 
     return (
         <MainContext.Provider value={{ main, dispatch }}>
-            {props.children}
+            { children}
         </MainContext.Provider>
     );
 };

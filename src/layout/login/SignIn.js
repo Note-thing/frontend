@@ -11,16 +11,15 @@ import {
     Button,
     Link
 } from '@mui/material';
-import { CONFIG, Get } from '../../config/config';
+import { CONFIG, Post } from '../../config/config';
 import { MainContext } from '../../context/MainContext';
-import { useInput } from '../../hooks/useInput';
+import useInput from '../../hooks/useInput';
 
 const SignIn = () => {
     const history = useHistory();
 
     const { dispatch } = useContext(MainContext);
 
-    
     // keep track of the input states
     // each keystroke (onChange event listener) is saved within the state
     const { value: email, bind: bindEmail } = useInput('');
@@ -28,25 +27,40 @@ const SignIn = () => {
 
     const buttonSignIn = async (e) => {
         e.preventDefault();
-        const response = await Get('/signin');
-        dispatch({
-            type: 'login',
-            user: { email, isAuthenticated: true }
-        });
-        history.push('/');
+        let response = null;
+        try {
+            response = await Post('/signin', { email, password });
+        } catch (error) {
+            // TODO: gestion erreur, à voir comment faire
+            dispatch({
+                type: 'dialog',
+                dialog: { id: 'login_failed', severity: 'error', is_open: true }
+            });
+        }
+        if (response != null) {
+            localStorage.setItem('User', JSON.stringify(response.user));
+            localStorage.setItem('Token', response.token);
+
+            dispatch({
+                type: 'dialog',
+                dialog: { id: 'login', severity: 'info', is_open: true }
+            });
+
+            dispatch({
+                type: 'login',
+                user: response.user
+            });
+
+            setTimeout(() => history.push('/'), 2000);
+        }
     };
 
     const redirectPage = (link) => history.push(link);
     return (
         <Grid container direction="column" alignItems="center" spacing={4}>
             <Grid item square>
-                <Typography
-                    sx={{ mt: 6, mb: 8 }}
-                    component="h1"
-                    variant="h5"
-                    align="center"
-                >
-                    <LoginIcon align="center" />
+                <Typography sx={{ mt: 6, mb: 8 }} component="h1" variant="h5" align="center">
+                    <LoginIcon />
                     Connection
                 </Typography>
 
@@ -76,13 +90,7 @@ const SignIn = () => {
                         {...bindPassword}
                     />
                     <FormControlLabel
-                        control={
-                            <Checkbox
-                                value="remember"
-                                color="primary"
-                                defaultChecked
-                            />
-                        }
+                        control={<Checkbox value="remember" color="primary" defaultChecked />}
                         label="Se souvenir de moi"
                     />
                     <Button
@@ -97,22 +105,21 @@ const SignIn = () => {
                     </Button>
                     <Grid container>
                         <Grid item xs>
-                            <Link
-                                href="#"
+                            <Button
                                 variant="body2"
                                 onClick={() => redirectPage(CONFIG.lost_password_url)}
                             >
                                 Mot de passe oublié?
-                            </Link>
+                            </Button>
                         </Grid>
                         <Grid item>
-                            <Link
+                            <Button
                                 href="#"
                                 variant="body2"
                                 onClick={() => redirectPage(CONFIG.signup_url)}
                             >
                                 S'inscrire
-                            </Link>
+                            </Button>
                         </Grid>
                     </Grid>
                     <Box mt={5}>

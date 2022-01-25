@@ -4,24 +4,70 @@ import LockIcon from '@mui/icons-material/Lock';
 import {
     Typography, Box, Grid, TextField, Button, Link
 } from '@mui/material';
-import { CONFIG } from '../../config/config';
+import PasswordStrengthBar from 'react-password-strength-bar';
+import { CONFIG, Post } from '../../config/config';
 import { MainContext } from '../../context/MainContext';
-import { useInput } from '../../hooks/useInput';
+import useInput from '../../hooks/useInput';
+import { validatePassword } from '../common/inputValidation';
 
 const ChangePassword = () => {
     const history = useHistory();
 
     const { dispatch } = useContext(MainContext);
-
     // keep track of the input states
     // each keystroke (onChange event listener) is saved within the state
-    const { value: password, bind: bindPassword } = useInput('');
-    const { value: passwordRepeat, bind: bindPasswordRepeat } = useInput('');
+    const { value: password, bind: bindPassword, setError: setPasswordError } = useInput('');
+    const { value: passwordRepeat, bind: bindPasswordRepeat, setError: setPasswordRepeatError } = useInput('');
 
-    const buttonChangePassword = (e) => {
+    const buttonChangePassword = async (e) => {
         e.preventDefault();
+        let valid = true;
+        if (!validatePassword(password)) {
+            setPasswordError({
+                error: true,
+                helperText: 'Password is invalid'
+            });
+            valid = false;
+        }
+        if (password !== passwordRepeat) {
+            setPasswordRepeatError({
+                error: true,
+                helperText: 'Repeat password missmatch'
+            });
+            valid = false;
+        }
+        if (!valid) {
+            return;
+        }
 
-        history.push('/');
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        const { token } = Object.fromEntries(urlSearchParams.entries());
+        try {
+            await Post('/password/reset', {
+                password,
+                password_token: token
+            });
+            dispatch({
+                type: 'dialog',
+                dialog: {
+                    id: 'forgot_reset_success',
+                    severity: 'info',
+                    is_open: true
+                }
+            });
+        } catch (error) {
+            dispatch({
+                type: 'dialog',
+                dialog: {
+                    id: 'forgot_reset_failed',
+                    severity: 'error',
+                    is_open: true,
+                    info: error.getMessage()
+                }
+            });
+            return;
+        }
+        setTimeout(() => history.push('/'), 2000);
     };
 
     const redirectPage = (link) => history.push(link);
@@ -48,11 +94,12 @@ const ChangePassword = () => {
                         id="password"
                         label="Nouveau mot de passe"
                         name="password"
+                        type="password"
                         autoComplete="password"
                         autoFocus
                         {...bindPassword}
                     />
-
+                    <PasswordStrengthBar password={password} />
                     <TextField
                         variant="outlined"
                         margin="normal"
@@ -61,6 +108,7 @@ const ChangePassword = () => {
                         id="passwordRepeat"
                         label="Répéter"
                         name="passwordRepeat"
+                        type="password"
                         autoComplete="passwordRepeat"
                         {...bindPasswordRepeat}
                     />
@@ -77,22 +125,20 @@ const ChangePassword = () => {
                     </Button>
                     <Grid container>
                         <Grid item xs>
-                            <Link
-                                href="#"
+                            <Button
                                 variant="body2"
                                 onClick={() => redirectPage(CONFIG.signin_url)}
                             >
                                 Se connecter ?
-                            </Link>
+                            </Button>
                         </Grid>
                         <Grid item>
-                            <Link
-                                href="#"
+                            <Button
                                 variant="body2"
                                 onClick={() => redirectPage(CONFIG.signup_url)}
                             >
                                 S'inscrire
-                            </Link>
+                            </Button>
                         </Grid>
                     </Grid>
                     <Box mt={5}>

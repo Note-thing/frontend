@@ -1,0 +1,63 @@
+:root {
+    --app-menu-width: 48px;
+    --app-border:0.1rem solid #e9f0f0;
+}
+
+.main{
+    margin-left:var(--app-menu-width);
+    width:calc(100% - var(--app-menu-width));
+    max-width:calc(100% - var(--app-menu-width));
+}
+
+.main-menu-container{
+    cursor:pointer;
+    position: fixed;
+    z-index: 1000;
+    background-color:white;
+    border-right: var(--app-border);
+    box-sizing: border-box;
+    height:100vh;
+    width:var(--app-menu-width);
+    transition:width 200ms ease-in-out;
+}
+
+.main-menu-container .main-menu-scrollable{
+    height: 85%;
+    overflow:auto;
+    scrollbar-width: none;
+}
+
+.main-menu-container .main-menu-scrollable::-webkit-scrollbar{
+    display: none;
+}
+
+.main-menu-container::before{
+    content:' ';
+    display: block;
+    min-width:48px;
+    min-height:48px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-image: url(../../resource/icons/main-menu.svg);
+}
+
+.main-menu-container:hover,
+.main-menu-container.open{
+    width:24rem;
+}
+.main-menu-container:hover::before,
+.main-menu-container.open::before{
+    display: none;
+}
+
+.main-menu-container .main-menu{
+    transition:opacity 300ms ease-in-out;
+    visibility:hidden;
+    opacity:0;
+}
+
+.main-menu-container:hover .main-menu,
+.main-menu-container.open .main-menu{
+    visibility:visible;
+    opacity:1;
+}

@@ -1,29 +1,30 @@
 import React from 'react';
-import { Grid } from '@mui/material';
-import './AppLayout.css';
+import { Switch, Route } from 'react-router-dom';
 import MainMenu from './MainMenu/MainMenu';
-import EditorComponent from './editor/EditorComponent';
+import EditorComponent from './editor/Editor';
+import { NoteProvider } from '../context/NoteContext';
+import SharedNoteComponent from './sharedNote/SharedNoteComponent';
+import DirectoryComponent from './directory/DirectoryComponent';
+import Profile from './profile/Profile';
+import '../resource/css/main.css';
 
 /**
  * Layout of the application
  * @param {*} props
  * @returns
  */
-export default function AppLayout(props) {
+export default function AppLayout() {
     return (
-        <Grid container height="100vh">
-            <Grid
-                item
-                xs={4}
-                md={2}
-                height="100%"
-                borderRight="0.1rem solid #e9F0F0"
-            >
-                <MainMenu />
-            </Grid>
-            <Grid item xs={8} md={10} height="100%">
-                <EditorComponent />
-            </Grid>
-        </Grid>
+        <NoteProvider>
+            <MainMenu />
+            <section className="main">
+                <Switch>
+                    <Route exact path="/directory/:directoryId" component={DirectoryComponent} />
+                    <Route path="/directory/**/note/**" component={EditorComponent} />
+                    <Route path="/shared_notes/:uuid" component={SharedNoteComponent} />
+                    <Route exactr path="/profile" component={Profile} />
+                </Switch>
+            </section>
+        </NoteProvider>
     );
 }
