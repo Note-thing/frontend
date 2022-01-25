@@ -41,7 +41,7 @@ export default function Editor() {
         } catch (err) {
             mainDispatch({
                 type: 'dialog',
-                dialog: { id: 'update_body_note', is_open: true }
+                dialog: { id: 'update_body_note', severity: 'error', is_open: true }
             });
         }
     }), [id, mainDispatch, debounceInput]);

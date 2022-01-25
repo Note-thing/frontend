@@ -40,6 +40,7 @@ const LostPassword = () => {
                 type: 'dialog',
                 dialog: {
                     id: 'forgot_email_sent',
+                    severity: 'info',
                     is_open: true
                 }
             });
@@ -48,6 +49,7 @@ const LostPassword = () => {
                 type: 'dialog',
                 dialog: {
                     id: 'forgot_email_failed',
+                    severity: 'error',
                     is_open: true,
                     info: error.getMessage()
                 }

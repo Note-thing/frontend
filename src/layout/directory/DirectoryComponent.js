@@ -54,7 +54,7 @@ export default function DirectoryComponent() {
             const oldDir = notes.directory;
             dispatchNote({ type: 'update_directory', directory: { ...oldDir, ...folder } });
         } catch (err) {
-            dispatchMain({ type: 'dialog', dialog: { id: 'cannotEditFolder', is_open: true } });
+            dispatchMain({ type: 'dialog', dialog: { id: 'cannotEditFolder', severity: 'error', is_open: true } });
         }
 
         setIsUpdatingName(false);
@@ -71,7 +71,7 @@ export default function DirectoryComponent() {
             dispatchNote({ type: 'delete_directory', directory: notes.directory });
             history.push('/');
         } catch (err) {
-            dispatchMain({ type: 'dialog', dialog: { id: 'cannotDeleteFolder', is_open: true } });
+            dispatchMain({ type: 'dialog', dialog: { id: 'cannotDeleteFolder', severity: 'error', is_open: true } });
         }
         setIsDeletingFolder(false);
     };

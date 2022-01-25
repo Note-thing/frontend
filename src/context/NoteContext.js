@@ -109,6 +109,7 @@ export const NoteProvider = ({ children }) => {
             } catch (err) {
                 window.location.replace(CONFIG.frontend_url + CONFIG.signin_url);
                 return false;
+
             }
         })();
     }, []);
@@ -150,7 +151,7 @@ export const NoteProvider = ({ children }) => {
                     } catch (err) {
                         mainDispatch({
                             type: 'dialog',
-                            dialog: { id: 'cannotLoadStructure', is_open: true }
+                            dialog: { id: 'cannotLoadStructure', severity: 'error', is_open: true }
                         });
                     }
                 })();
