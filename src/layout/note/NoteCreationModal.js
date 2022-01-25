@@ -1,7 +1,5 @@
 import React, { useState, useContext } from 'react';
-import {
-    TextField, Button, Alert, Grid
-} from '@mui/material';
+import { TextField, Button, Alert, Grid } from '@mui/material';
 import { useHistory } from 'react-router';
 import CustomModal from '../common/Modal';
 import { Post } from '../../config/config';
@@ -59,6 +57,8 @@ export default function NoteCreationModal({ open, onClose }) {
                 type: 'dialog',
                 dialog: { id: 'create_note', severity: 'info', is_open: true }
             });
+            // Reset the input field and close the modal
+            setNewNoteName('');
             onClose(false);
             history.push(`/directory/${response.folder_id}/note/${response.id}`);
         } catch (err) {
