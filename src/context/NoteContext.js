@@ -1,6 +1,4 @@
-import React, {
-    useEffect, createContext, useReducer, useMemo, useContext
-} from 'react';
+import React, { useEffect, createContext, useReducer, useMemo, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 import { MainContext } from './MainContext';
 import { CONFIG, Get } from '../config/config';
@@ -8,7 +6,7 @@ import { CONFIG, Get } from '../config/config';
 export const NoteContext = createContext();
 
 const getActiveFromURL = (directories) => {
-    const [, , directoryId, , noteId] = window.location.pathname.split('/');
+    const [, page, directoryId, , noteId] = window.location.pathname.split('/');
     let directory;
     let note;
     if (directoryId) {
@@ -17,7 +15,8 @@ const getActiveFromURL = (directories) => {
     if (directory && noteId) {
         note = directory.notes.find((d) => d.id === parseInt(noteId, 10));
     }
-    const anyMissing = (directoryId && !directory) || (noteId && !note);
+
+    const anyMissing = page === 'directory' && ((directoryId && !directory) || (noteId && !note));
     return {
         directory,
         note,
@@ -110,8 +109,8 @@ export const NoteProvider = ({ children }) => {
                 dispatch({ type: 'reset', directories: folders });
             } catch (err) {
                 window.location.replace(CONFIG.frontend_url + CONFIG.signin_url);
-                return false;
             }
+            return undefined;
         })();
     }, []);
 
@@ -169,10 +168,11 @@ export const NoteProvider = ({ children }) => {
     }, [location?.pathname, notes.directories]);
 
     return useMemo(
-        () => notes
-            && notes.directories && (
-            <NoteContext.Provider value={{ notes, dispatch }}>{children}</NoteContext.Provider>
-        ),
+        () =>
+            notes &&
+            notes.directories && (
+                <NoteContext.Provider value={{ notes, dispatch }}>{children}</NoteContext.Provider>
+            ),
         [notes, dispatch]
     );
 };
