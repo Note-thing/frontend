@@ -1,8 +1,22 @@
 import React from 'react';
 import {
+    Button, IconButton
+} from '@mui/material';
+import {
     Code, ContentSlide as C, Step, Slide as S, Presentation
 } from 'react-presents';
 import { ReactComponent as Logo } from '../../logo.svg';
+import { ReactComponent as CodeIcon } from '../../resource/icons/editor-viewmode-code.svg';
+import { ReactComponent as ViewIcon } from '../../resource/icons/editor-viewmode-view.svg';
+import { ReactComponent as SplitIcon } from '../../resource/icons/editor-viewmode-split.svg';
+import { 
+    Share as ShareIcon,
+    Delete as DeleteIcon,
+    PictureAsPdf as PictureAsPdfIcon,
+    LockOpen as LockOpenIcon,
+    Lock as LockIcon,
+    Sync as SyncIcon
+ } from '@mui/icons-material';
 
 function importAll(r) {
     const images = {};
@@ -157,6 +171,160 @@ export default function EditorTutorial() {
                         Maintenant vous savez comment créer une note !
                     </p>
                 </center>
+            </Slide>
+            <Slide>
+                <center>
+                    <h1>
+                        Prise en main de l'interface
+                    </h1>
+                    <p>
+                        Les bouttons suivants permettent d'ajuster comment Vous
+                        souahitez affichez votre note:
+                    </p>
+                </center>
+                <ul>
+                    <li>
+                        <Button size="small">
+                            <CodeIcon />
+                        </Button>
+                        &nbsp;Affiche uniquement l'éditeur Markdown
+                    </li>
+                    <li>
+                        <Button size="small">
+                            <SplitIcon />
+                        </Button>
+                        &nbsp;Affiche l'éditeur Markdown et le rendus HTML (option par défaut)
+                    </li>
+                    <li>
+                        <Button size="small">
+                            <ViewIcon />
+                        </Button>
+                        &nbsp;Affiche uniquement le rendus HTML
+                    </li>
+                </ul>
+            </Slide>
+            <Slide>
+                <center>
+                    <h1>
+                        Prise en main de l'interface
+                    </h1>
+                    <p>
+                        Les bouttons suivants permettent d'effectuer
+                        une action sur la note ouverte:
+                    </p>
+                </center>
+                <ul>
+                    <li>
+                        <IconButton
+                            color="primary"
+                        >
+                            <ShareIcon />
+                        </IconButton>
+                        &nbsp;Permets de partager notre note
+                    </li>
+                    <li>
+                        <IconButton
+                            color="primary"
+                        >
+                            <PictureAsPdfIcon />
+                        </IconButton>
+                        &nbsp;Permets de télécharger le rendus HTMl en un fichier PDF
+                    </li>
+                    <li>
+                        <IconButton
+                            color="primary"
+                        >
+                            <DeleteIcon />
+                        </IconButton>
+                        &nbsp;Permets de supprimer la note
+                    </li>
+                </ul>
+            </Slide>
+            <Slide>
+                <center>
+                    <h1>
+                        Prise en main de l'interface
+                    </h1>
+                    <p>
+                        Lorsque vous cliquez sur le bouton&nbsp;
+                        <IconButton
+                            color="primary"
+                        >
+                            <ShareIcon />
+                        </IconButton>
+                        &nbsp;pour partager votre note, il vous sera offert trois options:
+                    </p>
+                </center>
+                <ul>
+                    <li>
+                        <b>Copie de note</b>
+                        &nbsp;Offre la possibilité à quiconque possèdant le lien
+                        de créer une copie de votre note.
+                    </li>
+                    <li>
+                        <b>Lecture seule</b>
+                        &nbsp;Offre la possibilité à quiconque possèdant le lien
+                        de voir votre note sans pouvoir l'éditer.
+                    </li>
+                    <li>
+                        <b>Note partagée</b>
+                        &nbsp;Offre la possibilité à quiconque possèdant le lien
+                        de voir et modifier votre note. (seulement une personne à la fois)
+                    </li>
+                </ul>
+                <center>
+                    <p>
+                        Une fois le type de partage choisis, cliquez sur le bouton
+                        "Générer un lien". Vous pouvez ensuite copier et partager ce lien
+                        avec qui vous voulez.
+                    </p>
+                </center>
+            </Slide>
+            <Slide>
+                <center>
+                    <h1>
+                        Prise en main de l'interface
+                    </h1>
+                    <p>
+                        Le boutton suivant apparaît pour toutes les notes partagées en mode
+                        "Lecture seule" et "Note partagée":
+                    </p>
+                </center>
+                <ul>
+                    <li>
+                        <IconButton
+                            color="primary"
+                        >
+                            <SyncIcon />
+                        </IconButton>
+                        &nbsp;Permets de récupérer la version la plus récente de la note partagée.
+                    </li>
+                </ul>
+                <center>
+                    <p>
+                        Le boutton suivant apparaît pour toutes les notes partagées en mode
+                        "Lecture seule" et "Note partagée":
+                    </p>
+                </center>
+                <ul>
+                    <li>
+                        <IconButton
+                            color="primary"
+                        >
+                            <LockOpenIcon />
+                        </IconButton>
+                        &nbsp;Permets de déverouiller la note pour laisser un autre utilisateur
+                        faire de modifications.
+                    </li>
+                    <li>
+                        <IconButton
+                            color="primary"
+                        >
+                            <LockIcon />
+                        </IconButton>
+                        &nbsp;Permets de demander le vérouillage de la note pour pouvoir l'éditer.
+                    </li>
+                </ul>
             </Slide>
             <Slide>
                 <center>
