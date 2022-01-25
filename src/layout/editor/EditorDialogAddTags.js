@@ -10,6 +10,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import EditorTags from './EditorTags';
 import { Post } from '../../config/config';
 import { NoteContext } from '../../context/NoteContext';
+import { MainContext } from '../../context/MainContext';
 
 /**
  * Editor Dialog Add Tags. Show a dialog to the user to add more tags to his note
@@ -19,21 +20,33 @@ export default function EditorDialogAddTags({
     open, setOpen
 }) {
     const { notes: { note }, dispatch } = useContext(NoteContext);
+    const { dispatch: mainDispatch } = useContext(MainContext);
     const handleClose = () => {
         setOpen(false);
     };
 
-    const handleAddTag = (tag) => {
+    const handleAddTag = async (tag) => {
         if (tag !== undefined
             && tag.length > 0
             && !note.tags.map((t) => t.title).includes(tag)) {
-            Post('/tags', { title: tag, note_id: note.id }).then((t) => {
-                note.tags = [...note.tags, { title: t.title, id: t.id }];
+            try {
+                const response = await Post('/tags', { title: tag, note_id: note.id });
+                note.tags = [...note.tags, { title: response.title, id: response.id }];
                 dispatch({
                     type: 'update_note',
                     note
                 });
-            });
+            } catch (error) {
+                mainDispatch({
+                    type: 'dialog',
+                    dialog: {
+                        id: 'tag_add_failed',
+                        severity: 'error',
+                        is_open: true,
+                        info: error.getMessage()
+                    }
+                });
+            }
         }
     };
 

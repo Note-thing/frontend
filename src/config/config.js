@@ -2,8 +2,8 @@ import ForbiddenError from '../errors/ForbiddenError';
 import throwHttpError from '../errors/HttpErrorUtils';
 
 export const CONFIG = {
+    no_token_api_endpoints: ['/signin', '/signup', '/password/forgot', '/password/reset', '/users/validate'],
     api_url: 'http://note-thing.ch/api/v1',
-    no_token_api_endpoints: ['/signin', '/signup', '/password/forgot', '/password/reset'],
     no_redirection_endpoints: ['/signin'],
     signin_url: '/signin',
     lost_password_url: '/lost_password',
@@ -84,7 +84,7 @@ const requestWithBody = async (method, endpoint, data = null) => {
         const res = await fetch(CONFIG.api_url + endpoint, getRequestInfoWithHeaders(method, data));
         if (!res.ok) {
             const errorJson = JSON.parse((await res.text()));
-            throwHttpError(res.status, errorJson.message, errorJson);
+            throwHttpError(res.status, errorJson.messages, errorJson);
         } else if (res.status === 204) {
             return undefined;
         }

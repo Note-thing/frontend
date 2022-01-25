@@ -11,16 +11,16 @@ const ProtectedRoute = ({ component: Component }, ...rest) => {
                 if (user) {
                     return <Component {...props} />;
                 }
-                return (<Redirect to={
-                    {
-                        pathname: CONFIG.signin_url,
-                        state: {
-                            from: props.location
-                        }
+                const redirectionParams = {
+                    pathname: `${CONFIG.signin_url}`,
+                    state: {
+                        from: props.location
                     }
-
+                };
+                if (window.location.pathname !== '/') {
+                    redirectionParams.search = `?redirect=${window.location.pathname}`;
                 }
-                />);
+                return <Redirect to={redirectionParams} />;
             }}
         />
     );
