@@ -7,7 +7,7 @@ import EditorHeader from './EditorHeader';
 import { MainContext } from '../../context/MainContext';
 import { NoteContext } from '../../context/NoteContext';
 import useInput from '../../hooks/useInput';
-import { debounceInput } from '../../utils/utils';
+import debounceInput from '../../utils/utils';
 import { Patch } from '../../config/config';
 import '../../resource/css/editor.css';
 import UnProcessableEntityError from '../../errors/UnprocessableEntityError';
@@ -53,12 +53,12 @@ export default function Editor() {
                     });
                     mainDispatch({
                         type: 'dialog',
-                        dialog: { id: 'locked_note', is_open: true }
+                        dialog: { id: 'locked_note', severity: "error", is_open: true }
                     });
                 } else {
                     mainDispatch({
                         type: 'dialog',
-                        dialog: { id: 'update_body_note', is_open: true }
+                        dialog: { id: 'update_body_note', severity: "error",is_open: true }
                     });
                 }
             }

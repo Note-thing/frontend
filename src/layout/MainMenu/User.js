@@ -23,7 +23,7 @@ const User = () => {
         localStorage.removeItem('Token');
         dispatch({
             type: 'dialog',
-            dialog: { id: 'logout', is_open: true }
+            dialog: { id: 'logout', severity: 'info', is_open: true }
         });
         setTimeout(() => history.push('/'), 2000);
     };

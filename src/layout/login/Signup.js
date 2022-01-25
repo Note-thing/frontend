@@ -8,7 +8,7 @@ import PasswordStrengthBar from 'react-password-strength-bar';
 import { CONFIG, Post } from '../../config/config';
 import { MainContext } from '../../context/MainContext';
 import useInput from '../../hooks/useInput';
-import { validateName, validateEmail, validatePassword } from './inputValidation';
+import { validateName, validateEmail, validatePassword } from '../common/inputValidation';
 
 const Signup = () => {
     const history = useHistory();
@@ -83,17 +83,18 @@ const Signup = () => {
                 type: 'dialog',
                 dialog: {
                     id: 'signup_success',
+                    severity: 'info',
                     is_open: true
                 }
             });
         } catch (error) {
-            // TODO: gestion erreur, à voir comment faire
             dispatch({
                 type: 'dialog',
                 dialog: {
                     id: 'signup_failed',
+                    severity: 'error',
                     is_open: true,
-                    info: error.getMessage().join('.\n')
+                    info: error.getMessage()
                 }
             });
             return;

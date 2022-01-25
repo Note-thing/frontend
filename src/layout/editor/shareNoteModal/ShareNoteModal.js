@@ -153,7 +153,7 @@ export default function ShareNoteModal({ open, setOpen }) {
             });
             setSharedNotesList([newSharedNotes, ...sharedNotesList]);
         } catch (err) {
-            dispatch({ type: 'dialog', dialog: { id: 'cannotCopySharedNote', is_open: true } });
+            dispatch({ type: 'dialog', dialog: { id: 'cannotCopySharedNote', severity: 'error', is_open: true } });
         }
         setIsCreatingSharedNote(false);
     };

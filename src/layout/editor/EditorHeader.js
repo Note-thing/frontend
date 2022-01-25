@@ -54,7 +54,7 @@ export default function EditorHeader({ setPreviewWidth }) {
             setShowDeleteModal(false);
             mainDispatch({
                 type: 'dialog',
-                dialog: { id: 'delete_note_succeed', is_open: true }
+                dialog: { id: 'delete_note_succeed', severity: 'info', is_open: true }
             });
             history.push(`/directory/${notes.directory.id}`);
         } catch (err) {
@@ -108,7 +108,7 @@ export default function EditorHeader({ setPreviewWidth }) {
             noteDispatch({ type: 'update_note', note });
             mainDispatch({
                 type: 'dialog',
-                dialog: { id: 'sync_note', is_open: true }
+                dialog: { id: 'sync_note', severity: "error", is_open: true }
             });
         } catch (err) {
             mainDispatch({
@@ -160,7 +160,7 @@ export default function EditorHeader({ setPreviewWidth }) {
         } catch (err) {
             mainDispatch({
                 type: 'dialog',
-                dialog: { id: 'unlock_failed', is_open: true }
+                dialog: { id: 'unlock_failed', severity: "error", is_open: true }
             });
         }
     };
