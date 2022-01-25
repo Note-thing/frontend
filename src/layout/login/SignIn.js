@@ -51,7 +51,15 @@ const SignIn = () => {
                 user: response.user
             });
 
-            setTimeout(() => history.push('/'), 2000);
+            setTimeout(() => {
+                const params = new URLSearchParams(window.location.search);
+                const redirection = params.get('redirect');
+                if (redirection) {
+                    history.push(redirection);
+                } else {
+                    history.push('/');
+                }
+            }, 2000);
         }
     };
 
