@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import { useLocation } from 'react-router-dom';
 import { MainContext } from './MainContext';
-import { Get } from '../config/config';
+import { CONFIG, Get } from '../config/config';
 
 export const NoteContext = createContext();
 
@@ -107,10 +107,9 @@ export const NoteProvider = ({ children }) => {
                 const folders = await Get('/structure');
                 dispatch({ type: 'reset', directories: folders });
             } catch (err) {
-                mainDispatch({
-                    type: 'dialog',
-                    dialog: { id: 'cannotLoadStructure', is_open: true }
-                });
+                window.location.replace(CONFIG.frontend_url + CONFIG.signin_url);
+                return false;
+
             }
         })();
     }, []);
@@ -131,7 +130,7 @@ export const NoteProvider = ({ children }) => {
                     directory: active.directory
                 });
             }
-            if (active.note) {
+            if (active.note && notes.note.id !== active.note.id) {
                 (async () => {
                     try {
                         const data = await Get(`/notes/${active.note.id}`);
@@ -152,7 +151,7 @@ export const NoteProvider = ({ children }) => {
                     } catch (err) {
                         mainDispatch({
                             type: 'dialog',
-                            dialog: { id: 'cannotLoadStructure', is_open: true }
+                            dialog: { id: 'cannotLoadStructure', severity: 'error', is_open: true }
                         });
                     }
                 })();

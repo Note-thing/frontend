@@ -8,7 +8,7 @@ import PasswordStrengthBar from 'react-password-strength-bar';
 import { CONFIG, Post } from '../../config/config';
 import { MainContext } from '../../context/MainContext';
 import useInput from '../../hooks/useInput';
-import { validatePassword } from './inputValidation';
+import { validatePassword } from '../common/inputValidation';
 
 const ChangePassword = () => {
     const history = useHistory();
@@ -50,7 +50,8 @@ const ChangePassword = () => {
             dispatch({
                 type: 'dialog',
                 dialog: {
-                    id: 'signup_success',
+                    id: 'forgot_reset_success',
+                    severity: 'info',
                     is_open: true
                 }
             });
@@ -59,8 +60,9 @@ const ChangePassword = () => {
                 type: 'dialog',
                 dialog: {
                     id: 'forgot_reset_failed',
+                    severity: 'error',
                     is_open: true,
-                    info: error.getMessage().join('.\n')
+                    info: error.getMessage()
                 }
             });
             return;

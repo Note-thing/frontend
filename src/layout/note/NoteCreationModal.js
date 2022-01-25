@@ -57,12 +57,11 @@ export default function NoteCreationModal({ open, onClose }) {
             });
             mainDispatch({
                 type: 'dialog',
-                dialog: { id: 'create_note', is_open: true }
+                dialog: { id: 'create_note', severity: 'info', is_open: true }
             });
             onClose(false);
             history.push(`/directory/${response.folder_id}/note/${response.id}`);
         } catch (err) {
-            // TODO should probably use Stefan dialog dispatch
             if (err instanceof HttpError) {
                 setError(err.getMessage());
             }

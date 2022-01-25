@@ -9,7 +9,7 @@ import EditorHeader from './EditorHeader';
 import { MainContext } from '../../context/MainContext';
 import { NoteContext } from '../../context/NoteContext';
 import useInput from '../../hooks/useInput';
-import { debounceInput } from '../../utils/utils';
+import debounceInput from '../../utils/utils';
 import { Patch } from '../../config/config';
 import '../../resource/css/editor.css';
 
@@ -41,7 +41,7 @@ export default function Editor() {
         } catch (err) {
             mainDispatch({
                 type: 'dialog',
-                dialog: { id: 'update_body_note', is_open: true }
+                dialog: { id: 'update_body_note', severity: 'error', is_open: true }
             });
         }
     }), [id, mainDispatch, debounceInput]);

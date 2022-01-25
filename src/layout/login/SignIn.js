@@ -34,7 +34,7 @@ const SignIn = () => {
             // TODO: gestion erreur, à voir comment faire
             dispatch({
                 type: 'dialog',
-                dialog: { id: 'login_failed', is_open: true }
+                dialog: { id: 'login_failed', severity: 'error', is_open: true }
             });
         }
         if (response != null) {
@@ -43,7 +43,7 @@ const SignIn = () => {
 
             dispatch({
                 type: 'dialog',
-                dialog: { id: 'login', is_open: true }
+                dialog: { id: 'login', severity: 'info', is_open: true }
             });
 
             dispatch({

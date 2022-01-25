@@ -2,19 +2,22 @@ import React, {
     useState, useContext, useEffect, useCallback
 } from 'react';
 
-import { Grid, TextField, Button, IconButton } from '@mui/material';
-import { PictureAsPdf, Share, Delete as DeleteIcon } from '@mui/icons-material';
+import {
+    Grid, TextField, Button, IconButton
+} from '@mui/material';
+import { Share, Delete as DeleteIcon } from '@mui/icons-material';
 import { useHistory } from 'react-router-dom';
 
 import { ReactComponent as Code } from '../../resource/icons/editor-viewmode-code.svg';
 import { ReactComponent as View } from '../../resource/icons/editor-viewmode-view.svg';
 import { ReactComponent as Split } from '../../resource/icons/editor-viewmode-split.svg';
+
 import ShareNoteModal from './shareNoteModal/ShareNoteModal';
 import ConfirmationModal from '../common/ConfirmationModal';
 import { NoteContext } from '../../context/NoteContext';
 import { MainContext } from '../../context/MainContext';
 import { Delete, Patch } from '../../config/config';
-import { debounceInput } from '../../utils/utils';
+import debounceInput from '../../utils/utils';
 import EditorDownloadPDF from './EditorDownloadPDF';
 
 /**
@@ -38,13 +41,13 @@ export default function EditorHeader({ setPreviewWidth }) {
             setShowDeleteModal(false);
             mainDispatch({
                 type: 'dialog',
-                dialog: { id: 'delete_note_succeed', is_open: true }
+                dialog: { id: 'delete_note_succeed', severity: 'info', is_open: true }
             });
             history.push(`/directory/${notes.directory.id}`);
         } catch (err) {
             mainDispatch({
                 type: 'dialog',
-                dialog: { id: 'delete_note_failed', is_open: true }
+                dialog: { id: 'delete_note_failed', severity: 'error', is_open: true }
             });
         }
     }, [notes, noteDispatch, mainDispatch]);
@@ -60,7 +63,7 @@ export default function EditorHeader({ setPreviewWidth }) {
         } catch (err) {
             mainDispatch({
                 type: 'dialog',
-                dialog: { id: 'update_name_note', is_open: true }
+                dialog: { id: 'update_name_note', severity: 'error', is_open: true }
             });
         }
     }), [notes, noteDispatch, mainDispatch, debounceInput]);

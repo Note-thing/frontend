@@ -12,7 +12,7 @@ import {
 import { CONFIG, Post } from '../../config/config';
 import { MainContext } from '../../context/MainContext';
 import useInput from '../../hooks/useInput';
-import { validateEmail } from './inputValidation';
+import { validateEmail } from '../common/inputValidation';
 
 const LostPassword = () => {
     const history = useHistory();
@@ -40,6 +40,7 @@ const LostPassword = () => {
                 type: 'dialog',
                 dialog: {
                     id: 'forgot_email_sent',
+                    severity: 'info',
                     is_open: true
                 }
             });
@@ -48,8 +49,9 @@ const LostPassword = () => {
                 type: 'dialog',
                 dialog: {
                     id: 'forgot_email_failed',
+                    severity: 'error',
                     is_open: true,
-                    info: error.getMessage().join('.\n')
+                    info: error.getMessage()
                 }
             });
         }
