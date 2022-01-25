@@ -7,6 +7,7 @@ import AppLayout from './layout/AppLayout';
 import SignIn from './layout/login/SignIn';
 import Signup from './layout/login/Signup';
 import LostPassword from './layout/login/LostPassword';
+import Tutorial from './layout/editor/EditorTutorial';
 import ChangePassword from './layout/login/ChangePassword';
 import ValidateAccount from './layout/login/ValidateAccount';
 import { MainProvider } from './context/MainContext';
@@ -57,6 +58,11 @@ function App() {
                         <Route
                             path="/validate_account"
                             component={ValidateAccount}
+                        />
+                        <Route
+                            exact
+                            path="/tutorial"
+                            component={Tutorial}
                         />
                         <ProtectedRoute
                             exact

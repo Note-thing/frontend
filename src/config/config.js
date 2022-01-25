@@ -89,6 +89,7 @@ const requestWithBody = async (method, endpoint, data = null) => {
             return undefined;
         }
         const response = await res.json();
+
         return response;
     } catch (err) {
         // ControlTokenAfterResponse will redirect if 403. It will return true otherwise

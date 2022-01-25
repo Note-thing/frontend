@@ -17,9 +17,11 @@ const getActiveFromURL = (directories) => {
     if (directory && noteId) {
         note = directory.notes.find((d) => d.id === parseInt(noteId, 10));
     }
+    const anyMissing = (directoryId && !directory) || (noteId && !note);
     return {
         directory,
-        note
+        note,
+        anyMissing
     };
 };
 
@@ -122,17 +124,25 @@ export const NoteProvider = ({ children }) => {
             restore context state based on current url
         */
         if (notes.directories && notes.directories.length > 0) {
-            const active = getActiveFromURL(notes.directories);
-            if (active.directory) {
+            const { directory, note, anyMissing } = getActiveFromURL(notes.directories);
+            if (anyMissing) {
+                mainDispatch({
+                    type: 'dialog',
+                    dialog: { id: 'missing_ressource', severity: 'error', is_open: true }
+                });
+                setTimeout(() => window.location.replace(CONFIG.frontend_url), 2000);
+                return;
+            }
+            if (directory) {
                 dispatch({
                     type: 'change_directory',
-                    directory: active.directory
+                    directory
                 });
             }
-            if (active.note && notes.note.id !== active.note.id) {
+            if (note && notes.note.id !== note.id) {
                 (async () => {
                     try {
-                        const data = await Get(`/notes/${active.note.id}`);
+                        const data = await Get(`/notes/${note.id}`);
                         /*
                             Reuse unchangable note data already exsiting in the note context
                             Refresh with changeable data from api response
@@ -140,7 +150,7 @@ export const NoteProvider = ({ children }) => {
                         dispatch({
                             type: 'change_note',
                             note: {
-                                ...active.note,
+                                ...note,
                                 body: data.body,
                                 title: data.title,
                                 updated_at: data.updated_at,

@@ -44,8 +44,6 @@ export default function FolderCreationModal({ showModal, onClose }) {
             });
             onClose(false);
         } catch (err) {
-            console.log(err);
-            // TODO should probably use
             if (err instanceof HttpError) {
                 setError(err.getMessage());
             }
