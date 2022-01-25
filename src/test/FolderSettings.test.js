@@ -42,7 +42,7 @@ jest.mock('react-router-dom', () => ({
 
 it('Folder settings - change name', async () => {
     server.use(
-        rest.patch(`http://localhost:3001/api/v1/folders/${notes.directory.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
+        rest.patch(`http://note-thinh.ch/api/v1/folders/${notes.directory.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
     );
 
     render(
@@ -76,7 +76,7 @@ it('Folder settings - change name', async () => {
 
 it('Folder settings - empty name', async () => {
     server.use(
-        rest.patch(`http://localhost:3001/api/v1/folders/${notes.directory.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
+        rest.patch(`http://note-thinh.ch/api/v1/folders/${notes.directory.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
     );
 
     render(
@@ -108,7 +108,7 @@ it('Folder settings - empty name', async () => {
 });
 it('Folder settings - too long name', async () => {
     server.use(
-        rest.patch(`http://localhost:3001/api/v1/folders/${notes.directory.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
+        rest.patch(`http://note-thinh.ch/api/v1/folders/${notes.directory.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
     );
 
     render(
@@ -143,7 +143,7 @@ it('Folder settings - too long name', async () => {
 
 it('Folder settings - delete', async () => {
     server.use(
-        rest.delete(`http://localhost:3001/api/v1/folders/${notes.directory.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
+        rest.delete(`http://note-thinh.ch/api/v1/folders/${notes.directory.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
     );
 
     render(

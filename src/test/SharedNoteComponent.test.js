@@ -12,7 +12,7 @@ import MOCK_DATA from './data';
 import { mockStorage } from './Mock';
 
 const server = setupServer(
-    rest.post('http://localhost:3001/api/v1/shared_notes/123/copy', (req, res, ctx) => res(ctx.json({ greeting: 'hello there' })))
+    rest.post('http://note-thinh.ch/api/v1/shared_notes/123/copy', (req, res, ctx) => res(ctx.json({ greeting: 'hello there' })))
 );
 Object.defineProperty(window, 'options', { offset: 210 });
 Object.defineProperty(window, 'localStorage', mockStorage());
@@ -35,7 +35,7 @@ const dispatch = jest.fn((type, data) => {
 
 test('Choose dropdown option, and copy valid', async () => {
     server.use(
-        rest.post('http://localhost:3001/api/v1/shared_notes/123/copy', (req, res, ctx) => {
+        rest.post('http://note-thinh.ch/api/v1/shared_notes/123/copy', (req, res, ctx) => {
             res(ctx.status(200));
         })
     );
@@ -56,7 +56,7 @@ test('Choose dropdown option, and copy valid', async () => {
 
 test('Handles server error', async () => {
     server.use(
-        rest.post('http://localhost:3001/api/v1/shared_notes/123/copy', (req, res, ctx) => res(ctx.status(422)))
+        rest.post('http://note-thinh.ch/api/v1/shared_notes/123/copy', (req, res, ctx) => res(ctx.status(422)))
     );
 
     act(() => {
@@ -75,7 +75,7 @@ test('Handles server error', async () => {
 
 test('Handle no option choosen', async () => {
     server.use(
-        rest.post('http://localhost:3001/api/v1/shared_notes/123/copy', (req, res, ctx) => res(ctx.status(200)))
+        rest.post('http://note-thinh.ch/api/v1/shared_notes/123/copy', (req, res, ctx) => res(ctx.status(200)))
     );
 
     act(() => {

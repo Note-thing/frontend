@@ -83,10 +83,10 @@ const sharedNote = [
 
 it('Editor header - delete note', async () => {
     server.use(
-        rest.delete(`http://localhost:3001/api/v1/notes/${notes.note.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
+        rest.delete(`http://note-thinh.ch/api/v1/notes/${notes.note.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
     );
     server.use(
-        rest.get(`http://localhost:3001/api/v1/notes/${notes.note.id}/shared_notes`, (req, res, ctx) => res(ctx.json(sharedNote)))
+        rest.get(`http://note-thinh.ch/api/v1/notes/${notes.note.id}/shared_notes`, (req, res, ctx) => res(ctx.json(sharedNote)))
     );
     fireEvent.click(screen.getByTestId('editor-header-delete-btn'));
     await waitFor(() => expect(screen.getByTestId('confirmation-modal')).toBeInTheDocument());
@@ -96,7 +96,7 @@ it('Editor header - delete note', async () => {
 
 it('Editor header - change note name', async () => {
     server.use(
-        rest.patch(`http://localhost:3001/api/v1/notes/${notes.note.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
+        rest.patch(`http://note-thinh.ch/api/v1/notes/${notes.note.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
     );
 
     fireEvent.change(screen.getByTestId('note-title-input').querySelector('input'), {
@@ -109,7 +109,7 @@ it('Editor header - change note name', async () => {
 });
 it('Editor header - no title should show error message and no fetching should occur', async () => {
     server.use(
-        rest.patch(`http://localhost:3001/api/v1/notes/${notes.note.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
+        rest.patch(`http://note-thinh.ch/api/v1/notes/${notes.note.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
     );
 
     fireEvent.change(screen.getByTestId('note-title-input').querySelector('input'), {
