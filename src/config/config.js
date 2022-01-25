@@ -3,13 +3,14 @@ import throwHttpError from '../errors/HttpErrorUtils';
 
 export const CONFIG = {
     api_url: 'http://localhost:3001/api/v1',
-    no_token_api_endpoints: ['/signin', '/signup', '/password/forgot', '/password/reset', '/users/validate'],
+    no_token_api_endpoints: ['/signin', '/signup', '/password/forgot', '/password/reset'],
     no_redirection_endpoints: ['/signin'],
     signin_url: '/signin',
     lost_password_url: '/lost_password',
     signup_url: '/signup',
     frontend_url: 'http://localhost:3000',
     shared_note_url: 'http://localhost:3000/shared_notes'
+
 };
 
 /**
@@ -84,7 +85,7 @@ const requestWithBody = async (method, endpoint, data = null) => {
         const res = await fetch(CONFIG.api_url + endpoint, getRequestInfoWithHeaders(method, data));
         if (!res.ok) {
             const errorJson = JSON.parse((await res.text()));
-            throwHttpError(res.status, errorJson.messages, errorJson);
+            throwHttpError(res.status, errorJson.message, errorJson);
         } else if (res.status === 204) {
             return undefined;
         }
