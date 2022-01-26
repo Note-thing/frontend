@@ -10,9 +10,10 @@ import MOCK_DATA from './data';
 import { MainContext } from '../context/MainContext';
 import { mockStorage } from './Mock';
 import EditorHeader from '../layout/editor/EditorHeader';
+import { CONFIG } from '../config/config';
 
 const server = setupServer(
-    rest.post('http://localhost:3001/api/v1/folders', (req, res, ctx) => res(ctx.json({ test: 'test' })))
+    rest.post(`${CONFIG.api_url}/folders`, (req, res, ctx) => res(ctx.json({ test: 'test' })))
 );
 
 const notes = MOCK_DATA;
@@ -57,7 +58,7 @@ describe('Editor header', () => {
 
     it('Modal open', async () => {
         server.use(
-            rest.post('http://localhost:3001/api/v1/notes', (req, res, ctx) => res(ctx.json({ test: 'test' })))
+            rest.post(`${CONFIG.api_url}/notes`, (req, res, ctx) => res(ctx.json({ test: 'test' })))
         );
         expect(true).toBe(true);
         // fireEvent.click(screen.getByTestId('MainMenu-add-note-btn'));
