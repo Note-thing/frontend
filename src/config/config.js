@@ -2,15 +2,14 @@ import ForbiddenError from '../errors/ForbiddenError';
 import throwHttpError from '../errors/HttpErrorUtils';
 
 export const CONFIG = {
-    api_url: 'http://localhost:3001/api/v1',
+    api_url: 'https://note-thing.ch/api/v1',
     no_token_api_endpoints: ['/signin', '/signup', '/password/forgot', '/password/reset'],
     no_redirection_endpoints: ['/signin'],
     signin_url: '/signin',
     lost_password_url: '/lost_password',
     signup_url: '/signup',
-    frontend_url: 'http://localhost:3000',
-    shared_note_url: 'http://localhost:3000/shared_notes'
-
+    frontend_url: 'https://note-thing.ch',
+    shared_note_url: 'https://note-thing.ch/shared_notes'
 };
 
 /**
