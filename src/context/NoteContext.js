@@ -1,4 +1,6 @@
-import React, { useEffect, createContext, useReducer, useMemo, useContext } from 'react';
+import React, {
+    useEffect, createContext, useReducer, useMemo, useContext
+} from 'react';
 import { useLocation } from 'react-router-dom';
 import { MainContext } from './MainContext';
 import { CONFIG, Get } from '../config/config';
@@ -168,11 +170,10 @@ export const NoteProvider = ({ children }) => {
     }, [location?.pathname, notes.directories]);
 
     return useMemo(
-        () =>
-            notes &&
-            notes.directories && (
-                <NoteContext.Provider value={{ notes, dispatch }}>{children}</NoteContext.Provider>
-            ),
+        () => notes
+            && notes.directories && (
+            <NoteContext.Provider value={{ notes, dispatch }}>{children}</NoteContext.Provider>
+        ),
         [notes, dispatch]
     );
 };

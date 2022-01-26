@@ -23,6 +23,9 @@ jest.mock('react-router-dom', () => ({
     })
 }));
 
+const dispatch = jest.fn();
+const dispatchMain = jest.fn();
+
 const notes = MOCK_DATA;
 beforeEach(() => {
     document.body.innerHTML = '';
@@ -49,10 +52,6 @@ beforeEach(() => {
 });
 
 const server = setupServer();
-let dispatch;
-let dispatchMain;
-dispatch = jest.fn();
-dispatchMain = jest.fn();
 
 beforeAll(() => {
     server.listen();

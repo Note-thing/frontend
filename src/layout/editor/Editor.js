@@ -1,4 +1,6 @@
-import React, { useContext, useEffect, useState, useMemo, useCallback } from 'react';
+import React, {
+    useContext, useEffect, useState, useMemo, useCallback
+} from 'react';
 import { Grid } from '@mui/material';
 import TextareaMarkdown from 'textarea-markdown';
 import ResizePannel from './ResizePannel';
@@ -47,7 +49,7 @@ export default function Editor() {
         },
         [setPreviewWidth]
     );
-    
+
     const debounceBody = useCallback(
         debounceInput(async (value) => {
             try {

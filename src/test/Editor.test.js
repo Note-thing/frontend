@@ -23,24 +23,26 @@ Object.defineProperty(window, 'location', {
     }
 });
 
+function setup() {
+    let store = {
+        User: '{"email":"note-thing@pm.me","isAuthenticated":true}',
+        Token: 'éo234h5élk34hn5ékh35é23h5li23h45liu32h5i3h5ii2l34h5hl2i45'
+    };
+    return {
+        getItem(key) {
+            return store[key];
+        },
+        setItem(key, value) {
+            store[key] = value.toString();
+        },
+        clear() {
+            store = {};
+        }
+    };
+}
+
 Object.defineProperty(window, 'localStorage', {
-    value: (function () {
-        let store = {
-            User: '{"email":"note-thing@pm.me","isAuthenticated":true}',
-            Token: 'éo234h5élk34hn5ékh35é23h5li23h45liu32h5i3h5ii2l34h5hl2i45'
-        };
-        return {
-            getItem(key) {
-                return store[key];
-            },
-            setItem(key, value) {
-                store[key] = value.toString();
-            },
-            clear() {
-                store = {};
-            }
-        };
-    }())
+    value: setup()
 });
 
 const editor = () => render(

@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
-import { Grid, TextField, Button, FormControl } from '@mui/material';
-import PasswordStrengthBar from 'react-password-strength-bar';
+import {
+    Grid, TextField, Button, FormControl
+} from '@mui/material';
 import { MainContext } from '../../context/MainContext';
 import useInput from '../../hooks/useInput';
 import { validateName, validateEmail } from '../common/inputValidation';
