@@ -1,7 +1,7 @@
 import React from 'react';
 import { IconButton } from '@mui/material';
 import { PictureAsPdf } from '@mui/icons-material';
-import { jsPDF } from 'jspdf';
+import { JsPDF } from 'jspdf';
 
 /**
  * Button permitting the user to genrate a PDF from his html.
@@ -12,12 +12,7 @@ export default function EditorDownloadPDF({ noteTitle }) {
         const preview = document.querySelector('div#preview');
         const fullWidth = 210;
         const margin = 5;
-        const pdf = new jsPDF();
-
-        const images = Array.prototype.map.call(preview.getElementsByTagName('img'), (img) => img);
-        [...images].forEach((image) => {
-            image.width = 250;
-        });
+        const pdf = new JsPDF();
 
         pdf.html(preview, {
             callback: (doc) => {

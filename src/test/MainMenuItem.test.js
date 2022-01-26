@@ -1,6 +1,5 @@
 import fetch, { enableFetchMocks } from 'jest-fetch-mock';
 import React from 'react';
-import { act } from 'react-dom/test-utils';
 import { fireEvent, render, waitFor } from '@testing-library/react';
 
 import { MainProvider } from '../context/MainContext';
@@ -41,7 +40,7 @@ describe('Main Menu Component', () => {
                 { status: 200 }
             ]
         );
-        const { getByTestId, getAllByRole, getByText } = render(
+        const { getByTestId, getByText } = render(
             <MainProvider>
                 <NoteProvider>
                     <MainMenu />
