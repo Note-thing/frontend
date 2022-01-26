@@ -68,7 +68,7 @@ npm run build
 │  ├─ errors/         # Contient les templates d'erreur utilisé dans l'application
 │  ├─ hooks/          # Contient les hooks permettant de notifier l'instance actuelle du changement d'un composant
 │  ├─ layout/         # Contient les composants React utiles à l'affichage
-│  ├─ resource/       # Contient le CSS, les images et autres les autres ressources utilisées
+│  ├─ resource/       # Contient le CSS, les images et les autres ressources utilisées
 │  ├─ test/           # Contient les tests de l'application
 │  ├─ utils/          # Contient les scripts utilisés par plusieurs composants/contextes/...
 ```
