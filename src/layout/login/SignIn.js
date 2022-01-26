@@ -31,7 +31,6 @@ const SignIn = () => {
         try {
             response = await Post('/signin', { email, password });
         } catch (error) {
-            // TODO: gestion erreur, à voir comment faire
             dispatch({
                 type: 'dialog',
                 dialog: { id: 'login_failed', severity: 'error', is_open: true }
@@ -66,7 +65,7 @@ const SignIn = () => {
     const redirectPage = (link) => history.push(link);
     return (
         <Grid container direction="column" alignItems="center" spacing={4}>
-            <Grid item square>
+            <Grid item>
                 <Typography sx={{ mt: 6, mb: 8 }} component="h1" variant="h5" align="center">
                     <LoginIcon />
                     Connection
@@ -79,6 +78,7 @@ const SignIn = () => {
                         required
                         fullWidth
                         id="email"
+                        data-testid="email-field"
                         label="Adresse e-mail"
                         name="email"
                         autoComplete="email"
@@ -90,6 +90,7 @@ const SignIn = () => {
                         margin="normal"
                         required
                         fullWidth
+                        data-testid="password-field"
                         name="password"
                         label="Mot de passe"
                         type="password"
@@ -104,6 +105,7 @@ const SignIn = () => {
                     <Button
                         type="submit"
                         fullWidth
+                        data-testid="submit-button"
                         variant="contained"
                         color="primary"
                         size="large"
