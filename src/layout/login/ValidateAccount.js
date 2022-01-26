@@ -40,7 +40,7 @@ const ValidateAccount = () => {
 
     return (
         <section style={{ margin: 'auto', width: '64px' }}>
-            { loading && <Loading />}
+            { loading && <Loading data-testid="loader" />}
         </section>
     );
 };
