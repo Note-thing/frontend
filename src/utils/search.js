@@ -1,6 +1,3 @@
-// TODO remove me if i'm still here at the end of the project (here to avoid eslint warning)
-export const teapot = () => {};
-
 /**
  * Add or merge the result of a search. It add +1 to the score of the note
  * everytime the note match a term
@@ -11,7 +8,7 @@ export const teapot = () => {};
 const addOrMergeResult = (result, note) => {
     if (result.has(note.id)) {
         const oldResult = result.get(note.id);
-        result.set(note.id, { note, score: oldResult + 1 });
+        result.set(note.id, { note, score: oldResult.score + 1 });
     } else {
         result.set(note.id, { note, score: 1 });
     }
@@ -36,9 +33,14 @@ const sanitze = (term) => term
  * contains the note and a score for the note (everytime a note match a term of the request its
  * score is increase of 1)
  */
-export const search = (notes, request) => {
-    const requestTerms = sanitze(request).split(' ');
+export default (notes, request) => {
     const result = new Map();
+    const sanitizedRequest = sanitze(request);
+    if (sanitizedRequest === '') {
+        return result;
+    }
+    const requestTerms = sanitze(request).split(' ');
+
     notes.directories.forEach((dir) => {
         dir.notes.forEach((note) => {
             requestTerms.forEach((term) => {
@@ -46,7 +48,6 @@ export const search = (notes, request) => {
                     addOrMergeResult(result, note);
                 }
                 // Join the tags to search easier way
-
                 if (sanitze(note.tags.map((tag) => tag.title).join(' ')).includes(term)) {
                     addOrMergeResult(result, note);
                 }
