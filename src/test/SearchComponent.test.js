@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    render, fireEvent, waitForElementToBeRemoved, waitFor, screen
+    render, fireEvent, screen
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { NoteContext } from '../context/NoteContext';

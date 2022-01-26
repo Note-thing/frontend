@@ -4,7 +4,7 @@ import {
     Input, List, Box, ListItemButton, ListItemText, Chip
 } from '@mui/material';
 import { NoteContext } from '../../context/NoteContext';
-import { search } from '../../utils/search';
+import search from '../../utils/search';
 
 /**
  * Display a search input and the result

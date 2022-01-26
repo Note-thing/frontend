@@ -1,4 +1,6 @@
-import React, { useEffect, createContext, useReducer, useMemo, useContext } from 'react';
+import React, {
+    useEffect, createContext, useReducer, useMemo, useContext
+} from 'react';
 import { useLocation } from 'react-router-dom';
 import { MainContext } from './MainContext';
 import { CONFIG, Get } from '../config/config';
@@ -153,7 +155,12 @@ export const NoteProvider = ({ children }) => {
                                 body: data.body,
                                 title: data.title,
                                 updated_at: data.updated_at,
-                                folder_id: data.folder_id
+                                folder_id: data.folder_id,
+                                read_only: data.read_only,
+                                lock: data.lock,
+                                reference_note: data.reference_note,
+                                has_mirror: data.has_mirror
+
                             }
                         });
                     } catch (err) {
@@ -168,11 +175,10 @@ export const NoteProvider = ({ children }) => {
     }, [location?.pathname, notes.directories]);
 
     return useMemo(
-        () =>
-            notes &&
-            notes.directories && (
-                <NoteContext.Provider value={{ notes, dispatch }}>{children}</NoteContext.Provider>
-            ),
+        () => notes
+            && notes.directories && (
+            <NoteContext.Provider value={{ notes, dispatch }}>{children}</NoteContext.Provider>
+        ),
         [notes, dispatch]
     );
 };

@@ -1,6 +1,7 @@
 import React from 'react';
 import { IconButton } from '@mui/material';
 import { PictureAsPdf } from '@mui/icons-material';
+// eslint-disable-next-line no-unused-vars
 import { jsPDF } from 'jspdf';
 
 /**
@@ -13,11 +14,6 @@ export default function EditorDownloadPDF({ noteTitle }) {
         const fullWidth = 210;
         const margin = 5;
         const pdf = new jsPDF();
-
-        const images = Array.prototype.map.call(preview.getElementsByTagName('img'), (img) => img);
-        [...images].forEach((image) => {
-            image.width = 250;
-        });
 
         pdf.html(preview, {
             callback: (doc) => {
