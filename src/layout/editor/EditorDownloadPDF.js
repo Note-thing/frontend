@@ -1,7 +1,8 @@
 import React from 'react';
 import { IconButton } from '@mui/material';
 import { PictureAsPdf } from '@mui/icons-material';
-import { JsPDF } from 'jspdf';
+// eslint-disable-next-line no-unused-vars
+import { jsPDF } from 'jspdf';
 
 /**
  * Button permitting the user to genrate a PDF from his html.
@@ -12,7 +13,7 @@ export default function EditorDownloadPDF({ noteTitle }) {
         const preview = document.querySelector('div#preview');
         const fullWidth = 210;
         const margin = 5;
-        const pdf = new JsPDF();
+        const pdf = new jsPDF();
 
         pdf.html(preview, {
             callback: (doc) => {

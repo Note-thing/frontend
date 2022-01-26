@@ -82,11 +82,11 @@ describe('Editor Header - base', () => {
     });
     it('Editor header - delete note', async () => {
         server.use(
-            rest.delete(`http://localhost:3001/api/v1/notes/${notes.note.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
+            rest.delete(`${CONFIG.api_url}/notes/${notes.note.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
         );
         server.use(
             rest.get(
-                `http://localhost:3001/api/v1/notes/${notes.note.id}/shared_notes`,
+               `${CONFIG.api_url}/notes/${notes.note.id}/shared_notes`,
                 (req, res, ctx) => res(ctx.json(sharedNote))
             )
         );
@@ -98,7 +98,7 @@ describe('Editor Header - base', () => {
 
     it('Editor header - change note name', async () => {
         server.use(
-            rest.patch(`http://localhost:3001/api/v1/notes/${notes.note.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
+            rest.patch(`${CONFIG.api_url}/notes/${notes.note.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
         );
 
         fireEvent.change(screen.getByTestId('note-title-input').querySelector('input'), {
@@ -111,7 +111,7 @@ describe('Editor Header - base', () => {
     });
     it('Editor header - no title should show error message and no fetching should occur', async () => {
         server.use(
-            rest.patch(`http://localhost:3001/api/v1/notes/${notes.note.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
+            rest.patch(`${CONFIG.api_url}/notes/${notes.note.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
         );
 
         fireEvent.change(screen.getByTestId('note-title-input').querySelector('input'), {
@@ -151,21 +151,21 @@ describe('Editor header - shared notes link modal', () => {
     });
     it('Editor header - check 3 types of shared note exists', async () => {
         server.use(
-            rest.get(`http://localhost:3001/api/v1/notes/${notes.note.id}/shared_notes`, (req, res, ctx) => res(ctx.json({ test: '2' })))
+            rest.get(`${CONFIG.api_url}/notes/${notes.note.id}/shared_notes`, (req, res, ctx) => res(ctx.json({ test: '2' })))
         );
         fireEvent.click(screen.getByTestId('shared-note-share-btn'));
         await waitFor(() => expect(screen.getByTestId('shared-note-modal-body')).toBeInTheDocument());
     });
     it('Editor header - share button click, modal shown', async () => {
         server.use(
-            rest.get(`http://localhost:3001/api/v1/notes/${notes.note.id}/shared_notes`, (req, res, ctx) => res(ctx.json({ test: '2' })))
+            rest.get(`${CONFIG.api_url}/notes/${notes.note.id}/shared_notes`, (req, res, ctx) => res(ctx.json({ test: '2' })))
         );
         fireEvent.click(screen.getByTestId('shared-note-share-btn'));
         await waitFor(() => expect(screen.getByTestId('shared-note-modal-body')).toBeInTheDocument());
     });
     it('Editor header - previously created shared notes links displayed', async () => {
         server.use(
-            rest.get(`http://localhost:3001/api/v1/notes/${notes.note.id}/shared_notes`, (req, res, ctx) => res(ctx.json(sharedNote)))
+            rest.get(`${CONFIG.api_url}/notes/${notes.note.id}/shared_notes`, (req, res, ctx) => res(ctx.json(sharedNote)))
         );
         fireEvent.click(screen.getByTestId('shared-note-share-btn'));
         await waitFor(() => expect(screen.getByTestId('shared-note-modal-body')).toBeInTheDocument());
@@ -178,8 +178,8 @@ describe('Editor header - shared notes link modal', () => {
     });
     it('Editor header - Create a note', async () => {
         server.use(
-            rest.get(`http://localhost:3001/api/v1/notes/${notes.note.id}/shared_notes`, (req, res, ctx) => res(ctx.json(sharedNote))),
-            rest.post('http://localhost:3001/api/v1/shared_notes', (req, res, ctx) => {
+            rest.get(`${CONFIG.api_url}/notes/${notes.note.id}/shared_notes`, (req, res, ctx) => res(ctx.json(sharedNote))),
+            rest.post(CONFIG.api_url+'/shared_notes', (req, res, ctx) => {
                 const sNote = { ...sharedNote[0] };
                 sNote.title = 'NOUVEAU';
                 return res(ctx.json(sNote));
@@ -221,7 +221,7 @@ describe('Editor header - test title for shared note', () => {
     });
     it('Sync button  - should be able if readonly note ', async () => {
         server.use(
-            rest.get(`http://localhost:3001/api/v1/notes/read_only/${notes.note.id}`, (req, res, ctx) => res(ctx.json(sharedNote)))
+            rest.get(`${CONFIG.api_url}/notes/read_only/${notes.note.id}`, (req, res, ctx) => res(ctx.json(sharedNote)))
         );
         expect(screen.getByTestId('sync_note_btn').disabled).toBe(false);
         fireEvent.click(screen.getByTestId('sync_note_btn'));
@@ -268,7 +268,7 @@ describe('Editor header - lock=true', () => {
     });
     it('Sync button  - should be able if lock note', async () => {
         server.use(
-            rest.get(`http://localhost:3001/api/v1/notes/read_only/${notes.note.id}`, (req, res, ctx) => res(ctx.json(sharedNote)))
+            rest.get(`${CONFIG.api_url}/notes/read_only/${notes.note.id}`, (req, res, ctx) => res(ctx.json(sharedNote)))
         );
         expect(screen.getByTestId('sync_note_btn').disabled).toBe(false);
         fireEvent.click(screen.getByTestId('sync_note_btn'));
@@ -315,7 +315,7 @@ describe('Editor header - lock=false', () => {
     });
     it('Sync button  - should be disable if lock note is false ', async () => {
         server.use(
-            rest.get(`http://localhost:3001/api/v1/notes/read_only/${notes.note.id}`, (req, res, ctx) => res(ctx.json(sharedNote)))
+            rest.get(`${CONFIG.api_url}/notes/read_only/${notes.note.id}`, (req, res, ctx) => res(ctx.json(sharedNote)))
         );
         expect(screen.getByTestId('sync_note_btn').disabled).toBe(true);
     });
