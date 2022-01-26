@@ -3,7 +3,7 @@ import throwHttpError from '../errors/HttpErrorUtils';
 
 export const CONFIG = {
     api_url: 'https://note-thing.ch/api/v1',
-    no_token_api_endpoints: ['/signin', '/signup', '/password/forgot', '/password/reset', '/validate_account'],
+    no_token_api_endpoints: ['/signin', '/signup', '/password/forgot', '/password/reset', '/users/validate'],
     no_redirection_endpoints: ['/signin'],
     signin_url: '/signin',
     lost_password_url: '/lost_password',
