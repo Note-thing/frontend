@@ -1,79 +1,74 @@
-# Getting Started with Create React App
+<p align="center">
+  <img src="public/favicon.svg" />
+</p>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<h1 align="center">Note-thing</h1>
 
-NPM installs
+## Introduction
 
+Ce projet offre un interface web et on moyen d'utiliser le backend pour offir une expérience utilisateur hors norme lors de l'utilisation de note gestionnaire de création de notes.
 
+Pour ce faire, nous avons utilisé [ReactJs](https://github.com/facebook/create-react-app).
 
-```javascript
-npm install topbar --save
-npm install react-html-parser
+## Mise en place
+
+Tout d'abord, ouvrez un terminal, puis cloné le repository comme suit:
+```bash
+git clone git@github.com:Note-thing/frontend.git
 ```
 
-## Available Scripts
+Il vous faut, ensuite, installer les dépendances NPM avec la commande suivante:
+```bash
+npm install
+```
 
-In the project directory, you can run:
+Après ceci, le projet est prêt à être démarré à l'aide de la commande:
+```bash
+npm start
+```
 
-### `npm start`
+L'application, une fois démarée, est disponible à cette adresse: [http://localhost:3000](http://localhost:3000)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Scripts utiles
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Pour lancer tous les tests, utiliser la commande:
+```bash
+npm test
+```
 
-### `npm test`
+Pour générer l'application pour la production, utilisez la commande:
+```bash
+npm run build
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## CI / CD
 
-### `npm run build`
+### CI
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Les étapes suivantes sont effectuées pour nous assurer de la validité de l'application:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+ 1. Creation d'une VM ubuntu
+ 2. Récupération de la dernière version du repository
+ 3. Installation de NodeJs 16.x
+ 4. Lancement du script `npm ci` pour installer les dépendances
+ 5. Lancement du script `npm test` pour tester l'application
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### CD
 
-### `npm run eject`
+Les étapes suivantes sont effectuées lorsque l'on souhaite déployer l'application sur notre AWS (seule la branche _deploy_ permets de déployer l'application):
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+ 1. Creation d'une VM ubuntu
+ 2. Récupération de la dernière version du repository
+ 3. Lancement du script `npm ci` pour installer les dépendances
+ 4. Lancement du script `npm test` pour tester l'application
+ 5. Génère l'application optimisée pour la production
+ 6. Crée un fichier qui contiendra la clé SSH permettant de se connecter à l'AWS
+ 7. Change la permission du fichier créé au point 6 pour être modifiable
+ 8. Ajout de la clé SSh dans le fichier créé au point 6
+ 9. Utilisation de rsync pour copier les fichiers sur notre AWS en utilisant la clé SSH du point 8
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Contributeurs
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<a href="https://github.com/note-thing/frontend/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=note-thing/frontend" />
+</a>
