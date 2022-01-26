@@ -7,10 +7,10 @@ const position = {
     horizontal: 'center'
 };
 
-const DialogWrapper = ({ dialog: { is_open, severity, info }, text, handleClose }) => (
+const DialogWrapper = ({ dialog: { isOpen, severity, info }, text, handleClose }) => (
     <Snackbar
         anchorOrigin={position}
-        open={is_open}
+        open={isOpen}
         onClose={() => handleClose({ is_open: false })}
         autoHideDuration={6000}
     >

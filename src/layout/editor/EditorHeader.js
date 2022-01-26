@@ -1,6 +1,10 @@
-import React, { useState, useContext, useEffect, useCallback } from 'react';
+import React, {
+    useState, useContext, useEffect, useCallback
+} from 'react';
 
-import { Grid, TextField, Button, IconButton } from '@mui/material';
+import {
+    Grid, TextField, Button, IconButton
+} from '@mui/material';
 import { Share, Delete as DeleteIcon } from '@mui/icons-material';
 import { useHistory } from 'react-router-dom';
 

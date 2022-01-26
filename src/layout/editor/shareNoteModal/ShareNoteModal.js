@@ -8,11 +8,15 @@ import IconButton from '@mui/material/IconButton';
 import CopyIcon from '@mui/icons-material/ContentCopy';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CircularProgress from '@mui/material/CircularProgress';
-import { Alert, FormControl, Grow, Select, InputLabel, MenuItem, Grid } from '@mui/material';
+import {
+    Alert, FormControl, Grow, Select, InputLabel, MenuItem, Grid
+} from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '../../common/Modal';
-import { CONFIG, Delete, Get, Post } from '../../../config/config';
+import {
+    CONFIG, Delete, Get, Post
+} from '../../../config/config';
 import { MainContext } from '../../../context/MainContext';
 import { NoteContext } from '../../../context/NoteContext';
 import { SHARED_NOTE_DEFAULT_TYPE, SHARED_NOTE_TYPE } from '../../sharedNote/SharedNoteTypes';
@@ -55,7 +59,7 @@ export default function ShareNoteModal({ open, setOpen }) {
 
     /**
      * Handle copy button click. It just copy the link
-     * @param {Object} sharedNote to copy 
+     * @param {Object} sharedNote to copy
      */
     const copyLinkClickHandler = (sharedNote) => {
         if (isCopied) {
@@ -159,7 +163,7 @@ export default function ShareNoteModal({ open, setOpen }) {
     };
 
     /**
-     * Handle change of the type of shared note. (copy, mirror or readonly). The type is then used 
+     * Handle change of the type of shared note. (copy, mirror or readonly). The type is then used
      * when generating a new shared link.
      * @param {Event} ev
      */

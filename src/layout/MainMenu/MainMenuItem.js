@@ -45,7 +45,6 @@ export default function MainMenuItem({ directory, show }) {
                 clear the currently displayed note,
                 URL change will trigger note context api call to get latest note data
                 */
-            console.log('url change');
             dispatch({
                 type: 'change_note',
                 note: {}
