@@ -1,6 +1,10 @@
-import React, { useState, useContext, useEffect, useCallback } from 'react';
+import React, {
+    useState, useContext, useEffect, useCallback
+} from 'react';
 
-import { Grid, TextField, Button, IconButton } from '@mui/material';
+import {
+    Grid, TextField, Button, IconButton
+} from '@mui/material';
 import { Share, Delete as DeleteIcon } from '@mui/icons-material';
 import { useHistory } from 'react-router-dom';
 
@@ -196,10 +200,12 @@ export default function EditorHeader({ setPreviewWidth }) {
         if (notes.note?.has_mirror === true) {
             btns.push(
                 <IconButton
+                    key="lock_btn"
                     color="primary"
                     label="Demander l'accès"
                     disabled={lockBtnDisabled}
                     onClick={toggleLock}
+                    data-testid="lock_note_btn"
                 >
                     {lock ? <Lock /> : <LockOpen />}
                 </IconButton>
@@ -208,8 +214,10 @@ export default function EditorHeader({ setPreviewWidth }) {
         if (notes.note?.has_mirror === true || notes.note.read_only === true) {
             btns.push(
                 <IconButton
+                    key="sync_btn"
                     color="primary"
                     label="Synchronisation avec le cloud"
+                    data-testid="sync_note_btn"
                     disabled={syncBtnDisabled || (!lock && notes.note.read_only !== true)}
                     onClick={syncNote}
                 >
@@ -241,7 +249,6 @@ export default function EditorHeader({ setPreviewWidth }) {
 
     return (
         <Grid className="editor-header">
-            <ShareNoteModal open={showShareModal} setOpen={setShowShareModal} />
             <ConfirmationModal
                 open={showDeleteModal}
                 onClose={setShowDeleteModal}
@@ -250,6 +257,7 @@ export default function EditorHeader({ setPreviewWidth }) {
                 }}
                 testid="confirmation-modal"
             />
+            <ShareNoteModal open={showShareModal} setOpen={setShowShareModal} testid="shared-note-modal-body" />
             <Grid display="flex" justifyContent="space-around">
                 <Button size="small" onClick={() => handleViewModeClick(0)}>
                     <Code />
@@ -283,8 +291,9 @@ export default function EditorHeader({ setPreviewWidth }) {
                     label="Partager la note"
                     disabled={notes.note.reference_note !== null}
                     onClick={() => {
-                        setShowShareModal(!showShareModal);
+                        setShowShareModal(true);
                     }}
+                    data-testid="shared-note-share-btn"
                 >
                     <Share />
                 </IconButton>
@@ -293,7 +302,9 @@ export default function EditorHeader({ setPreviewWidth }) {
                 <IconButton
                     color="primary"
                     label="Supprimer la note"
-                    onClick={() => setShowDeleteModal(true)}
+                    onClick={() => {
+                        setShowDeleteModal(true);
+                    }}
                     data-testid="editor-header-delete-btn"
                 >
                     <DeleteIcon />

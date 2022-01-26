@@ -7,9 +7,11 @@ const position = {
     horizontal: 'center'
 };
 
+// eslint-disable-next-line camelcase
 const DialogWrapper = ({ dialog: { is_open, severity, info }, text, handleClose }) => (
     <Snackbar
         anchorOrigin={position}
+        // eslint-disable-next-line camelcase
         open={is_open}
         onClose={() => handleClose({ is_open: false })}
         autoHideDuration={6000}

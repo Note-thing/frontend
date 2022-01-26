@@ -12,7 +12,7 @@ export default function WelcomeComponent() {
         <div className="welcome">
             <center>
                 <Logo />
-                <h1>Bienvenu sur Note-thing</h1>
+                <h1>Bienvenue sur Note-thing</h1>
                 <p>
                     Vous pouvez créer une nouvelle note ou un nouveau dossier
                     dès maintenant en utilisant le menu à gauche.

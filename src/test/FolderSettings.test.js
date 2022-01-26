@@ -14,6 +14,7 @@ import FolderSettingsComponent from '../layout/directory/DirectoryComponent';
 import MOCK_DATA from './data';
 import { MainContext } from '../context/MainContext';
 import { mockStorage } from './Mock';
+import { CONFIG } from '../config/config';
 
 const notes = MOCK_DATA;
 const server = setupServer();
@@ -42,7 +43,7 @@ jest.mock('react-router-dom', () => ({
 
 it('Folder settings - change name', async () => {
     server.use(
-        rest.patch(`http://note-thing.ch/api/v1/folders/${notes.directory.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
+        rest.patch(`${CONFIG.api_url}/folders/${notes.directory.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
     );
 
     render(
@@ -76,7 +77,7 @@ it('Folder settings - change name', async () => {
 
 it('Folder settings - empty name', async () => {
     server.use(
-        rest.patch(`http://note-thing.ch/api/v1/folders/${notes.directory.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
+        rest.patch(`${CONFIG.api_url}/folders/${notes.directory.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
     );
 
     render(
@@ -108,7 +109,7 @@ it('Folder settings - empty name', async () => {
 });
 it('Folder settings - too long name', async () => {
     server.use(
-        rest.patch(`http://note-thing.ch/api/v1/folders/${notes.directory.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
+        rest.patch(`${CONFIG.api_url}/folders/${notes.directory.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
     );
 
     render(
@@ -143,7 +144,7 @@ it('Folder settings - too long name', async () => {
 
 it('Folder settings - delete', async () => {
     server.use(
-        rest.delete(`http://note-thing.ch/api/v1/folders/${notes.directory.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
+        rest.delete(`${CONFIG.api_url}/folders/${notes.directory.id}`, (req, res, ctx) => res(ctx.json({ test: '2' })))
     );
 
     render(

@@ -29,42 +29,42 @@ const Signup = () => {
         if (!validateName(firstname)) {
             setFirstNameError({
                 error: true,
-                helperText: 'First name is mandatory'
+                helperText: 'Le prénom est obligatoire'
             });
             inputError = true;
         }
         if (!validateName(lastname)) {
             setLastNameError({
                 error: true,
-                helperText: 'Last name is mandatory'
+                helperText: 'Le nom de famille est obligatoire'
             });
             inputError = true;
         }
         if (!validateEmail(email)) {
             setEmailError({
                 error: true,
-                helperText: 'Valid email adresse must be provided'
+                helperText: 'Une adresse e-mail valide doit être fournie'
             });
             inputError = true;
         }
         if (!validatePassword(password)) {
             setPasswordError({
                 error: true,
-                helperText: 'Password is mandatory'
+                helperText: 'Le mot de passe est obligatoire'
             });
             inputError = true;
         }
         if (!validatePassword(passwordRepeat)) {
-            setLastNameError({
+            setPasswordRepeatError({
                 error: true,
-                helperText: 'Password repeat is mandatory'
+                helperText: 'La répétition du mot de passe est obligatoire'
             });
             inputError = true;
         }
-        if (password !== passwordRepeat) {
+        if (validatePassword(password) && password !== passwordRepeat) {
             setPasswordRepeatError({
                 error: true,
-                helperText: 'Password repeat miss match'
+                helperText: 'Répétition du mot de passe erroné'
             });
             inputError = true;
         }
@@ -105,7 +105,7 @@ const Signup = () => {
     // const redirectPage = (link) => history.push(link);
     return (
         <Grid container spacing={4} direction="column" alignItems="center">
-            <Grid item square>
+            <Grid item>
                 <Typography
                     sx={{ mt: 6, mb: 8 }}
                     component="h1"
@@ -129,6 +129,7 @@ const Signup = () => {
                                 margin="normal"
                                 required
                                 fullWidth
+                                data-testid="firstname-field"
                                 id="firstname"
                                 label="Prénom"
                                 name="firstname"
@@ -143,6 +144,7 @@ const Signup = () => {
                                 margin="normal"
                                 required
                                 fullWidth
+                                data-testid="lastname-field"
                                 id="lastname"
                                 label="Nom"
                                 name="lastname"
@@ -157,6 +159,7 @@ const Signup = () => {
                         required
                         fullWidth
                         id="email"
+                        data-testid="email-field"
                         label="Adresse e-mail"
                         name="email"
                         autoComplete="email"
@@ -167,6 +170,7 @@ const Signup = () => {
                         margin="normal"
                         required
                         fullWidth
+                        data-testid="password-field"
                         name="password"
                         label="Mot de passe"
                         type="password"
@@ -183,6 +187,7 @@ const Signup = () => {
                         margin="normal"
                         required
                         fullWidth
+                        data-testid="passwordRepeat-field"
                         name="passwordRepeat"
                         label="Répéter le mot de passe"
                         type="password"
@@ -193,6 +198,7 @@ const Signup = () => {
                     <Button
                         type="submit"
                         fullWidth
+                        data-testid="submit-button"
                         variant="contained"
                         color="primary"
                         size="large"
