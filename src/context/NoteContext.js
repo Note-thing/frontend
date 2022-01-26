@@ -155,7 +155,12 @@ export const NoteProvider = ({ children }) => {
                                 body: data.body,
                                 title: data.title,
                                 updated_at: data.updated_at,
-                                folder_id: data.folder_id
+                                folder_id: data.folder_id,
+                                read_only: data.read_only,
+                                lock: data.lock,
+                                reference_note: data.reference_note,
+                                has_mirror: data.has_mirror
+
                             }
                         });
                     } catch (err) {

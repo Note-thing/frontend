@@ -22,7 +22,10 @@ import { NoteContext } from '../../../context/NoteContext';
 import { SHARED_NOTE_DEFAULT_TYPE, SHARED_NOTE_TYPE } from '../../sharedNote/SharedNoteTypes';
 import NotFoundError from '../../../errors/NotFoundError';
 
-export default function ShareNoteModal({ open, setOpen }) {
+/**
+ * Modal which create link for shared note and display existings ones
+ */
+export default function ShareNoteModal({ open, setOpen, testid }) {
     const [sharedNotesList, setSharedNotesList] = useState([]);
     const [noteType, setNoteType] = useState(SHARED_NOTE_DEFAULT_TYPE);
     const [isFetching, setIsFetching] = useState(false);
@@ -32,18 +35,26 @@ export default function ShareNoteModal({ open, setOpen }) {
     const { dispatch } = useContext(MainContext);
     const { notes } = useContext(NoteContext);
     useEffect(() => {
+        let isCancelled = false;
         (async () => {
             if (notes.note.id && open) {
                 try {
                     setIsFetching(true);
                     const sharedNotes = await Get(`/notes/${notes.note.id}/shared_notes`);
-                    setSharedNotesList(sharedNotes);
-                    setIsFetching(false);
+                    if (!isCancelled) {
+                        setSharedNotesList(sharedNotes);
+                        setIsFetching(false);
+                    }
                 } catch (err) {
-                    setIsFetching(false);
+                    if (!isCancelled) {
+                        setIsFetching(false);
+                    }
                 }
             }
         })();
+        return () => {
+            isCancelled = true;
+        };
     }, [notes.note.id, open]);
 
     /**
@@ -104,7 +115,7 @@ export default function ShareNoteModal({ open, setOpen }) {
     const displayNotesList = () => {
         if (sharedNotesList.length > 0) {
             return (
-                <List dense={false} sx={{ maxHeight: '200px', overflowY: 'scroll' }}>
+                <List data-testid="shared-notes-link-list" dense={false} sx={{ maxHeight: '200px', overflowY: 'scroll' }}>
                     {sharedNotesList
                         .sort((a, b) => a.created_at < b.created_at)
                         .map((sharedNote) => (
@@ -172,7 +183,7 @@ export default function ShareNoteModal({ open, setOpen }) {
         setNoteType(type);
     };
     return (
-        <Modal title="Partager votre note" open={open} onClose={setOpen}>
+        <Modal title="Partager votre note" open={open} onClose={setOpen} testid={testid}>
             <Grow in={isCopied}>
                 <Alert
                     sx={{
@@ -198,7 +209,7 @@ export default function ShareNoteModal({ open, setOpen }) {
                             label="Note Type"
                         >
                             {Object.values(SHARED_NOTE_TYPE).map((type) => (
-                                <MenuItem value={type.key}>{type.display}</MenuItem>
+                                <MenuItem key={type.key} value={type.key}>{type.display}</MenuItem>
                             ))}
                         </Select>
                     </FormControl>
@@ -208,6 +219,7 @@ export default function ShareNoteModal({ open, setOpen }) {
                         variant="outlined"
                         onClick={() => createNewSharedNote()}
                         disabled={isCreatingSharedNote}
+                        data-testid="create-new-link-button"
                     >
                         {isCreatingSharedNote && <CircularProgress />}
                         Générer un lien

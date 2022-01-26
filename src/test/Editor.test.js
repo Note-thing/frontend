@@ -1,7 +1,7 @@
 import fetch, { enableFetchMocks } from 'jest-fetch-mock';
 import React from 'react';
 import {
-    render, cleanup, act, fireEvent, waitFor
+    render, cleanup, act, fireEvent, waitFor, screen
 } from '@testing-library/react';
 import { MainProvider } from '../context/MainContext';
 import { NoteProvider } from '../context/NoteContext';
@@ -61,16 +61,9 @@ describe('Editor Component', () => {
     beforeAll(async () => {
         // testing layout
         fetch.mockResponses(
-            [
-                JSON.stringify(DEFAULT_MOCK_DATA.directories),
-                { status: 200 }
-            ], [
-                JSON.stringify(DEFAULT_MOCK_DATA.note),
-                { status: 200 }
-            ], [
-                JSON.stringify([]),
-                { status: 200 }
-            ]
+            [JSON.stringify(DEFAULT_MOCK_DATA.directories), { status: 200 }],
+            [JSON.stringify(DEFAULT_MOCK_DATA.note), { status: 200 }],
+            [JSON.stringify([]), { status: 200 }]
         );
         const edit = editor();
         await waitFor(() => expect(fetch).toHaveBeenCalledTimes(2));
@@ -187,15 +180,15 @@ And this is the second line.</p>`);
         });
         expect(preview.innerHTML.trim()).toBe('<p>Love<strong>is</strong>bold</p>');
         act(() => {
-            textarea.value = 'Italicized text is the *cat\'s meow*.';
+            textarea.value = "Italicized text is the *cat's meow*.";
             fireEvent.keyUp(textarea, { key: 'Enter', code: 'Enter', charCode: 13 });
         });
-        expect(preview.innerHTML.trim()).toBe('<p>Italicized text is the <em>cat\'s meow</em>.</p>');
+        expect(preview.innerHTML.trim()).toBe("<p>Italicized text is the <em>cat's meow</em>.</p>");
         act(() => {
-            textarea.value = 'Italicized text is the _cat\'s meow_.';
+            textarea.value = "Italicized text is the _cat's meow_.";
             fireEvent.keyUp(textarea, { key: 'Enter', code: 'Enter', charCode: 13 });
         });
-        expect(preview.innerHTML.trim()).toBe('<p>Italicized text is the <em>cat\'s meow</em>.</p>');
+        expect(preview.innerHTML.trim()).toBe("<p>Italicized text is the <em>cat's meow</em>.</p>");
         act(() => {
             textarea.value = 'A*cat*meow';
             fireEvent.keyUp(textarea, { key: 'Enter', code: 'Enter', charCode: 13 });
@@ -205,16 +198,21 @@ And this is the second line.</p>`);
             textarea.value = 'This text is ***really important***.';
             fireEvent.keyUp(textarea, { key: 'Enter', code: 'Enter', charCode: 13 });
         });
-        expect(preview.innerHTML.trim()).toBe('<p>This text is <em><strong>really important</strong></em>.</p>');
+        expect(preview.innerHTML.trim()).toBe(
+            '<p>This text is <em><strong>really important</strong></em>.</p>'
+        );
         act(() => {
             textarea.value = 'This text is ___really important___.';
             fireEvent.keyUp(textarea, { key: 'Enter', code: 'Enter', charCode: 13 });
         });
-        expect(preview.innerHTML.trim()).toBe('<p>This text is <em><strong>really important</strong></em>.</p>');
+        expect(preview.innerHTML.trim()).toBe(
+            '<p>This text is <em><strong>really important</strong></em>.</p>'
+        );
     });
     it('Editor Component | Markdown to html conversion | Blockquotes', () => {
         act(() => {
-            textarea.value = '> Dorothy followed her through many of the beautiful rooms in her castle.';
+            textarea.value =
+                '> Dorothy followed her through many of the beautiful rooms in her castle.';
             fireEvent.keyUp(textarea, { key: 'Enter', code: 'Enter', charCode: 13 });
         });
         expect(preview.innerHTML.trim()).toBe(`<blockquote>
@@ -325,12 +323,16 @@ And this is the second line.</p>`);
             textarea.value = 'At the command prompt, type `nano`.';
             fireEvent.keyUp(textarea, { key: 'Enter', code: 'Enter', charCode: 13 });
         });
-        expect(preview.innerHTML.trim()).toBe('<p>At the command prompt, type <code>nano</code>.</p>');
+        expect(preview.innerHTML.trim()).toBe(
+            '<p>At the command prompt, type <code>nano</code>.</p>'
+        );
         act(() => {
             textarea.value = '``Use `code` in your Markdown file.``';
             fireEvent.keyUp(textarea, { key: 'Enter', code: 'Enter', charCode: 13 });
         });
-        expect(preview.innerHTML.trim()).toBe('<p><code>Use `code` in your Markdown file.</code></p>');
+        expect(preview.innerHTML.trim()).toBe(
+            '<p><code>Use `code` in your Markdown file.</code></p>'
+        );
         act(() => {
             textarea.value = `    <html>
         <head>
@@ -348,25 +350,150 @@ And this is the second line.</p>`);
             textarea.value = 'My favorite search engine is [Duck Duck Go](https://duckduckgo.com).';
             fireEvent.keyUp(textarea, { key: 'Enter', code: 'Enter', charCode: 13 });
         });
-        expect(preview.innerHTML.trim()).toBe('<p>My favorite search engine is <a href="https://duckduckgo.com">Duck Duck Go</a>.</p>');
+        expect(preview.innerHTML.trim()).toBe(
+            '<p>My favorite search engine is <a href="https://duckduckgo.com">Duck Duck Go</a>.</p>'
+        );
         act(() => {
-            textarea.value = 'My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best search engine for privacy").';
+            textarea.value =
+                'My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best search engine for privacy").';
             fireEvent.keyUp(textarea, { key: 'Enter', code: 'Enter', charCode: 13 });
         });
-        expect(preview.innerHTML.trim()).toBe('<p>My favorite search engine is <a href="https://duckduckgo.com" title="The best search engine for privacy">Duck Duck Go</a>.</p>');
+        expect(preview.innerHTML.trim()).toBe(
+            '<p>My favorite search engine is <a href="https://duckduckgo.com" title="The best search engine for privacy">Duck Duck Go</a>.</p>'
+        );
         act(() => {
             textarea.value = `<https://www.markdownguide.org>
 <fake@example.com>`;
             fireEvent.keyUp(textarea, { key: 'Enter', code: 'Enter', charCode: 13 });
         });
-        expect(preview.innerHTML.trim()).toBe(`<p><a href="https://www.markdownguide.org">https://www.markdownguide.org</a><br>
+        expect(preview.innerHTML.trim())
+            .toBe(`<p><a href="https://www.markdownguide.org">https://www.markdownguide.org</a><br>
 <a href="mailto:fake@example.com">fake@example.com</a></p>`);
     });
     it('Editor Component | Markdown to html conversion | Images', () => {
         act(() => {
-            textarea.value = '![The San Juan Mountains are beautiful!](/assets/images/san-juan-mountains.jpg "San Juan Mountains")';
+            textarea.value =
+                '![The San Juan Mountains are beautiful!](/assets/images/san-juan-mountains.jpg "San Juan Mountains")';
             fireEvent.keyUp(textarea, { key: 'Enter', code: 'Enter', charCode: 13 });
         });
-        expect(preview.innerHTML.trim()).toBe('<p><img src="/assets/images/san-juan-mountains.jpg" alt="The San Juan Mountains are beautiful!" title="San Juan Mountains"></p>');
+        expect(preview.innerHTML.trim()).toBe(
+            '<p><img src="/assets/images/san-juan-mountains.jpg" alt="The San Juan Mountains are beautiful!" title="San Juan Mountains"></p>'
+        );
+    });
+});
+
+describe('Share note - lock = false', () => {
+    beforeAll(async () => {
+        document.body.innerHTML = '';
+        // testing layout
+        fetch.mockResponses(
+            [JSON.stringify(DEFAULT_MOCK_DATA.directories), { status: 200 }],
+            [
+                JSON.stringify({
+                    ...DEFAULT_MOCK_DATA.note,
+                    lock: false,
+                    has_mirror: true,
+                    reference_note: 2
+                }),
+                { status: 200 }
+            ]
+        );
+        const edit = editor();
+        await waitFor(() => expect(fetch).toHaveBeenCalledTimes(2));
+        container = edit.container;
+        // testing layout
+        const [textareaElement] = container.getElementsByClassName('editor-textarea');
+        const [previewElement] = container.getElementsByClassName('preview-pannel');
+        textarea = textareaElement;
+        preview = previewElement;
+    });
+    afterAll(() => {
+        cleanup();
+    });
+    beforeEach(() => {
+        fetch.resetMocks();
+    });
+    it('lock, has_mirror = true', async () => {
+        expect(screen.getByTestId('editor-textarea-input').disabled).toBe(false);
+    });
+});
+describe('Share note - lock = true', () => {
+    beforeAll(async () => {
+        fetch.resetMocks();
+        document.body.innerHTML = '';
+        // testing layout
+        fetch.mockResponses(
+            [JSON.stringify(DEFAULT_MOCK_DATA.directories), { status: 200 }],
+            [
+                JSON.stringify({
+                    ...DEFAULT_MOCK_DATA.note,
+                    lock: true,
+                    has_mirror: true,
+                    reference_note: 2
+                }),
+                { status: 200 }
+            ]
+        );
+        const edit = editor();
+        await waitFor(() => expect(fetch).toHaveBeenCalledTimes(2));
+        container = edit.container;
+        // testing layout
+        const [textareaElement] = container.getElementsByClassName('editor-textarea');
+        const [previewElement] = container.getElementsByClassName('preview-pannel');
+        textarea = textareaElement;
+        preview = previewElement;
+    });
+    it('lock, has_mirror = true', async () => {
+        await waitFor(() =>
+            expect(screen.getByTestId('editor-textarea-input').disabled).toBe(true)
+        );
+    });
+});
+describe('Share note - readonly = true', () => {
+    beforeAll(async () => {
+        fetch.resetMocks();
+        // testing layout
+        fetch.mockResponses(
+            [JSON.stringify(DEFAULT_MOCK_DATA.directories), { status: 200 }],
+            [
+                JSON.stringify({ ...DEFAULT_MOCK_DATA.note, read_only: true, reference_note: 2 }),
+                { status: 200 }
+            ]
+        );
+        const edit = editor();
+        await waitFor(() => expect(fetch).toHaveBeenCalledTimes(2));
+        container = edit.container;
+        // testing layout
+        const [textareaElement] = container.getElementsByClassName('editor-textarea');
+        const [previewElement] = container.getElementsByClassName('preview-pannel');
+        textarea = textareaElement;
+        preview = previewElement;
+    });
+    it('The editor is disabled', async () => {
+        await waitFor(() => expect(screen.getByTestId('editor-textarea-input').disabled).toBe(true));
+    });
+});
+describe('Share note - readonly = false', () => {
+    beforeAll(async () => {
+        fetch.resetMocks();
+        // testing layout
+        fetch.mockResponses(
+            [JSON.stringify(DEFAULT_MOCK_DATA.directories), { status: 200 }],
+            [
+                JSON.stringify({ ...DEFAULT_MOCK_DATA.note, read_only: false, reference_note: 2 }),
+                { status: 200 }
+            ]
+        );
+        const edit = editor();
+        await waitFor(() => expect(fetch).toHaveBeenCalledTimes(2));
+        container = edit.container;
+        // testing layout
+        const [textareaElement] = container.getElementsByClassName('editor-textarea');
+        const [previewElement] = container.getElementsByClassName('preview-pannel');
+        textarea = textareaElement;
+        preview = previewElement;
+    });
+    it('The editor is disabled', async () => {
+        expect(screen.getByTestId('editor-textarea-input').disabled).toBe(false);
     });
 });

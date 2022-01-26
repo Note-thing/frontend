@@ -39,6 +39,7 @@ const DEFAULT_MOCK_DATA = {
         created_at: '2021-12-28T15:15:20.000Z',
         updated_at: '2021-12-30T20:35:02.000Z',
         folder_id: 1,
+        reference_note: null,
         tags: [
             {
                 id: 6,

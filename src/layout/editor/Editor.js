@@ -49,7 +49,6 @@ export default function Editor() {
         },
         [setPreviewWidth]
     );
-
     const debounceBody = useCallback(
         debounceInput(async (value) => {
             try {
@@ -91,6 +90,7 @@ export default function Editor() {
                         rightWidth={previewWidth}
                         leftPannel={
                             <textarea
+                                data-testid="editor-textarea-input"
                                 className="editor-textarea"
                                 id="editor"
                                 disabled={(lock && note.has_mirror) || note.read_only}
