@@ -10,7 +10,9 @@ Ce projet offre une interface web et un moyen d'utiliser le backend pour offir u
 
 Pour ce faire, nous avons utilisé [ReactJs](https://github.com/facebook/create-react-app).
 
-Vous pouvez accèder à l'application en cliquant [ici](http://note-thing.ch).
+Vous pouvez accèder à l'application en cliquant [ici](https://note-thing.ch).
+
+Pour des détails techniques supplémentaire, cliquez [ici](https://github.com/Note-thing/frontend/wiki).
 
 ## Liste des fonctionnalités
 
@@ -143,5 +145,5 @@ Vous trouverez un [guide de contribution](CONTRIBUTING.md) qui définit quelques
   <img src="https://contrib.rocks/image?repo=note-thing/frontend" />
 </a>
 
-### License
+## License
 Notre projet utilise la [License apache](LICENSE).
