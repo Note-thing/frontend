@@ -133,16 +133,9 @@ Les étapes suivantes sont effectuées lorsque l'on souhaite déployer l'applica
  8. Ajout de la clé SSh dans le fichier créé au point 6
  9. Utilisation de rsync pour copier les fichiers sur notre AWS en utilisant la clé SSH du point 8
 
-## Comment contribuer ?
-
-1. Commencez par récupérer la dernière version du code (branche main)
-2. Ouvrir une issue expliquant ce que vous-voulez améliorer / fixer ou en reprendre une existante
-3. Créer une nouvelle branche à partir de main
-4. Faire vos changements
-5. Ouvrez une pull-request afin de merge vos changement, mentionnez la / les issues concernées
-6. Assurez-vous que la pull-request passe les tests automatisés et attendez que quelqu'un donne une review
-7. Une fois que le point 6 est passé, vous pouvez merge votre pull-request dans main
-8. Youpi vous avez fait une contribution au projet
+## Comment contribuer ? 🤌
+Note-thing est un projet réalisé par des étudiants en ingénierie logiciel. Nous sommes ouverts aux avis d'experts.
+Vous trouverez un [guide de contribution](CONTRIBUTING.md) qui définit quelques en points clefs comment contribuer au projet.
 
 ## Fondateurs
 
@@ -150,4 +143,5 @@ Les étapes suivantes sont effectuées lorsque l'on souhaite déployer l'applica
   <img src="https://contrib.rocks/image?repo=note-thing/frontend" />
 </a>
 
-## [License](./LICENSE)
+### License
+Notre projet utilise la [License apache](LICENSE).
