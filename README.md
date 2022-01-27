@@ -133,7 +133,7 @@ Les étapes suivantes sont effectuées lorsque l'on souhaite déployer l'applica
  8. Ajout de la clé SSh dans le fichier créé au point 6
  9. Utilisation de rsync pour copier les fichiers sur notre AWS en utilisant la clé SSH du point 8
 
-## Comment contribuer ? 🤌
+## Comment contribuer ?
 Note-thing est un projet réalisé par des étudiants en ingénierie logiciel. Nous sommes ouverts aux avis d'experts.
 Vous trouverez un [guide de contribution](CONTRIBUTING.md) qui définit quelques en points clefs comment contribuer au projet.
 
